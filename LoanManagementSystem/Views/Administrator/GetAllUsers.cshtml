@@ -1,0 +1,43 @@
+﻿@model List<ApplicationUser>
+
+@{
+    ViewData["Title"] = "All Users";
+}
+<style>
+/*    .btn-full {
+        white-space: nowrap;
+    }*/
+</style>
+
+<div class="container">
+    <h1>All Users</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">FullName</th>
+                <th scope="col">Email</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <th scope="row">@user.Id</th>
+                    <td>@user.FullName</td>
+                    <td>@user.Email</td>
+                    <td>
+                        <div class="btn-group" role="group">
+                            <a class="btn btn-primary mx-1" href="@Url.Action("Details", "Administrator", new { userId = user.Id })">View</a>
+                            <form asp-controller="Administrator" asp-action="DeleteUser" method="post" onsubmit="return confirm('Are you sure you want to delete this user?');">
+                                <input type="hidden" name="userId" value="@user.Id">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,35 @@
+﻿@model ApplicationUser
+
+@{
+    ViewData["Title"] = "User Details";
+}
+
+<a asp-action="GetAllUsers" class="btn btn-primary">Back to List</a>
+<section class="container d-flex justify-content-center">
+    <div class="card" style="width: 24rem;">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <i class="fas fa-id-card"></i>
+                <strong>ID:</strong> @Html.DisplayFor(model => model.Id)
+            </li>
+            <li class="list-group-item">
+                <i class="fas fa-user-circle"></i>
+                <strong>Full Name:</strong> @Html.DisplayFor(model => model.FullName)
+            </li>
+            <li class="list-group-item">
+                <i class="fas fa-at"></i>
+                <strong>Email:</strong> @Html.DisplayFor(model => model.Email)
+            </li>
+            <li class="list-group-item">
+                <i class="fas fa-venus-mars"></i>
+                <strong>DateOfBirth:</strong> @(Model.DateOfBirth)
+            </li>
+            <li class="list-group-item">
+                <i class="fas fa-venus-mars"></i>
+                <strong>Gender:</strong> @(Model.Gender == 'M' ? "Male" : "Female")
+            </li>
+        </ul>
+    </div>
+</section>
+
+

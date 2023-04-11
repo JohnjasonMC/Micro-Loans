@@ -1,0 +1,30 @@
+﻿@using LoanManagementSystem.Models;
+@model GadgetLoan
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<style>
+    p {
+        margin: 3px;
+    }
+</style>
+
+<!-- display daetails of the todo-->
+<h1>Gadget Loan</h1>
+<div class="container">
+    <div class="row text-left">
+        <div class="col-md-4">
+            <img class="img-thumbnail" src="@Model.GadgetImageURL" alt="@Model.GadgetName" />
+        </div>
+        <div class="col-md-8">
+            <h4>@Model.GadgetName</h4>
+            <h5>PHP @Model.Price</h5>
+            <p style="color:gray;font-size:10px;">Description</p>
+            <p>@Model.Description</p>
+            <a type="submit" class="btn btn-primary" asp-controller="GadgetLoan" asp-action="GetAllGadgets">Back to list</a>
+        </div>
+    </div>
+</div>

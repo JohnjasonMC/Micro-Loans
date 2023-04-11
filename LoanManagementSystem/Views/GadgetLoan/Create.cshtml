@@ -1,0 +1,54 @@
+﻿@using LoanManagementSystem.Models;
+@model GadgetLoan
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@section scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+<style>
+    .form-group {
+        margin-bottom: 5px;
+    }
+</style>
+
+<h1> Add Gadget</h1>
+<form method="post" asp-action="Create" asp-controller="GadgetLoan">
+    <div class="form-group row">
+        <label asp-for="GadgetName" class="col-sm-2 col-form-label">Name</label>
+        <div class="col-sm-10">
+            <input asp-for="GadgetName" class="form-control" id="GadgetName">
+            <span asp-validation-for="GadgetName" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="Description" class="col-sm-2 col-form-label">Description</label>
+        <div class="col-sm-10">
+            <textarea asp-for="Description" class="form-control" id="Description" rows="5"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="Price" class="col-sm-2 col-form-label">Price</label>
+        <div class="col-sm-10">
+            <input asp-for="Price" class="form-control" id="Price">
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="GadgetImageURL" class="col-sm-2 col-form-label">Image URL</label>
+        <div class="col-sm-10">
+            <input asp-for="GadgetImageURL" class="form-control" id="GadgetImageURL">
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-10 offset-sm-2">
+            <button type="submit" class="btn btn-primary">Add</button>
+        </div>
+    </div>
+</form>

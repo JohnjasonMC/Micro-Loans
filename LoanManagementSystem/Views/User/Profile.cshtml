@@ -1,0 +1,87 @@
+﻿@using LoanManagementSystem.ViewModel
+@using LoanManagementSystem.Models
+@model ApplicationUser
+
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<style>
+    .my-card{
+        background-color: hsl(0, 0%, 96%);
+    }
+</style>
+
+
+<div class="container" >
+    <div class="row justify-content-center" >
+        <div class="col-md-6" >
+            <div class="card my-card">
+                <div class="card-body my-2 mx-4">
+                    <h1 class="text-center fw-bold ls-tight mb-4">Profile Details</h1>
+                    <div class="row justify-content-center align-items-center">
+                        <div class="col-4">
+                            <strong class="text-muted">Name</strong>
+                        </div>
+                        <div class="col-8">
+                            @Html.DisplayFor(model => model.FullName)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <strong class="text-muted">Email</strong>
+                        </div>
+                        <div class="col-8">
+                            @Html.DisplayFor(model => model.Email)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                             <strong class="text-muted">Gender</strong>
+                        </div>   
+                        <div class="col-8">
+                            @(Model.Gender == 'M' ? "Male" : "Female")
+                         </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <strong class="text-muted">Id</strong>
+                         </div>  
+                         <div class="col-8">
+                             @Html.DisplayFor(model => model.Id)
+                         </div>
+                    </div>
+                    <a class="btn btn-primary mt-3 mx-auto d-block" asp-controller="Authentication" asp-action="EditPassword">Update Password</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*<section class="container d-flex justify-content-center">
+    <div class="card" style="width: 24rem;">
+            <li class="list-group-item">
+                <i class="fas fa-id-card"></i>
+                <strong>ID:</strong> @Html.DisplayFor(model => model.Id)
+            </li>
+            <li class="list-group-item">
+                <i class="fas fa-user-circle"></i>
+                <strong>Full Name:</strong> @Html.DisplayFor(model => model.FullName)
+            </li>
+            <li class="list-group-item">
+                <i class="fas fa-at"></i>
+                <strong>Email:</strong> @Html.DisplayFor(model => model.Email)
+            </li>
+            <li class="list-group-item">
+                <i class="fas fa-venus-mars"></i>
+                <strong>Gender:</strong> @(Model.Gender == 'M' ? "Male" : "Female")
+            </li>
+            <li class="list-group-item">
+                <i class="fas fa-id-card"></i>
+                <strong>ID:</strong> @Html.DisplayFor(model => model.DateOfBirth)
+            </li>
+            <li class="list-group-item">
+                <i class="fas fa-user-cog"></i>
+                <a class="btn btn-primary" asp-controller="Authentication" asp-action="EditPassword">Update Password</a>
+            </li>
+    </div>
+</section>*@

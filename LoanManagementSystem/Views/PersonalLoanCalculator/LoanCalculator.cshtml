@@ -1,0 +1,105 @@
+﻿@using System.Globalization;
+@using LoanManagementSystem.Models;
+@model PersonalLoanCalculator
+
+
+<div class="container">
+    <div class="row">
+        <div class="result mb-3">
+            <h2>Loan Calculator</h2>
+            <form asp-action="LoanCalculator" method="post">
+                <div class="result mb-3">
+                    <label for="principal">Principal Amount (Loan Amount):</label>
+                    <input type="text" class="form-control" id="principal" name="PrincipalAmount" value="@Model.PrincipalAmount" />
+                </div>
+                <div class="result mb-3">
+                    <label for="rate">(Fixed) Annual Interest Rate:</label>
+                    <input type="text" class="form-control" id="rate" name="AnualRate" value="12.00" readonly />
+                </div>
+                <div class="result mb-3">
+                    <label for="term">Loan Term (Refer To The Table Below):</label>
+                    <input type="text" class="form-control" id="numberofterms" name="NumberOfTerms" value="@Model.NumberOfTerms" />
+                </div>
+                <button type="submit" class="btn btn-primary">Calculate</button>
+            </form>
+            @if (Model.Payment.HasValue)
+            {
+                <div class="result mb-3">
+                    <h3>Monthly Payment: </h3>
+                    <p class="result-value h4">@Model.Payment.Value.ToString("C", new CultureInfo("en-PH"))</p>
+                    <p class="result-description">This is the monthly payment for the loan.</p>
+                </div>
+            }
+            <div asp-validation-summary="All" class="text-danger mt-5"></div>
+            <h2>Loan Description</h2>
+            <div class="table-responsive mt-4">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Loan Terms (months)</th>
+                            <th>(Fixed) Interest Rate (annual)</th>
+                            <th>Loan Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>12</td>
+                            <td>12%(12.00)</td>
+                            <td>Php 50,000 - Php 500,000</td>
+                        </tr>
+                        <tr>
+                            <td>24</td>
+                            <td>12%(12.00)</td>
+                            <td>Php 50,000 - Php 500,000</td>
+                        </tr>
+                        <tr>
+                            <td>36</td>
+                            <td>12%(12.00)</td>
+                            <td>Php 50,000 - Php 500,000</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <h2>Eligibility Criteria</h2>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Criteria</th>
+                        <th>Requirement</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Minimum Loan Amount</td>
+                        <td>Php 50,000</td>
+                    </tr>
+                    <tr>
+                        <td>Maximum Loan Amount</td>
+                        <td>Php 500,000</td>
+                    </tr>
+                    <tr>
+                        <td>Minimum Loan Term</td>
+                        <td>12 months</td>
+                    </tr>
+                    <tr>
+                        <td>Maximum Loan Term</td>
+                        <td>36 months</td>
+                    </tr>
+                    <tr>
+                        <td>Minimum Annual Income</td>
+                        <td>Php 25,000</td>
+                    </tr>
+                    <tr>
+                        <td>Minimum Credit Score</td>
+                        <td>500</td>
+                    </tr>
+                    <tr>
+                        <td>Supporting Documents</td>
+                        <td>(2) Valid ID's, Detailed Location Map, NBI Clearance, Any Valid Payroll Slip (Photocopy)'</td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
