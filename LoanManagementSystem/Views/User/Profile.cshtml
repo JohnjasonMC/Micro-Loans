@@ -7,15 +7,15 @@
 }
 
 <style>
-    .my-card{
+    .my-card {
         background-color: hsl(0, 0%, 96%);
     }
 </style>
 
 
-<div class="container" >
-    <div class="row justify-content-center" >
-        <div class="col-md-6" >
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
             <div class="card my-card">
                 <div class="card-body my-2 mx-4">
                     <h1 class="text-center fw-bold ls-tight mb-4">Profile Details</h1>
@@ -37,19 +37,19 @@
                     </div>
                     <div class="row">
                         <div class="col-4">
-                             <strong class="text-muted">Gender</strong>
-                        </div>   
+                            <strong class="text-muted">Gender</strong>
+                        </div>
                         <div class="col-8">
                             @(Model.Gender == 'M' ? "Male" : "Female")
-                         </div>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-4">
                             <strong class="text-muted">Id</strong>
-                         </div>  
-                         <div class="col-8">
-                             @Html.DisplayFor(model => model.Id)
-                         </div>
+                        </div>
+                        <div class="col-8">
+                            @Html.DisplayFor(model => model.Id)
+                        </div>
                     </div>
                     <a class="btn btn-primary mt-3 mx-auto d-block" asp-controller="Authentication" asp-action="EditPassword">Update Password</a>
                 </div>

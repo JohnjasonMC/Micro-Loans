@@ -1,18 +1,17 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel;
 
-namespace LoanManagementSystem.ViewModel
+namespace LmsAPI.DTO
 {
-    public class LoginUserViewModel
+    public class LoginDTO
     {
-        [DisplayName("Enter Username/Email Address")]
         [Required]
+        [EmailAddress]
         public string UserName { get; set; }
-
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
+        [Display(Name = "Remember Me")]
         public bool RememberMe { get; set; }
     }
 }
