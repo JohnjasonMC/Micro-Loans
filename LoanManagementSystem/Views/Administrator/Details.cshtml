@@ -4,32 +4,60 @@
     ViewData["Title"] = "User Details";
 }
 
+
+<style>
+
+
+    .my-card {
+        background-color: hsl(0, 0%, 96%);
+    }
+</style>
+
 <a asp-action="GetAllUsers" class="btn btn-primary">Back to List</a>
-<section class="container d-flex justify-content-center">
-    <div class="card" style="width: 24rem;">
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-                <i class="fas fa-id-card"></i>
-                <strong>ID:</strong> @Html.DisplayFor(model => model.Id)
-            </li>
-            <li class="list-group-item">
-                <i class="fas fa-user-circle"></i>
-                <strong>Full Name:</strong> @Html.DisplayFor(model => model.FullName)
-            </li>
-            <li class="list-group-item">
-                <i class="fas fa-at"></i>
-                <strong>Email:</strong> @Html.DisplayFor(model => model.Email)
-            </li>
-            <li class="list-group-item">
-                <i class="fas fa-venus-mars"></i>
-                <strong>DateOfBirth:</strong> @(Model.DateOfBirth)
-            </li>
-            <li class="list-group-item">
-                <i class="fas fa-venus-mars"></i>
-                <strong>Gender:</strong> @(Model.Gender == 'M' ? "Male" : "Female")
-            </li>
-        </ul>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card my-card">
+                <div class="card-body my-2 mx-4">
+                    <h1 class="text-center fw-bold ls-tight mb-4">User Details</h1>
+                    <div class="row justify-content-center align-items-center">
+                        <div class="col-4">
+                            <strong class="text-muted">Name</strong>
+                        </div>
+                        <div class="col-8">
+                            @Html.DisplayFor(model => model.FullName)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <strong class="text-muted">Email</strong>
+                        </div>
+                        <div class="col-8">
+                            @Html.DisplayFor(model => model.Email)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <strong class="text-muted">Gender</strong>
+                        </div>
+                        <div class="col-8">
+                            @(Model.Gender == 'M' ? "Male" : "Female")
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <strong class="text-muted">Id</strong>
+                        </div>
+                        <div class="col-8">
+                            @Html.DisplayFor(model => model.Id)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</section>
+</div>
+
 
 

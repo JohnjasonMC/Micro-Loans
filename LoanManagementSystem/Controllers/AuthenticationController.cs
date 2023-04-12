@@ -35,11 +35,11 @@ namespace LoanManagementSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser user = await this._userManager.Users.FirstOrDefaultAsync(u => u.Email == loginUser.Username);
+                ApplicationUser user = await this._userManager.Users.FirstOrDefaultAsync(u => u.Email == loginUser.UserName);
 
                 if (user != null)
                 {
-                    var result = await this._signInManager.PasswordSignInAsync(loginUser.Username,
+                    var result = await this._signInManager.PasswordSignInAsync(loginUser.UserName,
                     loginUser.Password,
                     loginUser.RememberMe,
                     false);

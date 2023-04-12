@@ -2,10 +2,12 @@
 using LmsAPI.DTO;
 using LmsAPI.Models;
 using LmsAPI.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LmsAPI.Controllers
 {
+    [Authorize]
     [Route("API/v1/[Controller]")]
     [ApiController]
     public class GadgetLoanController : ControllerBase
