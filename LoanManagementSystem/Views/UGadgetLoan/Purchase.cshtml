@@ -1,42 +1,28 @@
 ﻿@model LoanManagementSystem.ViewModel.PurchaseViewModel
 
-<h2>Payment Confirmation</h2>
+<h1>Purchase Gadget</h1>
 
 <div>
-    <h4>Thank you for your purchase of @Model.GadgetName</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Interest)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Interest)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PaymentTerm)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PaymentTerm)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Payment)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Payment)
-        </dd>
-    </dl>
-    <div>
-        <p>Your payment has been confirmed.</p>
-        @Html.ActionLink("Back to List", "Index")
+    <h3>@Model.GadgetName</h3>
+    <p>@Model.Description</p>
+    <p><strong>Price:</strong> Php @Model.Price</p>
+</div>
+
+<hr />
+
+<form method="post" asp-controller="UGadgetLoan" asp-action="ConfirmPurchase">
+    <input type="hidden" name="gadgetId" value="@Model.GadgetLoanId" />
+
+    <div class="form-group">
+        <label for="paymentTerm">Payment Term</label>
+        <select class="form-control" id="paymentTerm" name="paymentTerm" required>
+            <option value="">Select Payment Term</option>
+            @foreach (var imp in Model.AvailablePaymentTerms)
+            {
+                <option value="@imp.Id">@imp.PaymentTerm Months @imp.Interest% Interest</option>
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Confirm Purchase</button>
+</form>

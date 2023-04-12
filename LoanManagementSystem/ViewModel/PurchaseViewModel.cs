@@ -1,4 +1,7 @@
-﻿namespace LoanManagementSystem.ViewModel
+﻿using LoanManagementSystem.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
+
+namespace LoanManagementSystem.ViewModel
 {
     public class PurchaseViewModel
     {
@@ -8,7 +11,10 @@
         public decimal Price { get; set; }
         public double Interest { get; set; }
         public int PaymentTerm { get; set; }
-        public decimal Payment { get; set; }
-        public List<int> AvailablePaymentTerms { get; internal set; }
+        public decimal? Payment { get; set; }
+        //public bool IsDefault { get; set; }
+        //public List<SelectListItem> AvailableIMPs { get; set; }
+        public int SelectedIMPId { get; set; }
+        public List<IMP> AvailablePaymentTerms { get; set; }
     }
 }

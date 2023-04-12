@@ -10,7 +10,7 @@ namespace LoanManagementSystem.Data
         {
             modelBuilder.Entity<IMP>().HasData(
                 new IMP(1, .8, 3),
-                new IMP(2, 01.00, 6),
+                new IMP(2, 06.00, 6),
                 new IMP(3, 06.00, 12),
                 new IMP(4, 06.00, 24));
         }
