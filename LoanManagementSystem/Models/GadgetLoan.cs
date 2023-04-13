@@ -22,5 +22,15 @@ namespace LoanManagementSystem.Models
         public string? GadgetImageURL { get; set; }
         [ValidateNever]
         public virtual UGadgetLoan UGadgetLoan { get; set; }
+
+        public GadgetLoan() { }
+        public GadgetLoan(int id, string gadgetName, string description, int price, string? gadgetImageURL)
+        {
+            Id = id;
+            GadgetName = gadgetName;
+            Description = description;
+            Price = price;
+            GadgetImageURL = gadgetImageURL;
+        }
     }
 }

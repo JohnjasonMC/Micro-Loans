@@ -18,6 +18,14 @@ namespace LoanManagementSystem.ViewModel
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime DateOfBirth { get; set; }
 
+        [DisplayName("Enter Phone Number")]
+        [Required]
+        public string PhoneNumber { get; set; }
+
+        [DisplayName("Enter Address")]
+        [Required]
+        public string Address { get; set; }
+
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }

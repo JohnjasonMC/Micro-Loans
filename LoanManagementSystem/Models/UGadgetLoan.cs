@@ -12,6 +12,5 @@
         public virtual GadgetLoan GadgetLoan { get; set;}
         public int IMPId { get; set; }
         public virtual IMP IMP { get; set; }
-        public virtual GLRepayment GLRepayment { get; set; }
     }
 }

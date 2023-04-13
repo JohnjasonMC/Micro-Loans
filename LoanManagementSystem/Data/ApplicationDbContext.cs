@@ -36,30 +36,27 @@ namespace LoanManagementSystem.Data
                 .WithOne(ugl => ugl.UGadgetLoan)
                 .HasForeignKey<UGadgetLoan>(au => au.ApplicationUserId);
 
-            modelBuilder.Entity<PLRepayment>()
-                .HasOne(au => au.ApplicationUser)
-                .WithOne(plr => plr.PLRepayment)
-                .HasForeignKey<PLRepayment>(au => au.ApplicationUserId);
+            modelBuilder.Entity<UGadgetLoan>()
+                .HasOne(gl => gl.GadgetLoan)
+                .WithOne(ugl => ugl.UGadgetLoan)
+                .HasForeignKey<UGadgetLoan>(ugl => ugl.GadgetLoanId);
 
             modelBuilder.Entity<UGadgetLoan>()
-               .HasOne(gl => gl.GadgetLoan)
-               .WithOne(ugl => ugl.UGadgetLoan)
-               .HasForeignKey<UGadgetLoan>(ugl => ugl.GadgetLoanId);
+                .HasOne(imp => imp.IMP)
+                .WithOne(ugl => ugl.UGadgetLoan)
+                .HasForeignKey<UGadgetLoan>(ugl => ugl.IMPId);
 
-            modelBuilder.Entity<UGadgetLoan>()
-               .HasOne(imp => imp.IMP)
-               .WithOne(ugl => ugl.UGadgetLoan)
-               .HasForeignKey<UGadgetLoan>(ugl => ugl.IMPId);
+            modelBuilder.Entity<Purchase>()
+                .Property(p => p.Interest)
+                .HasColumnType("decimal(18, 2)");
 
-            modelBuilder.Entity<GLRepayment>()
-               .HasOne(ugl => ugl.UGadgetLoan)
-               .WithOne(glr => glr.GLRepayment)
-               .HasForeignKey<UGadgetLoan>(glr => glr.Id);
+            modelBuilder.Entity<Purchase>()
+                .Property(p => p.Payment)
+                .HasColumnType("decimal(18, 2)");
         }
         public DbSet<IMP> imps{ get; set; }
         public DbSet<GadgetLoan> gadgetloans { get; set; }
         public DbSet<UGadgetLoan> ugadgetloans { get; set; }
-        public DbSet<PLRepayment> plrepayments { get; set; }
-        public DbSet<GLRepayment> glrepayments { get; set; }
+        public DbSet<Purchase> purchases { get; set; }
     }
 }

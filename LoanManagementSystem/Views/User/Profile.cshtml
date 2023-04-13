@@ -21,7 +21,7 @@
                     <h1 class="text-center fw-bold ls-tight mb-4">Profile Details</h1>
                     <div class="row justify-content-center align-items-center">
                         <div class="col-4">
-                            <strong class="text-muted">Name</strong>
+                            <strong class="text-muted">Full Name</strong>
                         </div>
                         <div class="col-8">
                             @Html.DisplayFor(model => model.FullName)
@@ -41,6 +41,22 @@
                         </div>
                         <div class="col-8">
                             @(Model.Gender == 'M' ? "Male" : "Female")
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <strong class="text-muted">Phone Number</strong>
+                        </div>
+                        <div class="col-8">
+                            @Html.DisplayFor(model => model.PhoneNumber)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <strong class="text-muted">Address</strong>
+                        </div>
+                        <div class="col-8">
+                            @Html.DisplayFor(model => model.Address)
                         </div>
                     </div>
                     <div class="row">

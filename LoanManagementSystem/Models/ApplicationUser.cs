@@ -19,7 +19,11 @@ namespace LoanManagementSystem.Models
         [Required(ErrorMessage = "Enter Gender")]
         public char Gender { get; set; }
 
+        [Required]
+        public string PhoneNumber { get; set; }
+        [Required]
+        public string? Address { get; set; }
+
         public virtual UGadgetLoan UGadgetLoan { get; set; }
-        public virtual PLRepayment PLRepayment { get; set; }
     }
 }
