@@ -1,21 +1,9 @@
 ﻿@model LoanManagementSystem.ViewModel.PurchaseViewModel
 
-<h1>Confirm Purchase</h1>
+<h1>Purchase Confirmed</h1>
 
-<div>
-    <h3>@Model.GadgetName</h3>
-    <p>@Model.Description</p>
-    <p><strong>Price:</strong> Php @Model.Price</p>
-    <p><strong>Interest:</strong> @Model.Interest%</p>
-    <p><strong>Payment Term:</strong> @Model.PaymentTerm Months</p>
-    <p><strong>Monthly Payment:</strong> Php @Model.Payment</p>
-</div>
+<p>You have successfully purchased @Model.GadgetName!</p>
+<p>You will be making @Model.PaymentTerm monthly payments of @Model.Payment with an interest rate of @Model.Interest%.</p>
+<p>The total price of your purchase is @Model.Price.</p>
 
-<hr />
-
-<form method="post" asp-controller="UGadgetLoan" asp-action="Purchase">
-    <input type="hidden" name="gadgetId" value="@Model.GadgetLoanId" />
-    <input type="hidden" name="paymentTerm" value="@Model.PaymentTerm" />
-
-    <button type="submit" class="btn btn-primary">Purchase Gadget</button>
-</form>
+<a asp-action="MyPurchases" class="btn btn-primary">View My Purchases</a>

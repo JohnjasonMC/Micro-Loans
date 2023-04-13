@@ -1,0 +1,29 @@
+﻿@model List<LoanManagementSystem.Models.Purchase>
+
+<h2>My Purchases</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Item</th>
+            <th>Payment Term</th>
+            <th>Interest Rate</th>
+            <th>Payment Amount</th>
+            <th>Purchase Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var purchase in Model)
+        {
+            <tr>
+                <td>@purchase.GadgetLoan.GadgetName</td>
+                <td>@purchase.PaymentTerm.PaymentTerm</td>
+                <td>@purchase.Interest</td>
+                <td>@purchase.Payment</td>
+                <td>@purchase.DatePurchased.ToShortDateString()</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a href="@Url.Action("Index", "Home")">Return to Home</a>

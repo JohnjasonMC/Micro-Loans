@@ -9,10 +9,18 @@ namespace LoanManagementSystem.Data
         public static void SeedDefaultData(this ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<IMP>().HasData(
-                new IMP(1, .8, 3),
-                new IMP(2, 06.00, 6),
-                new IMP(3, 06.00, 12),
-                new IMP(4, 06.00, 24));
+                new IMP(1, .005, 3),
+                new IMP(2, .007, 6),
+                new IMP(3, .01, 12),
+                new IMP(4, .015, 24));
+
+            modelBuilder.Entity<GadgetLoan>().HasData(
+                new GadgetLoan(1, "Iphone 14 ProMax", "The iPhone 14 Pro Max display has rounded corners that follow a beautiful curved design, and these corners are within a standard rectangle. When measured as a standard rectangular shape, the screen is 6.69 inches diagonally (actual viewable area is less).", 79999, "https://accenthub.com.ph/wp-content/uploads/2022/10/Apple-iPhone-14-Pro-and-14-Pro-Max-Deep-Purple-1.jpg"),
+                new GadgetLoan(2, "Iphone 14 Pro", "The iPhone 14 Pro display has rounded corners that follow a beautiful curved design, and these corners are within a standard rectangle. When measured as a standard rectangular shape, the screen is 6.12 inches diagonally (actual viewable area is less).", 75999, "https://accenthub.com.ph/wp-content/uploads/2022/10/Apple-iPhone-14-Pro-and-14-Pro-Max-Deep-Purple-1.jpg"),
+                new GadgetLoan(3, "Iphone 13 ProMax", "The iPhone 13 display has rounded corners that follow a beautiful curved design, and these corners are within a standard rectangle. When measured as a standard rectangular shape, the screen is 6.06 inches diagonally (actual viewable area is less). Both models: HDR display.", 65999, "https://www.apple.com/newsroom/images/product/iphone/standard/Apple_iphone13_hero_09142021_inline.jpg.large.jpg"),
+                new GadgetLoan(4, "Iphone 12 ProMax", "The iPhone 12 display has rounded corners that follow a beautiful curved design, and these corners are within a standard rectangle. When measured as a standard rectangular shape, the screen is 6.06 inches diagonally (actual viewable area is less).", 55999, "https://i0.wp.com/abizot.com.ng/wp-content/uploads/2022/01/Apple-iPhone-12-Blue-64GB.png?fit=940%2C1112&ssl=1"),
+                new GadgetLoan(5, "Iphone 11", "The iPhone 11 display has rounded corners that follow a beautiful curved design, and these corners are within a standard rectangle. When measured as a standard rectangular shape, the screen is 6.06 inches diagonally (actual viewable area is less). Video playback: Up to 17 hours.", 36999, "https://www.techrepublic.com/wp-content/uploads/2019/09/iphone11.jpg"),
+                new GadgetLoan(6, "Iphone 11 Pro", "The iPhone 11 display has rounded corners that follow a beautiful curved design, and these corners are within a standard rectangle. When measured as a standard rectangular shape, the screen is 6.06 inches diagonally (actual viewable area is less). Video playback: Up to 17 hours.", 45999, "https://www.techrepublic.com/wp-content/uploads/2019/09/iphone11.jpg"));
         }
         public static void InvokeIdentityRoleSeed(this ModelBuilder modelBuilder)
         {
@@ -45,6 +53,8 @@ namespace LoanManagementSystem.Data
                     DateOfBirth = DateTime.Now,
                     UserName = "admin@gmail.com",
                     Email = "admin@gmail.com",
+                    PhoneNumber = "1234567890",
+                    Address ="Somewhere",
                     NormalizedUserName = "admin@gmail.com".ToUpper(),
                     NormalizedEmail = "admin@gmail.com".ToUpper(),
                     PasswordHash = passwordHasher.HashPassword(null, defaultPassword)
@@ -57,6 +67,8 @@ namespace LoanManagementSystem.Data
                     Gender = 'M',
                     UserName = "registered@gmail.com",
                     Email = "registered@gmail.com",
+                    PhoneNumber = "1234567890",
+                    Address = "Somewhere",
                     NormalizedUserName = "registered@gmail.com".ToUpper(),
                     NormalizedEmail = "registered@gmail.com".ToUpper(),
                     PasswordHash = passwordHasher.HashPassword(null, defaultPassword)

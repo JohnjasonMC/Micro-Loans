@@ -7,6 +7,7 @@
     }
 }
 
+
 @{
     ViewData["Title"] = "Register";
 }
@@ -15,7 +16,7 @@
 <section class="">
     <!-- Jumbotron -->
     <div class="px-4 py-5 px-md-5 text-center text-lg-start" style="background-color: hsl(0, 0%, 96%)">
-        <div class="container">
+        <div class="container" >
             <div class="row gx-lg-5 align-items-center">
                 <div class="col-lg-6 mb-5 mb-lg-0">
                     <h1 class="my-5 display-3 fw-bold ls-tight">
@@ -73,6 +74,20 @@
                                             <span asp-validation-for="Gender" class="text-danger"></span>
                                         </div>
                                     </div>
+                                    <div class="col-md-6 mb-4">
+                                        <div class="form-outline">
+                                            <label asp-for="PhoneNumber" class="form-label">Phone Number</label>
+                                            <input type="PhoneNumber" class="form-control" asp-for="PhoneNumber">
+                                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                        </div>
+                                    </div
+                                    <div class="col-md-6 mb-4">
+                                        <div class="form-outline">
+                                            <label asp-for="Address" class="form-label">Address</label>
+                                            <input type="PhoneNumber" class="form-control" asp-for="Address">
+                                            <span asp-validation-for="Address" class="text-danger"></span>
+                                        </div>
+                                    </div
                                     <div class="col-md-6 mb-4">
                                         <div class="form-outline">
                                             <label asp-for="Password" class="form-label">Password</label>

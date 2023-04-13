@@ -31,6 +31,8 @@ namespace LoanManagementSystem.Migrations
                     FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Gender = table.Column<string>(type: "nvarchar(1)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -39,7 +41,6 @@ namespace LoanManagementSystem.Migrations
                     PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
                     TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
@@ -65,21 +66,6 @@ namespace LoanManagementSystem.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_gadgetloans", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "glrepayments",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Payment = table.Column<double>(type: "float", nullable: false),
-                    UGadgetLoanId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_glrepayments", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -203,25 +189,37 @@ namespace LoanManagementSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "plrepayments",
+                name: "purchases",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PrincipalAmount = table.Column<int>(type: "int", nullable: true),
-                    AnualRate = table.Column<double>(type: "float", nullable: true),
-                    NumberOfTerms = table.Column<int>(type: "int", nullable: true),
-                    Rate = table.Column<double>(type: "float", nullable: true),
-                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    GadgetLoanId = table.Column<int>(type: "int", nullable: false),
+                    PaymentTermId = table.Column<int>(type: "int", nullable: false),
+                    Payment = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Interest = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    DatePurchased = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_plrepayments", x => x.Id);
+                    table.PrimaryKey("PK_purchases", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_plrepayments_AspNetUsers_ApplicationUserId",
+                        name: "FK_purchases_AspNetUsers_ApplicationUserId",
                         column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_purchases_gadgetloans_GadgetLoanId",
+                        column: x => x.GadgetLoanId,
+                        principalTable: "gadgetloans",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_purchases_imps_PaymentTermId",
+                        column: x => x.PaymentTermId,
+                        principalTable: "imps",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -230,7 +228,8 @@ namespace LoanManagementSystem.Migrations
                 name: "ugadgetloans",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Status = table.Column<bool>(type: "bit", nullable: true),
                     AnnualRate = table.Column<double>(type: "float", nullable: true),
                     Payment = table.Column<double>(type: "float", nullable: false),
@@ -254,12 +253,6 @@ namespace LoanManagementSystem.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ugadgetloans_glrepayments_Id",
-                        column: x => x.Id,
-                        principalTable: "glrepayments",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_ugadgetloans_imps_IMPId",
                         column: x => x.IMPId,
                         principalTable: "imps",
@@ -272,17 +265,30 @@ namespace LoanManagementSystem.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "1a73053f-78c6-41c2-94fc-d897ccc8b33c", "9f758d25-7d0d-4d83-88ab-fe4156177420", "Registered", "REGISTERED" },
-                    { "705c9705-c8a8-44af-99a3-e33b13856856", "523ca93d-4981-4928-aaa8-f747693424cd", "Administrator", "ADMINISTRATOR" }
+                    { "1a73053f-78c6-41c2-94fc-d897ccc8b33c", "9e38319b-37ea-4951-b4d1-9ef613634640", "Registered", "REGISTERED" },
+                    { "705c9705-c8a8-44af-99a3-e33b13856856", "2b09716b-9537-4d1d-b8e4-3dfd60ce0fde", "Administrator", "ADMINISTRATOR" }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "DateOfBirth", "Email", "EmailConfirmed", "FullName", "Gender", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                columns: new[] { "Id", "AccessFailedCount", "Address", "ConcurrencyStamp", "DateOfBirth", "Email", "EmailConfirmed", "FullName", "Gender", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "147c0de8-847c-4466-ad04-1fc7b563e0c4", 0, "11373498-e7dc-4b67-903f-2c5a180d57c7", new DateTime(2023, 4, 9, 15, 31, 25, 290, DateTimeKind.Local).AddTicks(4624), "admin@gmail.com", false, "Admin", " ", false, null, "ADMIN@GMAIL.COM", "ADMIN@GMAIL.COM", "AQAAAAEAACcQAAAAEEGCWTZ7sNaic00JkkTehrnBo0g+YyrD7XPwovxQHzdMeyg1jNVzxGi2Aij42FdSzg==", null, false, "afd3f2a0-9c2f-475c-adbb-a95d3dc8ee8c", false, "admin@gmail.com" },
-                    { "cba87ff8-bb15-442f-8a47-0e65a93cab8c", 0, "55c81825-a9c7-448a-b604-cde02cd557ce", new DateTime(2023, 4, 9, 15, 31, 25, 291, DateTimeKind.Local).AddTicks(8737), "registered@gmail.com", false, "Registered", "M", false, null, "REGISTERED@GMAIL.COM", "REGISTERED@GMAIL.COM", "AQAAAAEAACcQAAAAEBtuvMKAQmJ+1UFmxOXKcf6IennPgol4EmnYaQnZOAQd7QhVpzCwivrjvcFkejNnRg==", null, false, "845eb157-4352-4777-b724-ebfdf867d86f", false, "registered@gmail.com" }
+                    { "147c0de8-847c-4466-ad04-1fc7b563e0c4", 0, "Somewhere", "8393b003-b5a9-40d3-9c81-6c2fb9827e5f", new DateTime(2023, 4, 13, 18, 53, 3, 790, DateTimeKind.Local).AddTicks(7488), "admin@gmail.com", false, "Admin", " ", false, null, "ADMIN@GMAIL.COM", "ADMIN@GMAIL.COM", "AQAAAAEAACcQAAAAEInMRT6D9S3VezE7p3xcz+GpU4cRg5QSCh7OVoHFGSrdqi9HRO6yGmZI9O9ep6FaEg==", "1234567890", false, "0975968a-740e-4759-8fb2-7a0f3c5548f3", false, "admin@gmail.com" },
+                    { "cba87ff8-bb15-442f-8a47-0e65a93cab8c", 0, "Somewhere", "f27e253f-eb68-496d-af48-45083ccb6e16", new DateTime(2023, 4, 13, 18, 53, 3, 794, DateTimeKind.Local).AddTicks(3092), "registered@gmail.com", false, "Registered", "M", false, null, "REGISTERED@GMAIL.COM", "REGISTERED@GMAIL.COM", "AQAAAAEAACcQAAAAENPlapEj7D/PJyPnekidtA4jPrkb4SPXIw3ejRqVmEDPzld+w0LKgAUc2bgHXbSlnQ==", "1234567890", false, "6bc9e80f-9cbc-4613-ba79-ba414ab72d49", false, "registered@gmail.com" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "gadgetloans",
+                columns: new[] { "Id", "Description", "GadgetImageURL", "GadgetName", "Price" },
+                values: new object[,]
+                {
+                    { 1, "The iPhone 14 Pro Max display has rounded corners that follow a beautiful curved design, and these corners are within a standard rectangle. When measured as a standard rectangular shape, the screen is 6.69 inches diagonally (actual viewable area is less).", "https://accenthub.com.ph/wp-content/uploads/2022/10/Apple-iPhone-14-Pro-and-14-Pro-Max-Deep-Purple-1.jpg", "Iphone 14 ProMax", 79999 },
+                    { 2, "The iPhone 14 Pro display has rounded corners that follow a beautiful curved design, and these corners are within a standard rectangle. When measured as a standard rectangular shape, the screen is 6.12 inches diagonally (actual viewable area is less).", "https://accenthub.com.ph/wp-content/uploads/2022/10/Apple-iPhone-14-Pro-and-14-Pro-Max-Deep-Purple-1.jpg", "Iphone 14 Pro", 75999 },
+                    { 3, "The iPhone 13 display has rounded corners that follow a beautiful curved design, and these corners are within a standard rectangle. When measured as a standard rectangular shape, the screen is 6.06 inches diagonally (actual viewable area is less). Both models: HDR display.", "https://www.apple.com/newsroom/images/product/iphone/standard/Apple_iphone13_hero_09142021_inline.jpg.large.jpg", "Iphone 13 ProMax", 65999 },
+                    { 4, "The iPhone 12 display has rounded corners that follow a beautiful curved design, and these corners are within a standard rectangle. When measured as a standard rectangular shape, the screen is 6.06 inches diagonally (actual viewable area is less).", "https://i0.wp.com/abizot.com.ng/wp-content/uploads/2022/01/Apple-iPhone-12-Blue-64GB.png?fit=940%2C1112&ssl=1", "Iphone 12 ProMax", 55999 },
+                    { 5, "The iPhone 11 display has rounded corners that follow a beautiful curved design, and these corners are within a standard rectangle. When measured as a standard rectangular shape, the screen is 6.06 inches diagonally (actual viewable area is less). Video playback: Up to 17 hours.", "https://www.techrepublic.com/wp-content/uploads/2019/09/iphone11.jpg", "Iphone 11", 36999 },
+                    { 6, "The iPhone 11 display has rounded corners that follow a beautiful curved design, and these corners are within a standard rectangle. When measured as a standard rectangular shape, the screen is 6.06 inches diagonally (actual viewable area is less). Video playback: Up to 17 hours.", "https://www.techrepublic.com/wp-content/uploads/2019/09/iphone11.jpg", "Iphone 11 Pro", 45999 }
                 });
 
             migrationBuilder.InsertData(
@@ -290,10 +296,10 @@ namespace LoanManagementSystem.Migrations
                 columns: new[] { "Id", "Interest", "PaymentTerm" },
                 values: new object[,]
                 {
-                    { 1, 0.80000000000000004, 3 },
-                    { 2, 1.0, 6 },
-                    { 3, 6.0, 12 },
-                    { 4, 6.0, 24 }
+                    { 1, 0.0050000000000000001, 3 },
+                    { 2, 0.0070000000000000001, 6 },
+                    { 3, 0.01, 12 },
+                    { 4, 0.014999999999999999, 24 }
                 });
 
             migrationBuilder.InsertData(
@@ -346,10 +352,19 @@ namespace LoanManagementSystem.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_plrepayments_ApplicationUserId",
-                table: "plrepayments",
-                column: "ApplicationUserId",
-                unique: true);
+                name: "IX_purchases_ApplicationUserId",
+                table: "purchases",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_purchases_GadgetLoanId",
+                table: "purchases",
+                column: "GadgetLoanId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_purchases_PaymentTermId",
+                table: "purchases",
+                column: "PaymentTermId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ugadgetloans_ApplicationUserId",
@@ -388,7 +403,7 @@ namespace LoanManagementSystem.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "plrepayments");
+                name: "purchases");
 
             migrationBuilder.DropTable(
                 name: "ugadgetloans");
@@ -401,9 +416,6 @@ namespace LoanManagementSystem.Migrations
 
             migrationBuilder.DropTable(
                 name: "gadgetloans");
-
-            migrationBuilder.DropTable(
-                name: "glrepayments");
 
             migrationBuilder.DropTable(
                 name: "imps");

@@ -116,7 +116,7 @@
                             <a type="button" class="btn btn-light mt-1 mx-1" asp-controller="GadgetLoan" asp-action="Details" asp-route-gadgetId="@Model[j].Id">View</a>
                             @if (!(User.IsInRole("Administrator")))
                             {
-                                <a type="button" class="btn btn-light mt-1" asp-controller="UGadgetLoan" asp-action="ConfirmPurchase" asp-route-gadgetId="@Model[j].Id">Purchase</a>
+                                <a type="button" class="btn btn-light mt-1" asp-controller="UGadgetLoan" asp-action="Purchase" asp-route-gadgetId="@Model[j].Id">Purchase</a>
                             }
                             @if (User.IsInRole("Administrator"))
                             {
