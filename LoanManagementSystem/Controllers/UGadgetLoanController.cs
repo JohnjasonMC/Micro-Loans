@@ -52,6 +52,40 @@ namespace LoanManagementSystem.Controllers
 
             return View(model);
         }
+        [HttpPost]
+        private Purchase CreatePurchase(int gadgetId, int paymentTermId, decimal payment, decimal interestAmount)
+        {
+            var user = _dbContext.Users.FirstOrDefault(u => u.Id == User.Identity.Name);
+            if (user == null)
+            {
+                return null;
+            }
+
+            var gadgetLoan = _dbContext.gadgetloans.FirstOrDefault(gl => gl.Id == gadgetId);
+            if (gadgetLoan == null)
+            {
+                return null;
+            }
+
+            var paymentTermEntity = _dbContext.imps.FirstOrDefault(imp => imp.Id == paymentTermId);
+            if (paymentTermEntity == null)
+            {
+                return null;
+            }
+
+            var purchase = new Purchase
+            {
+                ApplicationUserId = User.Identity.Name,
+                GadgetLoan = gadgetLoan,
+                PaymentTerm = paymentTermEntity,
+                Payment = payment,
+                Interest = interestAmount,
+                DatePurchased = DateTime.Now
+            };
+            _dbContext.purchases.Add(purchase);
+            _dbContext.SaveChanges();
+            return purchase;
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -66,11 +100,6 @@ namespace LoanManagementSystem.Controllers
             }
 
             decimal payment = (decimal)((gadgetLoan.Price +(gadgetLoan.Price * paymentTermEntity.Interest * paymentTermEntity.PaymentTerm)) /(paymentTermEntity.PaymentTerm));
-            var user = _dbContext.Users.FirstOrDefault(u => u.Id == User.Identity.Name);
-            if (user == null)
-            {
-                return NotFound();
-            }
             var model = new PurchaseViewModel
             {
                 GadgetLoanId = gadgetId,
@@ -81,18 +110,6 @@ namespace LoanManagementSystem.Controllers
                 PaymentTerm = paymentTermEntity.PaymentTerm,
                 Payment = Math.Round(payment, 2)
             };
-            var purchase = new Purchase
-            {
-                ApplicationUserId = User.Identity.Name,
-                GadgetLoanId = gadgetLoan.Id,
-                PaymentTermId = paymentTermEntity.Id,
-                Payment = (decimal)payment,
-                Interest = (decimal)paymentTermEntity.Interest,
-                DatePurchased = DateTime.Now
-            };
-
-            _dbContext.purchases.Add(purchase);
-            _dbContext.SaveChanges();
            return View("ConfirmPurchase", model);
         }
 

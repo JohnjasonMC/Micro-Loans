@@ -1,20 +1,28 @@
 ﻿@model LoanManagementSystem.ViewModel.PurchaseViewModel
 
-<h1>Purchase @Model.GadgetName</h1>
+<h1>Purchase Gadget</h1>
 
-<p>@Model.Description</p>
-<p>@Model.Price</p>
+<div>
+    <h3>@Model.GadgetName</h3>
+    <p>@Model.Description</p>
+    <p><strong>Price:</strong> Php @Model.Price</p>
+</div>
 
-<form method="post" asp-action="ConfirmPurchase">
+<hr />
+
+<form method="post" asp-controller="UGadgetLoan" asp-action="ConfirmPurchase">
+    <input type="hidden" name="gadgetId" value="@Model.GadgetLoanId" />
+
     <div class="form-group">
-        <label for="paymentTerm">Payment Term:</label>
-        <select class="form-control" id="paymentTerm" name="paymentTerm">
-            @foreach (var paymentTerm in Model.AvailablePaymentTerms)
+        <label for="paymentTerm">Payment Term</label>
+        <select class="form-control" id="paymentTerm" name="paymentTerm" required>
+            <option value="">Select Payment Term</option>
+            @foreach (var imp in Model.AvailablePaymentTerms)
             {
-                <option value="@paymentTerm.Id">@paymentTerm.PaymentTerm months - @paymentTerm.Interest% interest</option>
+                <option value="@imp.Id">@imp.PaymentTerm Months @imp.Interest% Interest</option>
             }
         </select>
     </div>
-    <input type="hidden" name="gadgetId" value="@Model.GadgetLoanId" />
+
     <button type="submit" class="btn btn-primary">Confirm Purchase</button>
 </form>
