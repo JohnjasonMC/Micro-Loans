@@ -1,21 +1,32 @@
 ﻿@model LoanManagementSystem.ViewModel.PurchaseViewModel
 
-<h1>Confirm Purchase</h1>
+<style>
+    .btn-color {
+        background-color: #004260;
+        color: white;
+    }
+</style>
 
-<div>
-    <h3>@Model.GadgetName</h3>
-    <p>@Model.Description</p>
-    <p><strong>Price:</strong> Php @Model.Price</p>
-    <p><strong>Interest:</strong> @Model.Interest%</p>
-    <p><strong>Payment Term:</strong> @Model.PaymentTerm Months</p>
-    <p><strong>Monthly Payment:</strong> Php @Model.Payment</p>
+
+<h1 class="fw-bold ls-tight">Confirm Purchase</h1>
+<div class="row">
+    <div class="col-4">
+        <img class="img-thumbnail" src="@Model.GadgetImageURL" alt="@Model.GadgetName"/>
+    </div>
+    <div class="col-8">
+        <h3 class="fw-bold ls-tight">@Model.GadgetName</h3>
+        <h5>PHP @Model.Price</h5>
+        <p class="my-3">@Model.Description</p>
+        <p><strong>Interest:</strong> @Model.Interest%</p>
+        <p><strong>Payment Term:</strong> @Model.PaymentTerm Months</p>
+        <p><strong>Monthly Payment:</strong> Php @Model.Payment</p>
+        <form method="post" asp-controller="UGadgetLoan" asp-action="Purchase">
+            <input type="hidden" name="gadgetId" value="@Model.GadgetLoanId" />
+            <input type="hidden" name="paymentTerm" value="@Model.PaymentTerm" />
+            <a type="submit" class="btn btn-light btn-color" asp-controller="UGadgetLoan" asp-action="Purchase" asp-route-gadgetId="@Model.GadgetLoanId">Back</a>
+            <button type="submit" class="btn  btn-light btn-color">Purchase Gadget</button>        
+        </form>
+    </div>
 </div>
 
-<hr />
 
-<form method="post" asp-controller="UGadgetLoan" asp-action="Purchase">
-    <input type="hidden" name="gadgetId" value="@Model.GadgetLoanId" />
-    <input type="hidden" name="paymentTerm" value="@Model.PaymentTerm" />
-
-    <button type="submit" class="btn btn-primary">Purchase Gadget</button>
-</form>

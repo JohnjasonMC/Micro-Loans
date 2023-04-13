@@ -24,13 +24,18 @@
             .navbar-custom .nav-link {
                 color: white;
             }
-
+        
+            .footer-custom{
+                margin-top: 60px;
+                padding-top: 60px
+            }
+       
     </style>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-custom border-bottom box-shadow mb-5">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                    <img src="https://www.cebuanalhuillier.com/wp-content/uploads/2015/04/cebuana1.png" alt="Logo" height="40">
+                    <img src="/src/Logo.jpg" alt="Logo" height="50">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -43,9 +48,6 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="PersonalLoanCalculator" asp-action="LoanCalculator">Loan Calculator</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="PersonalLoan" asp-action="Index">Personal Loan</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="GadgetLoan" asp-action="GetAllGadgets">Gadget Loan</a>
@@ -118,4 +120,43 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+<div class="container footer-custom">
+    <footer class="row row-cols-5 py-5 my-5 border-top">
+    <div class="col">
+        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+            <img src="/src/whitelogo.png" alt="Logo" height="80">
+        </a>
+        <p class="text-muted mx-3">© 2023</p>
+    </div>
+    <div class="col"></div>
+    <div class="col">
+        <h5>Services</h5>
+        <ul class="nav flex-column">
+            <li class="nav-item mb-2">
+               <a class="nav-link p-0 text-muted" asp-area="" asp-controller="PersonalLoanCalculator" asp-action="LoanCalculator">Loan Calculator</a>
+            </li>
+            <li class="nav-item mb-2">
+               <a class="nav-link p-0 text-muted" asp-area="" asp-controller="GadgetLoan" asp-action="GetAllGadgets">Gadget Loan</a>
+            </li>
+        </ul>
+    </div>
+    <div class="col">
+        <h5>Social Media</h5>
+        <ul class="nav flex-column">
+              <li class="nav-item mb-2">
+                    <a href="https://www.facebook.com/cebuanalhuillierpawnshop" class="nav-link p-0 text-muted">Facebook</a>
+              </li>
+                <li class="nav-item mb-2">
+                    <a href="https://twitter.com/kaCebuana" class="nav-link p-0 text-muted">Twitter</a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a href="https://www.youtube.com/user/cebuanalhuillier" class="nav-link p-0 text-muted">Youtube</a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a href="https://instagram.com/cebuanalhuillier" class="nav-link p-0 text-muted">Instagram</a>
+                </li>
+        </ul>
+    </div>
+</footer>
+</div>
 </html>

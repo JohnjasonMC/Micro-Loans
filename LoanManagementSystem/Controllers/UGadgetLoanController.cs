@@ -136,6 +136,7 @@ namespace LoanManagementSystem.Controllers
                 GadgetLoanId = gadgetId,
                 GadgetName = gadgetLoan.GadgetName,
                 Description = gadgetLoan.Description,
+                GadgetImageURL = gadgetLoan.GadgetImageURL,
                 Price = gadgetLoan.Price,
                 AvailablePaymentTerms = paymentTerms
             };
@@ -165,6 +166,7 @@ namespace LoanManagementSystem.Controllers
                 Description = gadgetLoan.Description,
                 Price = gadgetLoan.Price,
                 Interest = paymentTermEntity.Interest,
+                GadgetImageURL = gadgetLoan.GadgetImageURL,
                 PaymentTerm = paymentTermEntity.PaymentTerm,
                 Payment = Math.Round(payment, 2)
             };

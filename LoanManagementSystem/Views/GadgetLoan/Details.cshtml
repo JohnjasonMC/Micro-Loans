@@ -6,124 +6,52 @@
 *@
 @{
 }
+
 <style>
-    p {
-        margin: 3px;
-    }
-
-    .image-container {
-        height: 400px; /* Set desired height */
-        width: 350px; /* Set desired width */
-        position: relative; /* Set position property to relative */
-    }
-
-        .image-container img {
-            object-fit: cover; /* Make the image cover the entire container */
-            position: absolute; /* Set position property to absolute */
-            top: 0; /* Set top position to 0 */
-            left: 0; /* Set left position to 0 */
-            width: 100%; /* Set width to 100% to cover entire container */
-            height: 100%; /* Set height to 100% to cover entire container */
-            border-radius: 30px;
-        }
-
-    .bg-image {
-        height: 450px;
-        position: absolute;
-        left: 150px;
-        right: 150px; /* Use viewport width (vw) instead of a fixed width */
+    .btn-back-to-list{ 
         background-color: #004260;
-        background-image: none;
-        background-position: left top;
-        background-repeat: no-repeat;
-        background-size: auto;
-        padding-left: 0;
-        margin-left: 0; /* Add margin-left: 0 to remove any left margin */
-        border-radius: 30px;
-        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    .text-custom{
-        position: relative;
-        padding: 30px;
         color: white;
     }
-
-    .btn-back-to-list {
-        position: absolute;
-        bottom: 0; /* Set bottom spacing */
-        right: 20px; /* Set right spacing */
-    }
-
-    .table-fixed-bottom {
-        position: absolute;
-        bottom: 30px; /* Adjust the value to your preference */
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 1;
-    }
-
-    .table-borderless  tbody tr td {
-        padding-top: 0px;
-        padding-bottom: 5px;
-        border: none;
-        color: white;
-    }
-
-    .table-borderless thead th {
-        padding-top: 5px;
-        padding-bottom: 3px;
-        font-size: 14px;
-        border: none;
-        color: white;
-    }
-
-    .table-title{
-        position: absolute;
-        bottom: 100px; /* Adjust the value to your preference */
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 1;
-    }
-
-
 </style>
 
-<!-- display daetails of the todo-->
+
 <h1 class="fw-bold ls-tight">Gadget Loan</h1>
-<div class="bg-image">
-    <div class="container">
-        <div class="row text-left">
-            <div class="col-md-4 mt-4">
-                <div class="image-container">
-                    <img class="img-thumbnail" src="@Model.GadgetImageURL" alt="@Model.GadgetName" />
-                </div>
-            </div>
-            <div class="col-md-8 text-custom">
-                <h3 class="fw-bold ls-tight">@Model.GadgetName</h3>
-                <h5>PHP @Model.Price</h5>
-                <p class="my-3">@Model.Description</p>
-                <h5 class="text-center fw-bold ls-tight mb-2 table-title">Interest Rate</h5>
-                <table class="table table-borderless table-fixed-bottom">
-                    <thead>
-                        <tr>
-                            <th scope="col" class="text-center">3 Months</th>
-                            <th scope="col" class="text-center">6 Months</th>
-                            <th scope="col" class="text-center">12 Months</th>
-                            <th scope="col" class="text-center">24 Months</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="text-center">0.8%</td>
-                            <td class ="text-center">1.0%</td>
-                            <td class="text-center">6.0%</td>
-                            <td class="text-center">6.0%</td>
-                        </tr>
-                    </tbody>
-                    </table>
-                <a type="submit" class="btn btn-light btn-back-to-list" asp-controller="GadgetLoan" asp-action="GetAllGadgets">Back to list</a>
-            </div>
+<div class="row">   
+        <div class="col-4">
+            <img class="img-thumbnail" src="@Model.GadgetImageURL" alt="@Model.GadgetName" />
         </div>
-    </div>
+        <div class="col-8">
+            <h3 class="fw-bold ls-tight">@Model.GadgetName</h3>
+            <h5>PHP @Model.Price</h5>
+            <p class="my-3">@Model.Description</p>
+            <h5 class="text-center fw-bold ls-tight mb-2 table-title">Interest Rate</h5>
+            <table class="table table-borderless table-fixed-bottom">
+                <thead>
+                    <tr>
+                        <th scope="col" class="text-center">3 Months</th>
+                        <th scope="col" class="text-center">6 Months</th>
+                        <th scope="col" class="text-center">12 Months</th>
+                        <th scope="col" class="text-center">24 Months</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center">0.8%</td>
+                        <td class="text-center">1.0%</td>
+                        <td class="text-center">6.0%</td>
+                        <td class="text-center">6.0%</td>
+                    </tr>
+                </tbody>
+            </table>
+            <a type="submit" class="btn btn-back-to-list" asp-controller="GadgetLoan" asp-action="GetAllGadgets">Back to list</a>
+        </div>
 </div>
+
+
+
+
+
+
+
+
+
