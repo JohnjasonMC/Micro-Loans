@@ -53,24 +53,25 @@ namespace LoanManagementSystem.Controllers
             return View(model);
         }
         [HttpPost]
-        private Purchase CreatePurchase(int gadgetId, int paymentTermId, decimal payment, decimal interestAmount)
+        [ValidateAntiForgeryToken]
+        public IActionResult AddPurchase(int gadgetId, int paymentTermId, decimal payment, decimal interestAmount)
         {
             var user = _dbContext.Users.FirstOrDefault(u => u.Id == User.Identity.Name);
             if (user == null)
             {
-                return null;
+                return BadRequest("User not found");
             }
 
             var gadgetLoan = _dbContext.gadgetloans.FirstOrDefault(gl => gl.Id == gadgetId);
             if (gadgetLoan == null)
             {
-                return null;
+                return BadRequest("Gadget Loan not found");
             }
 
             var paymentTermEntity = _dbContext.imps.FirstOrDefault(imp => imp.Id == paymentTermId);
             if (paymentTermEntity == null)
             {
-                return null;
+                return BadRequest("Payment Term not found");
             }
 
             var purchase = new Purchase
@@ -84,7 +85,7 @@ namespace LoanManagementSystem.Controllers
             };
             _dbContext.purchases.Add(purchase);
             _dbContext.SaveChanges();
-            return purchase;
+            return Ok(purchase);
         }
 
         [HttpPost]
