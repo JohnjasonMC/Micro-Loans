@@ -20,7 +20,7 @@
         <p><strong>Interest:</strong> @Model.Interest%</p>
         <p><strong>Payment Term:</strong> @Model.PaymentTerm Months</p>
         <p><strong>Monthly Payment:</strong> Php @Model.Payment</p>
-        <form method="post" asp-controller="UGadgetLoan" asp-action="Purchase">
+        <form method="post" asp-controller="UGadgetLoan" asp-action="CompletePurchase">
             <input type="hidden" name="gadgetId" value="@Model.GadgetLoanId" />
             <input type="hidden" name="paymentTerm" value="@Model.PaymentTerm" />
             <a type="submit" class="btn btn-light btn-color" asp-controller="UGadgetLoan" asp-action="Purchase" asp-route-gadgetId="@Model.GadgetLoanId">Back</a>

@@ -47,7 +47,8 @@ namespace LoanManagementSystem.Controllers
                 GadgetName = gadgetLoan.GadgetName,
                 Description = gadgetLoan.Description,
                 Price = gadgetLoan.Price,
-                AvailablePaymentTerms = paymentTerms
+                AvailablePaymentTerms = paymentTerms,
+                GadgetImageURL = gadgetLoan.GadgetImageURL
             };
 
             return View(model);
@@ -108,10 +109,12 @@ namespace LoanManagementSystem.Controllers
                 Price = gadgetLoan.Price,
                 Interest = (decimal)paymentTermEntity.Interest,
                 PaymentTerm = paymentTermEntity.PaymentTerm,
-                Payment = Math.Round(payment, 2)
+                Payment = Math.Round(payment, 2),
+                GadgetImageURL = gadgetLoan.GadgetImageURL
             };
            return View("ConfirmPurchase", model);
         }
+
 
         [HttpGet]
         [Authorize(Roles = "Registered")]

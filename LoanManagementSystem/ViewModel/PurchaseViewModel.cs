@@ -11,6 +11,7 @@ namespace LoanManagementSystem.ViewModel
         public int GadgetLoanId { get; set; }
         public string GadgetName { get; set; }
         public string Description { get; set; }
+        public string GadgetImageURL { get; set; }
         public decimal Price { get; set; }
         public decimal Payment { get; set; }
         public decimal Interest { get; set; }

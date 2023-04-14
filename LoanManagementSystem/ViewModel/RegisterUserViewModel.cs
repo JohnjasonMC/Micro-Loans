@@ -5,24 +5,24 @@ namespace LoanManagementSystem.ViewModel
 {
     public class RegisterUserViewModel
     {
-        [DisplayName("Enter Full Name")]
+        [DisplayName("Full Name")]
         [Required]
         public string FullName { get; set; }
 
-        [DisplayName("Enter Email Address")]
+        [DisplayName("Email Address")]
         [Required]
         public string Email { get; set; }
 
-        [DisplayName("Enter Date of Birth")]
+        [DisplayName("Date of Birth")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime DateOfBirth { get; set; }
 
-        [DisplayName("Enter Phone Number")]
+        [DisplayName("Phone Number")]
         [Required]
         public string PhoneNumber { get; set; }
 
-        [DisplayName("Enter Address")]
+        [DisplayName("Address")]
         [Required]
         public string Address { get; set; }
 
