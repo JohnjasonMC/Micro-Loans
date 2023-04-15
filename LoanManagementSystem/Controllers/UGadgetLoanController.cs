@@ -30,16 +30,16 @@ namespace LoanManagementSystem.Controllers
         }
 
         [HttpGet]
-        public IActionResult Purchase(int gadgetId)
+        public async Task<IActionResult> Purchase(int gadgetId)
         {
-            var gadgetLoan =  _dbContext.gadgetloans.FirstOrDefault(gl => gl.Id == gadgetId);
+            var gadgetLoan =  await _dbContext.gadgetloans.FirstOrDefaultAsync(gl => gl.Id == gadgetId);
 
             if (gadgetLoan == null)
             {
                 return NotFound();
             }
 
-            var paymentTerms =  _dbContext.imps.ToList();
+            var paymentTerms =  await _dbContext.imps.ToListAsync();
 
             if (paymentTerms == null)
             {
