@@ -13,5 +13,10 @@
             Interest = interest;
             PaymentTerm = paymentterm;
         }
+
+        public static implicit operator int(IMP v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

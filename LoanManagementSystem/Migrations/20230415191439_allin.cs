@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LoanManagementSystem.Migrations
 {
-    public partial class init : Migration
+    public partial class allin : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -196,10 +196,14 @@ namespace LoanManagementSystem.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     GadgetLoanId = table.Column<int>(type: "int", nullable: false),
-                    PaymentTermId = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    GadgetName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Payment = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Interest = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    DatePurchased = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    DatePurchased = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PaymentTerm = table.Column<int>(type: "int", nullable: false),
+                    IsComplete = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -214,12 +218,6 @@ namespace LoanManagementSystem.Migrations
                         name: "FK_purchases_gadgetloans_GadgetLoanId",
                         column: x => x.GadgetLoanId,
                         principalTable: "gadgetloans",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_purchases_imps_PaymentTermId",
-                        column: x => x.PaymentTermId,
-                        principalTable: "imps",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -265,8 +263,8 @@ namespace LoanManagementSystem.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "1a73053f-78c6-41c2-94fc-d897ccc8b33c", "9e38319b-37ea-4951-b4d1-9ef613634640", "Registered", "REGISTERED" },
-                    { "705c9705-c8a8-44af-99a3-e33b13856856", "2b09716b-9537-4d1d-b8e4-3dfd60ce0fde", "Administrator", "ADMINISTRATOR" }
+                    { "1a73053f-78c6-41c2-94fc-d897ccc8b33c", "4ab09cf6-b7d4-4a81-a8ff-f9df488eaa3f", "Registered", "REGISTERED" },
+                    { "705c9705-c8a8-44af-99a3-e33b13856856", "ab13cb50-6d96-4ff8-87d2-ee1dad8cd9b0", "Administrator", "ADMINISTRATOR" }
                 });
 
             migrationBuilder.InsertData(
@@ -274,8 +272,8 @@ namespace LoanManagementSystem.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "Address", "ConcurrencyStamp", "DateOfBirth", "Email", "EmailConfirmed", "FullName", "Gender", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "147c0de8-847c-4466-ad04-1fc7b563e0c4", 0, "Somewhere", "8393b003-b5a9-40d3-9c81-6c2fb9827e5f", new DateTime(2023, 4, 13, 18, 53, 3, 790, DateTimeKind.Local).AddTicks(7488), "admin@gmail.com", false, "Admin", " ", false, null, "ADMIN@GMAIL.COM", "ADMIN@GMAIL.COM", "AQAAAAEAACcQAAAAEInMRT6D9S3VezE7p3xcz+GpU4cRg5QSCh7OVoHFGSrdqi9HRO6yGmZI9O9ep6FaEg==", "1234567890", false, "0975968a-740e-4759-8fb2-7a0f3c5548f3", false, "admin@gmail.com" },
-                    { "cba87ff8-bb15-442f-8a47-0e65a93cab8c", 0, "Somewhere", "f27e253f-eb68-496d-af48-45083ccb6e16", new DateTime(2023, 4, 13, 18, 53, 3, 794, DateTimeKind.Local).AddTicks(3092), "registered@gmail.com", false, "Registered", "M", false, null, "REGISTERED@GMAIL.COM", "REGISTERED@GMAIL.COM", "AQAAAAEAACcQAAAAENPlapEj7D/PJyPnekidtA4jPrkb4SPXIw3ejRqVmEDPzld+w0LKgAUc2bgHXbSlnQ==", "1234567890", false, "6bc9e80f-9cbc-4613-ba79-ba414ab72d49", false, "registered@gmail.com" }
+                    { "147c0de8-847c-4466-ad04-1fc7b563e0c4", 0, "Somewhere", "2bdfe730-8b3d-4bd4-bc13-c4190b141b55", new DateTime(2023, 4, 16, 3, 14, 39, 6, DateTimeKind.Local).AddTicks(9068), "admin@gmail.com", false, "Admin", " ", false, null, "ADMIN@GMAIL.COM", "ADMIN@GMAIL.COM", "AQAAAAEAACcQAAAAEKFYo0IyMY+TIObeIEyV6L2eRL1CvcFdVvLVTnlfUGtjLiCAi7SVuIJLbEbGt4e+Gw==", "1234567890", false, "47a131d4-34ef-4879-9203-f863593d9e34", false, "admin@gmail.com" },
+                    { "cba87ff8-bb15-442f-8a47-0e65a93cab8c", 0, "Somewhere", "cf7eac26-9bbf-419d-97f6-9903850db8b7", new DateTime(2023, 4, 16, 3, 14, 39, 8, DateTimeKind.Local).AddTicks(3955), "registered@gmail.com", false, "Registered", "M", false, null, "REGISTERED@GMAIL.COM", "REGISTERED@GMAIL.COM", "AQAAAAEAACcQAAAAELtq4ZoJ0n1ovR0fRuLZ/hKDw2Bv73zt/1MliHBczP7qZ3BkTWIabhauRo+iZAo/3w==", "1234567890", false, "d194108e-2a8a-4b6e-8487-0fbff160e36e", false, "registered@gmail.com" }
                 });
 
             migrationBuilder.InsertData(
@@ -360,11 +358,6 @@ namespace LoanManagementSystem.Migrations
                 name: "IX_purchases_GadgetLoanId",
                 table: "purchases",
                 column: "GadgetLoanId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_purchases_PaymentTermId",
-                table: "purchases",
-                column: "PaymentTermId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ugadgetloans_ApplicationUserId",

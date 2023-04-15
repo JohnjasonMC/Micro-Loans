@@ -1,22 +1,36 @@
 ﻿@model LoanManagementSystem.ViewModel.PurchaseViewModel
 
+
 <h1>Confirm Purchase</h1>
 
-<div>
-    <h3>@Model.GadgetName</h3>
-    <p>@Model.Description</p>
-    <p><strong>Price:</strong> Php @Model.Price</p>
-    <p><strong>Interest:</strong> @Model.Interest%</p>
-    <p><strong>Payment Term:</strong> @Model.PaymentTerm Months</p>
-    <p><strong>Monthly Payment:</strong> Php @Model.Payment</p>
-</div>
+<p>Are you sure you want to purchase the following gadget?</p>
 
-<hr />
+<dl>
+    <dt>Gadget Name</dt>
+    <dd>@Model.GadgetName</dd>
 
-<form method="post" asp-controller="UGadgetLoan" asp-action="AddPurchase">
-    <input type="hidden" name="gadgetId" value="@Model.GadgetLoanId" />
-    <input type="hidden" name="paymentTerm" value="@Model.PaymentTerm" />
+    <dt>Description</dt>
+    <dd>@Model.Description</dd>
 
-    <button type="submit" class="btn btn-primary">Purchase Gadget</button>
-    <a href="@Url.Action("GetAllGadgets", "GadgetLoan")" class="btn btn-default">Cancel</a>
+    <dt>Price</dt>
+    <dd>@Model.Price.ToString("C")</dd>
+
+    <dt>Interest Rate</dt>
+    <dd>@Model.Interest.ToString("P")</dd>
+
+    <dt>Payment Term</dt>
+    <dd>@Model.PaymentTerm.ToString()</dd>
+
+    <dt>Payment Amount</dt>
+    <dd>@Model.Payment.ToString("C")</dd>
+</dl>
+
+<form asp-action="CompletePurchase" method="post">
+    @Html.AntiForgeryToken()
+
+    <input type="submit" value="Confirm Purchase" />
 </form>
+
+<p>
+    <a asp-action="Index">Cancel</a>
+</p>

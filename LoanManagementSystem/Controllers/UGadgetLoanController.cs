@@ -2,6 +2,7 @@
 using LoanManagementSystem.Models;
 using LoanManagementSystem.ViewModel;
 using LoanManagementSystem.Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 using System.Linq;
@@ -9,6 +10,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Microsoft.VisualBasic;
+using System.Security.Claims;
+
 
 namespace LoanManagementSystem.Controllers
 {
@@ -17,11 +20,13 @@ namespace LoanManagementSystem.Controllers
     {
         private readonly ILogger<UGadgetLoanController> _logger;
         private readonly ApplicationDbContext _dbContext;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public UGadgetLoanController(ApplicationDbContext dbContext, ILogger<UGadgetLoanController> logger)
+        public UGadgetLoanController(ApplicationDbContext dbContext, ILogger<UGadgetLoanController> logger, UserManager<ApplicationUser> userManager)
         {
             _dbContext = dbContext;
             _logger = logger;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -52,46 +57,12 @@ namespace LoanManagementSystem.Controllers
 
             return View(model);
         }
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddPurchase(int gadgetId, int paymentTermId, decimal payment, decimal interestAmount)
+        public async Task<IActionResult> ConfirmPurchase(int gadgetId, int paymentTerm)
         {
-            var user = _dbContext.Users.FirstOrDefault(u => u.Id == User.Identity.Name);
-            if (user == null)
-            {
-                return BadRequest("User not found");
-            }
 
-            var gadgetLoan = _dbContext.gadgetloans.FirstOrDefault(gl => gl.Id == gadgetId);
-            if (gadgetLoan == null)
-            {
-                return BadRequest("Gadget Loan not found");
-            }
-
-            var paymentTermEntity = _dbContext.imps.FirstOrDefault(imp => imp.Id == paymentTermId);
-            if (paymentTermEntity == null)
-            {
-                return BadRequest("Payment Term not found");
-            }
-
-            var purchase = new Purchase
-            {
-                ApplicationUserId = User.Identity.Name,
-                GadgetLoan = gadgetLoan,
-                PaymentTerm = paymentTermEntity,
-                Payment = payment,
-                Interest = interestAmount,
-                DatePurchased = DateTime.Now
-            };
-            _dbContext.purchases.Add(purchase);
-            _dbContext.SaveChanges();
-            return Ok(purchase);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult ConfirmPurchase(int gadgetId, int paymentTerm)
-        {
             var gadgetLoan = _dbContext.gadgetloans.FirstOrDefault(gl => gl.Id == gadgetId);
             var paymentTermEntity = _dbContext.imps.FirstOrDefault(imp => imp.Id == paymentTerm);
 
@@ -100,7 +71,7 @@ namespace LoanManagementSystem.Controllers
                 return NotFound();
             }
 
-            decimal payment = (decimal)((gadgetLoan.Price +(gadgetLoan.Price * paymentTermEntity.Interest * paymentTermEntity.PaymentTerm)) /(paymentTermEntity.PaymentTerm));
+            decimal payment = (decimal)((gadgetLoan.Price + (gadgetLoan.Price * paymentTermEntity.Interest * paymentTermEntity.PaymentTerm)) / (paymentTermEntity.PaymentTerm));
             var model = new PurchaseViewModel
             {
                 GadgetLoanId = gadgetId,
@@ -111,49 +82,63 @@ namespace LoanManagementSystem.Controllers
                 PaymentTerm = paymentTermEntity.PaymentTerm,
                 Payment = Math.Round(payment, 2)
             };
-           return View("ConfirmPurchase", model);
+
+            //GINAMIT KOTO PARA MAKUHA KO YUNG PIPILIIN NI USER NA GADGET AT PAYMENT TERM AT MA MAP SA COMPLETEPURCHASE AT YUN NAMAN YUNG GAGAMITIN PARA MAG SAVE NG DATA SA PURCHASE TABLE
+            TempData["gadgetId"] = gadgetId;
+            TempData["paymentTermId"] = paymentTerm;
+
+            return View("ConfirmPurchase", model);
         }
 
-        [HttpGet]
-        [Authorize(Roles = "Registered")]
-        public async Task<IActionResult> MyPurchases()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CompletePurchase()//KAYA NAG ADD ULIT AKO NG ACTION KASI PAG NASA CONFIRM YUNG PAG SASAVE NG PURCHASE MAG KAKABUG KASI KAHIT HINDI MAG CONFIRM YUNG USER MAG KAKAROON NG TOKEN ID YUNG PURCHASE SO KAYA NISEPARATE KO
         {
-            var purchases = await _dbContext.purchases.
-                Where(p => p.ApplicationUserId == User.Identity.Name)
-                   .Include(p => p.GadgetLoan)
-                   .Include(p => p.PaymentTerm)
-                   .ToListAsync();
-            return View(purchases);
-        }
+            //COCONVERT KO ULIT YUNG NAKUHANG DATA SA TEMP TO INT32 NA MAGAGAMIT NAMAN SA SUCCEEDING OPERATION AT YAN NADIN YUNG MAGSISILBING HOLDER NUNG DATA
+            int gadgetId = Convert.ToInt32(TempData["gadgetId"]);
+            int paymentTermId = Convert.ToInt32(TempData["paymentTermId"]);
 
-        [HttpGet]
-        [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> Purchases()
-        {
-            var purchases = await _dbContext.purchases
-                .Include(p => p.ApplicationUser)
-                .Include(p => p.GadgetLoan)
-                .Include(p => p.PaymentTerm)
-                .ToListAsync();
+            var gadgetLoan = _dbContext.gadgetloans.FirstOrDefault(gl => gl.Id == gadgetId);
+            var paymentTermEntity = _dbContext.imps.FirstOrDefault(imp => imp.Id == paymentTermId);
 
-            var model = new AdminPurchasesViewModel
+            if (gadgetLoan == null || paymentTermEntity == null)
             {
-                Purchases = purchases.Select(p => new PurchaseViewModel
-                {
-                    Id = p.Id,
-                    GadgetLoanId = p.GadgetLoanId,
-                    GadgetName = p.GadgetLoan.GadgetName,
-                    Description = p.GadgetLoan.Description,
-                    Price = p.GadgetLoan.Price,
-                    PaymentTerm = p.PaymentTerm.Id,
-                    Interest = p.Interest,
-                    Payment = p.Payment,
-                    UserId = p.ApplicationUserId,
-                    UserName = p.ApplicationUser.UserName
-                }).ToList()
+                return NotFound();
+            }
+            //SAME LANG TO NUNG SA CONFIRM PARA LANG DIN MAKUHA YUNG DATA FROM IT
+            decimal payment = (decimal)((gadgetLoan.Price + (gadgetLoan.Price * paymentTermEntity.Interest * paymentTermEntity.PaymentTerm)) / (paymentTermEntity.PaymentTerm));
+            var model = new PurchaseViewModel
+            {
+                GadgetLoanId = gadgetId,
+                GadgetName = gadgetLoan.GadgetName,
+                Description = gadgetLoan.Description,
+                Price = gadgetLoan.Price,
+                Interest = (decimal)paymentTermEntity.Interest,
+                PaymentTerm = paymentTermEntity.PaymentTerm,
+                Payment = Math.Round(payment, 2)
             };
-            return View(model);
-        }
 
+            // CODE PARA MAKUHA YUNG CURRENT USER ISYSYNC NYA TO SA TOKEN NA NAKUKUHA SA LOGIN USING USER MANAGER
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // KUHAIN NYA YUNG ID NG USER SYA DATABASE ITO YUNG CURRENT
+            var user = await _userManager.FindByIdAsync(userId); //OPTIONAL LANG TO PERO NILAGAY KONA DIN BAKA KASI MAG KA BUG PAG HAHANAP
+            var purchase = new Purchase //NAG GAWA LANG AKO NG PANIBAGONG MODEL PARA MAHOLD YUNG VALUE NA MAKUKUHA SA CONFIRM PURCHASE USING TEMPDATA
+            {
+                ApplicationUserId = userId,
+                GadgetLoanId = model.GadgetLoanId,
+                GadgetName = model.GadgetName,
+                Description = model.Description,
+                Price = (int)model.Price,
+                Interest = model.Interest,
+                PaymentTerm = model.PaymentTerm,
+                Payment = model.Payment,
+                IsComplete = true
+            };
+
+            //TAPOS SASAVE KO SA DB NG PURCHASE KADA MAY COCOMPLETE PURCHASE YUNG USER
+            _dbContext.purchases.Add(purchase);
+            await _dbContext.SaveChangesAsync();
+
+            return RedirectToAction("MyPurchases");//MAY PROBLEMA PA DITO PERO PUSH KONA SA GIT PARA MAKITA MO CHANGES KO
+        }
     }
 }
