@@ -18,7 +18,7 @@
         <h3 class="fw-bold ls-tight">@Model.GadgetName</h3>
         <h5>PHP @Model.Price</h5>
         <p class="my-3">@Model.Description</p>
-        <p><strong>Interest:</strong> interestRate%</p>
+        <p><strong>Interest:</strong> @Model.Interest%</p>
         <p><strong>Payment Term:</strong> @Model.PaymentTerm Months</p>
         <p><strong>Monthly Payment:</strong> Php @Model.Payment</p>
         <form method="post" asp-controller="UGadgetLoan" asp-action="AddPurchase">
