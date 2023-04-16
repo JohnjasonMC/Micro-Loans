@@ -13,14 +13,15 @@
     <div class="col-4">
         <img class="img-thumbnail" src="@Model.GadgetImageURL" alt="@Model.GadgetName"/>
     </div>
+
     <div class="col-8">
         <h3 class="fw-bold ls-tight">@Model.GadgetName</h3>
         <h5>PHP @Model.Price</h5>
         <p class="my-3">@Model.Description</p>
-        <p><strong>Interest:</strong> @Model.Interest%</p>
+        <p><strong>Interest:</strong> interestRate%</p>
         <p><strong>Payment Term:</strong> @Model.PaymentTerm Months</p>
         <p><strong>Monthly Payment:</strong> Php @Model.Payment</p>
-        <form method="post" asp-controller="UGadgetLoan" asp-action="CompletePurchase">
+        <form method="post" asp-controller="UGadgetLoan" asp-action="AddPurchase">
             <input type="hidden" name="gadgetId" value="@Model.GadgetLoanId" />
             <input type="hidden" name="paymentTerm" value="@Model.PaymentTerm" />
             <a type="submit" class="btn btn-light btn-color" asp-controller="UGadgetLoan" asp-action="Purchase" asp-route-gadgetId="@Model.GadgetLoanId">Back</a>
@@ -29,9 +30,5 @@
     </div>
 </div>
 
-<hr />
 
-<form method="post" asp-controller="UGadgetLoan" asp-action="CreatePurchase">
-    <input type="hidden" name="gadgetId" value="@Model.GadgetLoanId" />
-    <input type="hidden" name="paymentTerm" value="@Model.PaymentTerm" />
 

@@ -20,10 +20,12 @@ namespace LoanManagementSystem.ViewModel
 
         [DisplayName("Phone Number")]
         [Required]
+        [RegularExpression(@"^\(?([0-9]{11})$", ErrorMessage = "Please enter valid phone number")]
         public string PhoneNumber { get; set; }
 
         [DisplayName("Address")]
         [Required]
+        [StringLength(50, MinimumLength =5, ErrorMessage = "Please enter valid Address")]
         public string Address { get; set; }
 
         [Required]

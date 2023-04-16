@@ -3,6 +3,9 @@ using LoanManagementSystem.Repository.Contract;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using X.PagedList;
+using System.Linq;
+using Microsoft.Data.SqlClient;
 
 namespace LoanManagementSystem.Controllers
 {
@@ -17,10 +20,16 @@ namespace LoanManagementSystem.Controllers
         }
 
         [AllowAnonymous]
-        public IActionResult GetAllGadgets()
+        public IActionResult GetAllGadgets(string searchString)
         {
-            var gadgetlist = _repo.GetAllGadgets();
-            return View(gadgetlist);
+
+            var gadgets = from gadget in _repo.GetAllGadgets()
+                          select gadget;
+            if(!String.IsNullOrEmpty(searchString))
+            {
+                gadgets = gadgets.Where(s => s.GadgetName.ToLower().Contains(searchString.Trim().ToLower()));
+            }
+                return View(gadgets.ToList()); 
         }
 
         [AllowAnonymous]

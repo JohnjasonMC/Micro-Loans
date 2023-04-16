@@ -32,7 +32,7 @@
                         Our five-point application to disbursement process ensures services are delivered on time.
                     </p>
                 </div>
-                <div asp-validation-summary="ModelOnly" class="text-danger alert alert-danger"></div>
+                
                 <div class="col-lg-6 mb-5 mb-lg-0">
                     <div class="row">
                         <h2 class="my-5 display-3 fw-bold ls-tight" style="font-size: 40px; text-align: center;">
@@ -42,6 +42,7 @@
                     </div>
                     <div class="card" style="background: linear-gradient(to bottom right, #ffffff, #ffffff);">
                         <div class="card-body py-5 px-md-5">
+                            <div asp-validation-summary="ModelOnly" class="text-danger alert alert-danger"></div>
                             <form asp-controller="Authentication" asp-action="Register">
                                 <!-- 2 column grid layout with text inputs for the first and last names -->
                                 <div class="row">
@@ -70,7 +71,10 @@
                                     <div class="col-md-6 mb-3  text-start">
                                         <div class="form-outline">
                                             <label asp-for="Gender" class="form-label">Gender</label>
-                                            <select asp-for="Gender" class="form-control" asp-items="ViewBag.GenderList"></select>
+                                            <select asp-for="Gender" class="form-control"> 
+                                                <option value="M">Male</option>
+                                                <option value="F">Female</option>
+                                            </select>
                                             <span asp-validation-for="Gender" class="text-danger"></span>
                                         </div>
                                     </div>
