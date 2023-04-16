@@ -1,5 +1,7 @@
-﻿using System.ComponentModel;
+﻿using LoanManagementSystem.CustomValidation;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+
 
 namespace LoanManagementSystem.ViewModel
 {
@@ -15,6 +17,7 @@ namespace LoanManagementSystem.ViewModel
 
         [DisplayName("Date of Birth")]
         [DataType(DataType.Date)]
+        [MinAge(18)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime DateOfBirth { get; set; }
 
