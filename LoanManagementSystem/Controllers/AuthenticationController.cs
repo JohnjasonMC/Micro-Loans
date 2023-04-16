@@ -78,6 +78,8 @@ namespace LoanManagementSystem.Controllers
                     FullName = registerUser.FullName,
                     DateOfBirth = registerUser.DateOfBirth,
                     Gender = registerUser.Gender,
+                    Address = registerUser.Address,
+                    PhoneNumber = registerUser.PhoneNumber,
                 };
 
                 var result = await this._userManager.CreateAsync(userModel, registerUser.Password);
@@ -159,3 +161,4 @@ namespace LoanManagementSystem.Controllers
         }
     }
 }
+ 

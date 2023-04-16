@@ -52,7 +52,8 @@ namespace LoanManagementSystem.Controllers
                 GadgetName = gadgetLoan.GadgetName,
                 Description = gadgetLoan.Description,
                 Price = gadgetLoan.Price,
-                AvailablePaymentTerms = paymentTerms
+                AvailablePaymentTerms = paymentTerms,
+                GadgetImageURL = gadgetLoan.GadgetImageURL
             };
 
             return View(model);
@@ -82,6 +83,7 @@ namespace LoanManagementSystem.Controllers
                 Price = gadgetLoan.Price,
                 Interest = paymentTermEntity.Interest,
                 PaymentTerm = paymentTermEntity.PaymentTerm,
+                GadgetImageURL = gadgetLoan.GadgetImageURL,
                 Payment = Math.Round(payment, 2)
             };
 
@@ -120,9 +122,9 @@ namespace LoanManagementSystem.Controllers
                 Price = gadgetLoan.Price,
                 Interest = paymentTermEntity.Interest,
                 PaymentTerm = paymentTermEntity.PaymentTerm,
-                Payment = Math.Round(payment, 2)
+                Payment = Math.Round(payment, 2),
+                GadgetImageURL = gadgetLoan.GadgetImageURL
             };
-
             // CODE PARA MAKUHA YUNG CURRENT USER ISYSYNC NYA TO SA TOKEN NA NAKUKUHA SA LOGIN USING USER MANAGER
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // KUHAIN NYA YUNG ID NG USER SYA DATABASE ITO YUNG CURRENT
             var user = await _userManager.FindByIdAsync(userId);//OPTIONAL LANG TO PERO NILAGAY KONA DIN BAKA KASI MAG KA BUG PAG HAHANAP
@@ -138,6 +140,8 @@ namespace LoanManagementSystem.Controllers
                 PaymentTerm = model.PaymentTerm,
                 Payment = model.Payment
             };
+
+
 
             //TAPOS SASAVE KO SA DB NG PURCHASE KADA MAY COCOMPLETE PURCHASE YUNG USER
             _dbContext.purchases.Add(purchase);

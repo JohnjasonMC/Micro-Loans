@@ -1,29 +1,34 @@
-﻿using System.ComponentModel;
+﻿using LoanManagementSystem.CustomValidation;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+
 
 namespace LoanManagementSystem.ViewModel
 {
     public class RegisterUserViewModel
     {
-        [DisplayName("Enter Full Name")]
+        [DisplayName("Full Name")]
         [Required]
         public string FullName { get; set; }
 
-        [DisplayName("Enter Email Address")]
+        [DisplayName("Email Address")]
         [Required]
         public string Email { get; set; }
 
-        [DisplayName("Enter Date of Birth")]
+        [DisplayName("Date of Birth")]
         [DataType(DataType.Date)]
+        [MinAge(18)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime DateOfBirth { get; set; }
 
-        [DisplayName("Enter Phone Number")]
+        [DisplayName("Phone Number")]
         [Required]
+        [RegularExpression(@"^\(?([0-9]{11})$", ErrorMessage = "Please enter valid phone number")]
         public string PhoneNumber { get; set; }
 
-        [DisplayName("Enter Address")]
+        [DisplayName("Address")]
         [Required]
+        [StringLength(50, MinimumLength =5, ErrorMessage = "Please enter valid Address")]
         public string Address { get; set; }
 
         [Required]
