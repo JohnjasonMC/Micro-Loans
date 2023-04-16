@@ -72,14 +72,16 @@ namespace LoanManagementSystem.Controllers
                 return NotFound();
             }
 
-            decimal payment = (decimal)((gadgetLoan.Price + (gadgetLoan.Price * paymentTermEntity.Interest * paymentTermEntity.PaymentTerm)) / (paymentTermEntity.PaymentTerm));
+            decimal interest = (decimal)paymentTermEntity.Interest;
+            decimal payment = (decimal)((gadgetLoan.Price + (gadgetLoan.Price * interest * paymentTermEntity.PaymentTerm)) / (paymentTermEntity.PaymentTerm));
+
             var model = new PurchaseViewModel
             {
                 GadgetLoanId = gadgetId,
                 GadgetName = gadgetLoan.GadgetName,
                 Description = gadgetLoan.Description,
                 Price = gadgetLoan.Price,
-                Interest = (decimal)paymentTermEntity.Interest,
+                Interest = paymentTermEntity.Interest,
                 PaymentTerm = paymentTermEntity.PaymentTerm,
                 GadgetImageURL = gadgetLoan.GadgetImageURL,
                 Payment = Math.Round(payment, 2)
@@ -107,22 +109,25 @@ namespace LoanManagementSystem.Controllers
             {
                 return NotFound();
             }
+
             //SAME LANG TO NUNG SA CONFIRM PARA LANG DIN MAKUHA YUNG DATA FROM IT
-            decimal payment = (decimal)((gadgetLoan.Price + (gadgetLoan.Price * paymentTermEntity.Interest * paymentTermEntity.PaymentTerm)) / (paymentTermEntity.PaymentTerm));
+            decimal interest = (decimal)paymentTermEntity.Interest;
+            decimal payment = (decimal)((gadgetLoan.Price + (gadgetLoan.Price * interest * paymentTermEntity.PaymentTerm)) / (paymentTermEntity.PaymentTerm));
+
             var model = new PurchaseViewModel
             {
                 GadgetLoanId = gadgetId,
                 GadgetName = gadgetLoan.GadgetName,
                 Description = gadgetLoan.Description,
                 Price = gadgetLoan.Price,
-                Interest = (decimal)paymentTermEntity.Interest,
+                Interest = paymentTermEntity.Interest,
                 PaymentTerm = paymentTermEntity.PaymentTerm,
                 Payment = Math.Round(payment, 2),
                 GadgetImageURL = gadgetLoan.GadgetImageURL
             };
             // CODE PARA MAKUHA YUNG CURRENT USER ISYSYNC NYA TO SA TOKEN NA NAKUKUHA SA LOGIN USING USER MANAGER
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // KUHAIN NYA YUNG ID NG USER SYA DATABASE ITO YUNG CURRENT
-            var user = await _userManager.FindByIdAsync(userId); //OPTIONAL LANG TO PERO NILAGAY KONA DIN BAKA KASI MAG KA BUG PAG HAHANAP
+            var user = await _userManager.FindByIdAsync(userId);//OPTIONAL LANG TO PERO NILAGAY KONA DIN BAKA KASI MAG KA BUG PAG HAHANAP
             var purchase = new Purchase //NAG GAWA LANG AKO NG PANIBAGONG MODEL PARA MAHOLD YUNG VALUE NA MAKUKUHA SA CONFIRM PURCHASE USING TEMPDATA
             {
                 ApplicationUserId = userId,
@@ -130,8 +135,8 @@ namespace LoanManagementSystem.Controllers
                 GadgetName = model.GadgetName,
                 Description = model.Description,
                 Price = (int)model.Price,
+                Interest = model.Interest,
                 DatePurchased = DateTime.Now,
-                Interest = (decimal)model.Interest,
                 PaymentTerm = model.PaymentTerm,
                 Payment = model.Payment,
                 IsComplete = true
@@ -145,5 +150,28 @@ namespace LoanManagementSystem.Controllers
 
             return RedirectToAction("MyPurchases");//MAY PROBLEMA PA DITO PERO PUSH KONA SA GIT PARA MAKITA MO CHANGES KO
         }
+
+        [HttpGet]
+        public async Task<IActionResult> MyPurchases()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var purchases = await _dbContext.purchases
+                .Where(p => p.ApplicationUserId == userId)
+                .ToListAsync();
+
+            return View(purchases);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> Purchases()
+        {
+            var purchases = await _dbContext.purchases
+                .Include(p => p.ApplicationUser)
+                .ToListAsync();
+
+            return View(purchases);
+        }
+
     }
 }

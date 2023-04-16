@@ -12,7 +12,7 @@ namespace LoanManagementSystem.Models
         public string Description { get; set; }
         public string GadgetName { get; set; }
         public decimal Payment { get; set; }
-        public decimal Interest { get; set; }
+        public double Interest { get; set; }
         public DateTime DatePurchased { get; set; }
         public int PaymentTerm { get; set; }
         public bool IsComplete { get; set; }

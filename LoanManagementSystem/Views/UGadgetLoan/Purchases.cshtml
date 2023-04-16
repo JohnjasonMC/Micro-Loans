@@ -1,36 +1,28 @@
-﻿@model LoanManagementSystem.ViewModel.AdminPurchasesViewModel
+﻿@model List<Purchase>
 
-<h1>All Purchases</h1>
-
-<table>
+<table class="table table-striped">
     <thead>
         <tr>
-            <th>ID</th>
-            <th>Gadget Loan ID</th>
+            <th>Application User</th>
             <th>Gadget Name</th>
-            <th>Description</th>
-            <th>Price</th>
-            <th>Payment Term</th>
+            <th>Gadget Description</th>
             <th>Interest</th>
-            <th>Payment</th>
-            <th>User ID</th>
-            <th>User Name</th>
+            <th>Payment Term</th>
+            <th>Payment Amount</th>
+            <th>Date Purchased</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var purchase in Model.Purchases)
+        @foreach (var purchase in Model)
         {
             <tr>
-                <td>@purchase.Id</td>
-                <td>@purchase.GadgetLoanId</td>
+                <td>@purchase.ApplicationUser.UserName</td>
                 <td>@purchase.GadgetName</td>
                 <td>@purchase.Description</td>
-                <td>@purchase.Price</td>
-                <td>@purchase.PaymentTerm</td>
                 <td>@purchase.Interest</td>
+                <td>@purchase.PaymentTerm months</td>
                 <td>@purchase.Payment</td>
-                <td>@purchase.UserId</td>
-                <td>@purchase.UserName</td>
+                <td>@purchase.DatePurchased</td>
             </tr>
         }
     </tbody>
