@@ -81,6 +81,7 @@ namespace LoanManagementSystem.Controllers
                 Price = gadgetLoan.Price,
                 Interest = (decimal)paymentTermEntity.Interest,
                 PaymentTerm = paymentTermEntity.PaymentTerm,
+                GadgetImageURL = gadgetLoan.GadgetImageURL,
                 Payment = Math.Round(payment, 2)
             };
 
@@ -129,33 +130,14 @@ namespace LoanManagementSystem.Controllers
                 GadgetName = model.GadgetName,
                 Description = model.Description,
                 Price = (int)model.Price,
-                Interest = model.Interest,
+                DatePurchased = DateTime.Now,
+                Interest = (decimal)model.Interest,
                 PaymentTerm = model.PaymentTerm,
                 Payment = model.Payment,
                 IsComplete = true
             };
-            [HttpGet]
-        [Authorize(Roles = "Registered")]
-        public async Task<IActionResult> MyPurchases()
-        {
-            var purchases = await _dbContext.purchases.
-                Where(p => p.ApplicationUserId == User.Identity.Name)
-                   .Include(p => p.GadgetLoan)
-                   .Include(p => p.PaymentTerm)
-                   .ToListAsync();
-            return View(purchases);
-        }
-            [HttpGet]
-            [Authorize(Roles = "Registered")]
-            public async Task<IActionResult> MyPurchases()
-            {
-                var purchases = await _dbContext.purchases.
-                    Where(p => p.ApplicationUserId == User.Identity.Name)
-                       .Include(p => p.GadgetLoan)
-                       .Include(p => p.PaymentTerm)
-                       .ToListAsync();
-                return View(purchases);
-            }
+
+
 
             //TAPOS SASAVE KO SA DB NG PURCHASE KADA MAY COCOMPLETE PURCHASE YUNG USER
             _dbContext.purchases.Add(purchase);
