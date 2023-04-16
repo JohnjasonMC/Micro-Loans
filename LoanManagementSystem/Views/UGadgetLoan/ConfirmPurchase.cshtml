@@ -1,4 +1,6 @@
 ﻿@model LoanManagementSystem.ViewModel.PurchaseViewModel
+@using System.Globalization;
+
 
 <style>
     .btn-color {
@@ -29,6 +31,30 @@
         </form>
     </div>
 </div>
+<p>Are you sure you want to purchase the following gadget?</p>
 
+<dl>
+    <dt>Gadget Name</dt>
+    <dd>@Model.GadgetName</dd>
 
+    <dt>Description</dt>
+    <dd>@Model.Description</dd>
 
+    <dt>Price</dt>
+    <dd>@Model.Price.ToString("C", new CultureInfo("en-PH"))</dd>
+
+    <dt>Interest Rate</dt>
+    <dd>@Model.Interest.ToString("P")</dd>
+
+    <dt>Payment Term</dt>
+    <dd>@Model.PaymentTerm.ToString()</dd>
+
+    <dt>Payment Amount</dt>
+    <dd>@Model.Payment.ToString("C", new CultureInfo("en-PH"))</dd>
+</dl>
+
+<form asp-action="CompletePurchase" method="post">
+    @Html.AntiForgeryToken()
+
+    <input type="submit" value="Confirm Purchase" />
+</form>

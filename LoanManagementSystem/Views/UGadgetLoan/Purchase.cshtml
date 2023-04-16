@@ -39,3 +39,18 @@
 </div>
 
 
+<form method="post" asp-action="ConfirmPurchase">
+    <div class="form-group">
+        <label for="paymentTerm">Payment Term:</label>
+        <select class="form-control" id="paymentTerm" name="paymentTerm">
+            @foreach (var paymentTerm in Model.AvailablePaymentTerms)
+            {
+                <option value="@paymentTerm.Id">@paymentTerm.PaymentTerm months - @paymentTerm.Interest% interest</option>
+            }
+        </select>
+    </div>
+    <input type="hidden" name="gadgetId" value="@Model.GadgetLoanId" />
+    <input type="hidden" name="paymentTerm" value="@Model.PaymentTerm" />
+    <button type="submit" class="btn btn-primary">Confirm Purchase</button>
+</form>
+

@@ -1,29 +1,37 @@
-﻿@model List<LoanManagementSystem.Models.Purchase>
+﻿@model List<Purchase>
 
-<h2>My Purchases</h2>
+<h1>My Purchases</h1>
 
-<table class="table">
+<table>
     <thead>
         <tr>
-            <th>Item</th>
+            <th>ID</th>
+            <th>Gadget Loan ID</th>
+            <th>Gadget Name</th>
+            <th>Description</th>
+            <th>Price</th>
             <th>Payment Term</th>
-            <th>Interest Rate</th>
-            <th>Payment Amount</th>
-            <th>Purchase Date</th>
+            <th>Interest</th>
+            <th>Payment</th>
+            <th>User ID</th>
+            <th>User Name</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var purchase in Model)
         {
             <tr>
+                <td>@purchase.Id</td>
+                <td>@purchase.GadgetLoanId</td>
                 <td>@purchase.GadgetLoan.GadgetName</td>
-                <td>@purchase.PaymentTerm.PaymentTerm</td>
+                <td>@purchase.GadgetLoan.Description</td>
+                <td>@purchase.GadgetLoan.Price</td>
+                <td>@purchase.PaymentTerm</td>
                 <td>@purchase.Interest</td>
                 <td>@purchase.Payment</td>
-                <td>@purchase.DatePurchased.ToShortDateString()</td>
+                <td>@purchase.ApplicationUserId</td>
+                <td>@purchase.ApplicationUser.UserName</td>
             </tr>
         }
     </tbody>
 </table>
-
-<a href="@Url.Action("Index", "Home")">Return to Home</a>

@@ -1,33 +1,37 @@
 ﻿@model LoanManagementSystem.ViewModel.AdminPurchasesViewModel
 
-<h2>All Purchases</h2>
+<h1>All Purchases</h1>
 
-<table class="table">
+<table>
     <thead>
         <tr>
             <th>ID</th>
-            <th>User</th>
-            <th>Item</th>
+            <th>Gadget Loan ID</th>
+            <th>Gadget Name</th>
+            <th>Description</th>
+            <th>Price</th>
             <th>Payment Term</th>
-            <th>Interest Rate</th>
-            <th>Payment Amount</th>
-            <th>Purchase Date</th>
+            <th>Interest</th>
+            <th>Payment</th>
+            <th>User ID</th>
+            <th>User Name</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var purchase in Model.Purchases)
         {
-                <tr>
-                    <td>@purchase.Id</td>
-                    <td>@purchase.UserName (@purchase.UserId)</td>
-                    <td>@purchase.GadgetName</td>
-                    <td>@purchase.PaymentTerm</td>
-                    <td>@purchase.Interest</td>
-                    <td>@purchase.Payment</td>
-                    <td>@purchase.DatePurchased.ToShortDateString()</td>
-                </tr>
+            <tr>
+                <td>@purchase.Id</td>
+                <td>@purchase.GadgetLoanId</td>
+                <td>@purchase.GadgetName</td>
+                <td>@purchase.Description</td>
+                <td>@purchase.Price</td>
+                <td>@purchase.PaymentTerm</td>
+                <td>@purchase.Interest</td>
+                <td>@purchase.Payment</td>
+                <td>@purchase.UserId</td>
+                <td>@purchase.UserName</td>
+            </tr>
         }
     </tbody>
 </table>
-
-<a href="@Url.Action("Index", "Home")">Return to Home</a>
