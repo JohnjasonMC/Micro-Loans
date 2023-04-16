@@ -18,43 +18,17 @@
 
     <div class="col-8">
         <h3 class="fw-bold ls-tight">@Model.GadgetName</h3>
-        <h5>PHP @Model.Price</h5>
+        <h5>PHP @Model.Price.ToString("C", new CultureInfo("en-PH"))</h5>
         <p class="my-3">@Model.Description</p>
-        <p><strong>Interest:</strong> @Model.Interest%</p>
-        <p><strong>Payment Term:</strong> @Model.PaymentTerm Months</p>
-        <p><strong>Monthly Payment:</strong> Php @Model.Payment</p>
-        <form method="post" asp-controller="UGadgetLoan" asp-action="AddPurchase">
-            <input type="hidden" name="gadgetId" value="@Model.GadgetLoanId" />
-            <input type="hidden" name="paymentTerm" value="@Model.PaymentTerm" />
+        <p><strong>Interest:</strong> @Model.Interest.ToString("P")</p>
+        <p><strong>Payment Term:</strong> @Model.PaymentTerm.ToString() Months</p>
+        <p><strong>Monthly Payment:</strong> @Model.Payment.ToString("C", new CultureInfo("en-PH"))</p>
+        <form asp-action="CompletePurchase" method="post">
+            @Html.AntiForgeryToken()
             <a type="submit" class="btn btn-light btn-color" asp-controller="UGadgetLoan" asp-action="Purchase" asp-route-gadgetId="@Model.GadgetLoanId">Back</a>
-            <button type="submit" class="btn  btn-light btn-color">Purchase Gadget</button>        
+            <input type="submit" value="Confirm Purchase" />
         </form>
     </div>
 </div>
-<p>Are you sure you want to purchase the following gadget?</p>
 
-<dl>
-    <dt>Gadget Name</dt>
-    <dd>@Model.GadgetName</dd>
 
-    <dt>Description</dt>
-    <dd>@Model.Description</dd>
-
-    <dt>Price</dt>
-    <dd>@Model.Price.ToString("C", new CultureInfo("en-PH"))</dd>
-
-    <dt>Interest Rate</dt>
-    <dd>@Model.Interest.ToString("P")</dd>
-
-    <dt>Payment Term</dt>
-    <dd>@Model.PaymentTerm.ToString()</dd>
-
-    <dt>Payment Amount</dt>
-    <dd>@Model.Payment.ToString("C", new CultureInfo("en-PH"))</dd>
-</dl>
-
-<form asp-action="CompletePurchase" method="post">
-    @Html.AntiForgeryToken()
-
-    <input type="submit" value="Confirm Purchase" />
-</form>

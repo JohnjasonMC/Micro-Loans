@@ -27,7 +27,7 @@
                         Our five-point application to disbursement process ensures services are delivered on time.
                     </p>
                 </div>
-                <div asp-validation-summary="ModelOnly" class="text-danger alert alert-danger"></div>
+                
                 <div class="col-lg-6 mb-5 mb-lg-0">
                     <div class="row">
                         <h2 class="my-5 display-3 fw-bold ls-tight" style="font-size: 40px; text-align: center;">
@@ -37,6 +37,7 @@
                     </div>
                     <div class="card" style="background: linear-gradient(to bottom right, #ffffff, #ffffff);">
                         <div class="card-body py-5 px-md-5">
+                            <div asp-validation-summary="ModelOnly" class="text-danger alert alert-danger"></div>
                             <form asp-action="Login">
                                 <!-- 2 column grid layout with text inputs for the first and last names -->
                                 <div class="row">

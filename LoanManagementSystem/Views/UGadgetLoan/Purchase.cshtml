@@ -24,33 +24,23 @@
                 <label for="paymentTerm">Payment Term</label>
                 <select class="form-control" id="paymentTerm" name="paymentTerm" required>
                     <option value="">Select Payment Term</option>
-                    @foreach (var imp in Model.AvailablePaymentTerms)
+                    @*@foreach (var imp in Model.AvailablePaymentTerms)
                     {
                         var interestRate = imp.Interest * 100;
                         <option value="@imp.Id">@imp.PaymentTerm Months @interestRate.ToString("0.0")% Interest</option>
+                    }*@
+                     @foreach (var paymentTerm in Model.AvailablePaymentTerms)
+                    {
+                        var interestRate = paymentTerm.Interest * 100;
+                        <option value="@paymentTerm.Id">@paymentTerm.PaymentTerm months - @interestRate.ToString("0.0")% interest</option>
                     }
                 </select>
             </div>
+            <input type="hidden" name="gadgetId" value="@Model.GadgetLoanId" />
+            <input type="hidden" name="paymentTerm" value="@Model.PaymentTerm" />
             <a type="submit" class="btn btn-light btn-color" asp-controller="GadgetLoan" asp-action="GetAllGadgets">Back to list</a>
             <button type="submit" class="btn btn-light btn-color">Confirm</button>
 
         </form>
     </div>
 </div>
-
-
-<form method="post" asp-action="ConfirmPurchase">
-    <div class="form-group">
-        <label for="paymentTerm">Payment Term:</label>
-        <select class="form-control" id="paymentTerm" name="paymentTerm">
-            @foreach (var paymentTerm in Model.AvailablePaymentTerms)
-            {
-                <option value="@paymentTerm.Id">@paymentTerm.PaymentTerm months - @paymentTerm.Interest% interest</option>
-            }
-        </select>
-    </div>
-    <input type="hidden" name="gadgetId" value="@Model.GadgetLoanId" />
-    <input type="hidden" name="paymentTerm" value="@Model.PaymentTerm" />
-    <button type="submit" class="btn btn-primary">Confirm Purchase</button>
-</form>
-
