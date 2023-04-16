@@ -136,8 +136,7 @@ namespace LoanManagementSystem.Controllers
                 Interest = model.Interest,
                 DatePurchased = DateTime.Now,
                 PaymentTerm = model.PaymentTerm,
-                Payment = model.Payment,
-                IsComplete = true
+                Payment = model.Payment
             };
 
             //TAPOS SASAVE KO SA DB NG PURCHASE KADA MAY COCOMPLETE PURCHASE YUNG USER
@@ -169,5 +168,34 @@ namespace LoanManagementSystem.Controllers
             return View(purchases);
         }
 
+        /*
+        [HttpPost]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> ApproveOrDeclineLoan(int purchaseId, string status)
+        {
+            var purchase = await _dbContext.purchases.FindAsync(purchaseId);
+
+            if (purchase == null)
+            {
+                return NotFound();
+            }
+
+            if (status.ToLower() == "approve")
+            {
+                purchase.LoanStatus = "Approved";
+            }
+            else if (status.ToLower() == "decline")
+            {
+                purchase.LoanStatus = "Declined";
+            }
+            else
+            {
+                return BadRequest();
+            }
+
+            await _dbContext.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Purchases));
+        }*/
     }
 }

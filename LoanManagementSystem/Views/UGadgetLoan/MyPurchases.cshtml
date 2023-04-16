@@ -1,27 +1,29 @@
 ﻿@model List<Purchase>
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Gadget Name</th>
-            <th>Gadget Description</th>
-            <th>Interest</th>
-            <th>Payment Term</th>
-            <th>Payment Amount</th>
-            <th>Date Purchased</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var purchase in Model)
-        {
-            <tr>
-                <td>@purchase.GadgetName</td>
-                <td>@purchase.Description</td>
-                <td>@purchase.Interest</td>
-                <td>@purchase.PaymentTerm months</td>
-                <td>@purchase.Payment</td>
-                <td>@purchase.DatePurchased.ToShortDateString()</td>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+             <tr>
+                <th>Gadget Name</th>
+                <th>Gadget Description</th>
+                <th>Interest</th>
+                <th>Payment Term</th>
+                <th>Payment Amount</th>
+                <th>Date Purchased</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var purchase in Model)
+            {
+                <tr>
+                    <td>@purchase.GadgetName</td>
+                    <td>@purchase.Description</td>
+                    <td>@purchase.Interest</td>
+                    <td>@purchase.PaymentTerm months</td>
+                    <td>@purchase.Payment</td>
+                    <td>@purchase.DatePurchased.ToShortDateString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

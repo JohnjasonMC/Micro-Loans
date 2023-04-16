@@ -1,7 +1,7 @@
 ﻿@model List<Purchase>
 
-<table class="table table-striped">
-    <thead>
+<div class="table-responsive">
+    <table class="table">
         <tr>
             <th>Application User</th>
             <th>Gadget Name</th>
@@ -11,19 +11,20 @@
             <th>Payment Amount</th>
             <th>Date Purchased</th>
         </tr>
-    </thead>
-    <tbody>
-        @foreach (var purchase in Model)
-        {
-            <tr>
-                <td>@purchase.ApplicationUser.UserName</td>
-                <td>@purchase.GadgetName</td>
-                <td>@purchase.Description</td>
-                <td>@purchase.Interest</td>
-                <td>@purchase.PaymentTerm months</td>
-                <td>@purchase.Payment</td>
-                <td>@purchase.DatePurchased</td>
-            </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var purchase in Model)
+            {
+                <tr>
+                    <td>@purchase.ApplicationUser.UserName</td>
+                    <td>@purchase.GadgetName</td>
+                    <td>@purchase.Description</td>
+                    <td>@purchase.Interest</td>
+                    <td>@purchase.PaymentTerm months</td>
+                    <td>@purchase.Payment</td>
+                    <td>@purchase.DatePurchased</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
