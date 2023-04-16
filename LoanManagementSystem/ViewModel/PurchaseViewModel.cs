@@ -13,7 +13,7 @@ namespace LoanManagementSystem.ViewModel
         public string Description { get; set; }
         public decimal Price { get; set; }
         public decimal Payment { get; set; }
-        public decimal Interest { get; set; }
+        public double Interest { get; set; }
         public int PaymentTerm { get; set; }
         public List<IMP> AvailablePaymentTerms { get; set; }
         public DateTime DatePurchased { get; set; }
