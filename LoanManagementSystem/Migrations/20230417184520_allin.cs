@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LoanManagementSystem.Migrations
 {
-    public partial class init : Migration
+    public partial class allin : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -203,7 +203,9 @@ namespace LoanManagementSystem.Migrations
                     Interest = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     DatePurchased = table.Column<DateTime>(type: "datetime2", nullable: false),
                     GadgetImageURL = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PaymentTerm = table.Column<int>(type: "int", nullable: false)
+                    PaymentTerm = table.Column<int>(type: "int", nullable: false),
+                    IsArchived = table.Column<bool>(type: "bit", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -263,8 +265,8 @@ namespace LoanManagementSystem.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "1a73053f-78c6-41c2-94fc-d897ccc8b33c", "1fb40093-4342-4218-b95d-a8436c305038", "Registered", "REGISTERED" },
-                    { "705c9705-c8a8-44af-99a3-e33b13856856", "89c4d5d4-1ac0-4134-9cdc-9060a7756e73", "Administrator", "ADMINISTRATOR" }
+                    { "1a73053f-78c6-41c2-94fc-d897ccc8b33c", "4755a364-f587-4cdb-8a58-575360e57764", "Registered", "REGISTERED" },
+                    { "705c9705-c8a8-44af-99a3-e33b13856856", "1fbd5936-aa28-445d-8a15-a1ff83886ba3", "Administrator", "ADMINISTRATOR" }
                 });
 
             migrationBuilder.InsertData(
@@ -272,8 +274,8 @@ namespace LoanManagementSystem.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "Address", "ConcurrencyStamp", "DateOfBirth", "Email", "EmailConfirmed", "FullName", "Gender", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "147c0de8-847c-4466-ad04-1fc7b563e0c4", 0, "Somewhere", "83d14981-47d9-45ef-90fe-a606dfa4ae30", new DateTime(2023, 4, 17, 20, 8, 23, 197, DateTimeKind.Local).AddTicks(4549), "admin@gmail.com", false, "Admin", " ", false, null, "ADMIN@GMAIL.COM", "ADMIN@GMAIL.COM", "AQAAAAEAACcQAAAAEAMJi7xrnbMiFbiqJVarBBJzze6EjZfpnhzX/g1yUCNhkLmStr67SFhMHgH+8Nwi+A==", "1234567890", false, "26a2eabc-8a75-4e16-9228-598f21a6d6c8", false, "admin@gmail.com" },
-                    { "cba87ff8-bb15-442f-8a47-0e65a93cab8c", 0, "Somewhere", "8146ff35-90c5-4d19-bf89-ac09d62468c8", new DateTime(2023, 4, 17, 20, 8, 23, 198, DateTimeKind.Local).AddTicks(5712), "registered@gmail.com", false, "Registered", "M", false, null, "REGISTERED@GMAIL.COM", "REGISTERED@GMAIL.COM", "AQAAAAEAACcQAAAAEGR/so/Z4H5oZ+U8NSqwI0BdkelWCuAPsppAvFpxKN/ux+O4DnJrVvtxhMB4rK/rVg==", "1234567890", false, "a7d564f4-0d2f-428a-a182-c3f92f9639a3", false, "registered@gmail.com" }
+                    { "147c0de8-847c-4466-ad04-1fc7b563e0c4", 0, "Somewhere", "e58cf5cb-8115-4d75-a342-9fb85e2eb8be", new DateTime(2023, 4, 18, 2, 45, 20, 198, DateTimeKind.Local).AddTicks(3471), "admin@gmail.com", false, "Admin", " ", false, null, "ADMIN@GMAIL.COM", "ADMIN@GMAIL.COM", "AQAAAAEAACcQAAAAEB4cneT37aA7OiN5yw+VZg3ZjOLBufts+LLxcOiog7PGHWQQ5rYMxOhSU9jZOzto+Q==", "1234567890", false, "fc07bbdd-dc82-4bc3-80bc-52ecf025232d", false, "admin@gmail.com" },
+                    { "cba87ff8-bb15-442f-8a47-0e65a93cab8c", 0, "Somewhere", "b91877a3-ef93-443d-b8d9-3f382841b2b5", new DateTime(2023, 4, 18, 2, 45, 20, 199, DateTimeKind.Local).AddTicks(4756), "registered@gmail.com", false, "Registered", "M", false, null, "REGISTERED@GMAIL.COM", "REGISTERED@GMAIL.COM", "AQAAAAEAACcQAAAAEOtlq02PvtAniNAjzm0/hRotK8LLVTayslsLm/mKpcjwogxlxL5wlQjJpyyuzEPZ4g==", "1234567890", false, "02080998-c7b0-4873-a004-809fc6cf2a8a", false, "registered@gmail.com" }
                 });
 
             migrationBuilder.InsertData(
