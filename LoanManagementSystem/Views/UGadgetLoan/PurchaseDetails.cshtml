@@ -9,7 +9,7 @@
 
 
 <style>
-    .btn-color {
+    .btn-custom {
         background-color: #004260;
         color: white;
     }
@@ -35,24 +35,27 @@
         <p><strong>Interest:</strong> @Model.Interest%</p>
         <p><strong>Payment Term:</strong> @Model.PaymentTerm.ToString() Months</p>
         <p><strong>Monthly Payment:</strong> @Model.Payment.ToString("C", new CultureInfo("en-PH"))</p>  
-        <p><strong>Date Purchase:</strong> @Model.DatePurchased</p>
+        <p><strong>Date Applied:</strong> @Model.DatePurchased</p>
         <p><strong>Monthly Payment:</strong> @Model.Payment</p>
+        <a type="submit" class="btn btn-light btn-custom" asp-controller="UGadgetLoan" asp-action="MyPurchases">Back</a>
     </div>
 </div>
 
-<h1 class="fw-bold ls-tight">User Details</h1>
-<table class="table">
-    <thead class="thead-custom">
-        <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Phone Number</th>
-            <th>Gender</th>
-            <th>Birthdate</th>
-            <th>Address</th>
-        </tr>
-    </thead>
-    <tbody>
+@if (User.IsInRole("Administrator"))
+{
+    <h1 class="fw-bold ls-tight">User Details</h1>
+    <table class="table">
+        <thead class="thead-custom">
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Gender</th>
+                <th>Birthdate</th>
+                <th>Address</th>
+            </tr>
+        </thead>
+        <tbody>
             <tr>
                 <td>@Model.ApplicationUser.FullName</td>
                 <td>@Model.ApplicationUser.UserName</td>
@@ -61,10 +64,11 @@
                 <td>@Model.ApplicationUser.DateOfBirth.ToString("MM-dd-yyyy")</td>
                 <td>@Model.ApplicationUser.Address</td>
 
-                
-                
+
+
             </tr>
-        
-    </tbody>
-</table
+
+        </tbody>
+    </table>
+}
 

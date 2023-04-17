@@ -26,7 +26,7 @@
         <form asp-action="CompletePurchase" method="post">
             @Html.AntiForgeryToken()
             <a type="submit" class="btn btn-light btn-color" asp-controller="UGadgetLoan" asp-action="Purchase" asp-route-gadgetId="@Model.GadgetLoanId">Back</a>
-            <input type="submit" value="Confirm Purchase" />
+            <input type="submit" class="btn btn-light btn-color" value="Confirm Purchase" />
         </form>
     </div>
 </div>
