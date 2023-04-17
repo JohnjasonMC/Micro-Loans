@@ -123,9 +123,15 @@ namespace LoanManagementSystem.Controllers
                 Payment = Math.Round(payment, 2),
                 GadgetImageURL = gadgetLoan.GadgetImageURL
             };
-   
+            
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = await _userManager.FindByIdAsync(userId);
+            var existingPurchase = _dbContext.purchases.FirstOrDefault(p => p.ApplicationUserId == userId);//one purchase only per user
+            if (existingPurchase != null)
+            {
+                ModelState.AddModelError(string.Empty, "You already have an existing gadget loan.");
+                return View("PurchaseError");
+            }
             var purchase = new Purchase 
             {
                 ApplicationUserId = userId,
@@ -155,6 +161,23 @@ namespace LoanManagementSystem.Controllers
                 .ToListAsync();
 
             return View(purchases);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> WithdrawPurchase(int purchaseId)
+        {
+            var purchase = await _dbContext.purchases.FindAsync(purchaseId);//get purchaseid from db 
+
+            if (purchase == null)
+            {
+                return NotFound();
+            }
+
+            // remove the purchase made by the user in the database
+            _dbContext.purchases.Remove(purchase);
+            await _dbContext.SaveChangesAsync();
+
+            return RedirectToAction("MyPurchases");
         }
 
         [HttpGet]
@@ -198,7 +221,7 @@ namespace LoanManagementSystem.Controllers
             return View(purchase);
         }
 
-
+        
 
     }
 }

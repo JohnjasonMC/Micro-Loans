@@ -26,6 +26,7 @@
                 <th>Payment Term</th>
                 <th>Monthly Payment</th>
                 <th>Date Applied</th>
+                <th>Actions</th>
                 <th></th>
             </tr>
         </thead>
@@ -38,7 +39,14 @@
                     <td>@purchase.PaymentTerm months</td>
                     <td>@purchase.Payment</td>
                     <td>@purchase.DatePurchased.ToShortDateString()</td>
-                    <td><a type="button" class="btn btn-custom btn-block mt-1 mx-1" asp-controller="UGadgetLoan" asp-action="PurchaseDetails" asp-route-id="@purchase.Id">View</a></td>
+                    <td><a type="button" class="btn btn-custom mt-1 mx-1" asp-controller="UGadgetLoan" asp-action="PurchaseDetails" asp-route-id="@purchase.Id">View</a></td>
+                    <td>
+                        <form method="post" asp-controller="UGadgetLoan" asp-action="WithdrawPurchase" asp-route-purchaseId="@purchase.Id" onsubmit="return confirm('Are you sure you want to withdraw this purchase?')">
+                            <button type="submit" class="btn btn-custom mt-1 mx-1">Withdraw Purchase</button>
+                            <input type="hidden" name="purchaseId" value="@purchase.Id" />
+                            @Html.AntiForgeryToken()
+                        </form>
+                    </td>
                 </tr>
             }
         </tbody>
