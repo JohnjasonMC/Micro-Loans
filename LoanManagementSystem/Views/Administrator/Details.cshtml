@@ -7,13 +7,17 @@
 
 <style>
 
+    .btn-custom{
+        background-color: #004260;
+        color: white;
+    }
 
     .my-card {
         background-color: hsl(0, 0%, 96%);
     }
 </style>
 
-<a asp-action="GetAllUsers" class="btn btn-primary">Back to List</a>
+<a asp-action="GetAllUsers" class="btn btn-custom">Back to List</a>
 
 <div class="container">
     <div class="row justify-content-center">
@@ -21,20 +25,37 @@
             <div class="card my-card">
                 <div class="card-body my-2 mx-4">
                     <h1 class="text-center fw-bold ls-tight mb-4">User Details</h1>
-                    <div class="row justify-content-center align-items-center">
-                        <div class="col-4">
-                            <strong class="text-muted">Name</strong>
+                    
+                        <div class="row">
+                            <div class="col-4">
+                                <strong class="text-muted">Id</strong>
+                            </div>
+                            <div class="col-8">
+                                @Html.DisplayFor(model => model.Id)
+                            </div>
                         </div>
-                        <div class="col-8">
-                            @Html.DisplayFor(model => model.FullName)
+                        <div class="row">
+                            <div class="col-4">
+                                <strong class="text-muted">Name</strong>
+                            </div>
+                            <div class="col-8">
+                                @Html.DisplayFor(model => model.FullName)
+                            </div>
                         </div>
-                    </div>
+                        <div class="row">
+                            <div class="col-4">
+                                <strong class="text-muted">Email</strong>
+                            </div>
+                            <div class="col-8">
+                                @Html.DisplayFor(model => model.Email)
+                            </div>
+                        </div>
                     <div class="row">
                         <div class="col-4">
-                            <strong class="text-muted">Email</strong>
+                            <strong class="text-muted">Phone Number</strong>
                         </div>
                         <div class="col-8">
-                            @Html.DisplayFor(model => model.Email)
+                            @Html.DisplayFor(model => model.PhoneNumber)
                         </div>
                     </div>
                     <div class="row">
@@ -47,12 +68,21 @@
                     </div>
                     <div class="row">
                         <div class="col-4">
-                            <strong class="text-muted">Id</strong>
+                            <strong class="text-muted">Birthdate</strong>
                         </div>
                         <div class="col-8">
-                            @Html.DisplayFor(model => model.Id)
+                            @Html.DisplayFor(model => model.DateOfBirth)
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <strong class="text-muted">Address</strong>
+                        </div>
+                        <div class="col-8">
+                            @Html.DisplayFor(model => model.Address)
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
         </div>
