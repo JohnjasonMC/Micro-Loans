@@ -131,6 +131,7 @@ namespace LoanManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditPassword(UpdatePasswordViewModel userPassword)
         {
+            ModelState.Clear();
             if (!ModelState.IsValid)
             {
                 return View();

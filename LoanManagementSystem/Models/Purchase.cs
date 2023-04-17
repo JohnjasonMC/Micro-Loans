@@ -14,6 +14,7 @@ namespace LoanManagementSystem.Models
         public decimal Payment { get; set; }
         public double Interest { get; set; }
         public DateTime DatePurchased { get; set; }
+        public string GadgetImageURL { get; set; }
         public int PaymentTerm { get; set; }
         //public string LoanStatus { get; set; }
 

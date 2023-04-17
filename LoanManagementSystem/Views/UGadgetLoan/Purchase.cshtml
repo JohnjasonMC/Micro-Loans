@@ -31,8 +31,8 @@
                     }*@
                      @foreach (var paymentTerm in Model.AvailablePaymentTerms)
                     {
-                        var interestRate = paymentTerm.Interest * 100;
-                        <option value="@paymentTerm.Id">@paymentTerm.PaymentTerm months - @interestRate.ToString("0.0")% interest</option>
+                       @* var interestRate = paymentTerm.Interest/100;*@
+                        <option value="@paymentTerm.Id">@paymentTerm.PaymentTerm months - @paymentTerm.Interest% interest</option>
                     }
                 </select>
             </div>

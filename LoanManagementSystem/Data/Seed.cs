@@ -9,10 +9,10 @@ namespace LoanManagementSystem.Data
         public static void SeedDefaultData(this ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<IMP>().HasData(
-                new IMP(1, .005, 3),
-                new IMP(2, .007, 6),
-                new IMP(3, .01, 12),
-                new IMP(4, .015, 24));
+                new IMP(1, .5, 3),
+                new IMP(2, .7, 6),
+                new IMP(3, 1, 12),
+                new IMP(4, 1.5, 24));
 
             modelBuilder.Entity<GadgetLoan>().HasData(
                 new GadgetLoan(1, "Iphone 14 ProMax", "The iPhone 14 Pro Max display has rounded corners that follow a beautiful curved design, and these corners are within a standard rectangle. When measured as a standard rectangular shape, the screen is 6.69 inches diagonally (actual viewable area is less).", 79999, "https://accenthub.com.ph/wp-content/uploads/2022/10/Apple-iPhone-14-Pro-and-14-Pro-Max-Deep-Purple-1.jpg"),

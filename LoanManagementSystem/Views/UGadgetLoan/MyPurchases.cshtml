@@ -1,4 +1,5 @@
-﻿@model List<Purchase>
+﻿@using System.Globalization;
+@model List<Purchase>
 
 <div class="table-responsive">
     <table class="table">
@@ -27,3 +28,32 @@
         </tbody>
     </table>
 </div>
+
+
+
+<table class="table table-striped table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th>Gadget Name</th>
+            <th>Interest</th>
+            <th>Payment Term</th>
+            <th>Payment Amount</th>
+            <th>Date Purchased</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var purchase in Model)
+        {
+            <tr>
+                <td>@purchase.GadgetName</td>
+                <td>@purchase.Interest%</td>
+                <td>@purchase.PaymentTerm months</td>
+                <td>@purchase.Payment.ToString("C", new CultureInfo("en-PH"))</td>
+                <td>@purchase.DatePurchased.ToShortDateString()</td>
+                <td><a type="button" class="btn btn-light btn-block mt-1 mx-1" asp-controller="UGadgetLoan" asp-action="GetPurchaseById" asp-route-purchaseId="@purchase.Id">View</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+

@@ -1,30 +1,33 @@
-﻿@model List<Purchase>
+﻿@using System.Globalization;
+@model List<Purchase>
 
-<div class="table-responsive">
-    <table class="table">
+
+<h1 class="fw-bold ls-tight">Gadget Loan Applications</h1>
+<table class="table table-striped">
+    <thead>
         <tr>
-            <th>Application User</th>
+            <th>Name</th>
+            <th>Phone Number</th>
             <th>Gadget Name</th>
-            <th>Gadget Description</th>
             <th>Interest</th>
             <th>Payment Term</th>
-            <th>Payment Amount</th>
             <th>Date Purchased</th>
+            <th></th>
         </tr>
-        </thead>
-        <tbody>
-            @foreach (var purchase in Model)
-            {
-                <tr>
-                    <td>@purchase.ApplicationUser.UserName</td>
-                    <td>@purchase.GadgetName</td>
-                    <td>@purchase.Description</td>
-                    <td>@purchase.Interest</td>
-                    <td>@purchase.PaymentTerm months</td>
-                    <td>@purchase.Payment</td>
-                    <td>@purchase.DatePurchased</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
+    </thead>
+    <tbody>
+        @foreach (var purchase in Model)
+        {
+            <tr>
+                <td>@purchase.ApplicationUser.FullName</td>
+                <td>@purchase.ApplicationUser.PhoneNumber</td>
+                <td>@purchase.GadgetName</td>
+                <td>@purchase.Interest%</td>
+                <td>@purchase.PaymentTerm months</td>
+                <td>@purchase.DatePurchased</td>
+                <td><a type="button" class="btn btn-primary mt-1 mx-1" asp-controller="UGadgetLoan" asp-action="PurchaseDetails" asp-route-id="@purchase.Id">View</a></td>
+                
+            </tr>
+        }
+    </tbody>
+</table>
