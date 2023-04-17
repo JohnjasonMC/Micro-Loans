@@ -2,12 +2,31 @@
 @using LoanManagementSystem.Models;
 @model PersonalLoanCalculator
 
+<style>
+    .btn-custom{
+        background-color: #004260;
+        color: white;
+    }
+
+    .center{
+        text-align: center;
+    }
+
+    .thead-custom{
+        background-color: #004260;
+        color: white;
+    }
+</style>
+
 
 <div class="container">
+    <div class="mb-6">
     <div class="row">
-        <div class="result mb-3">
-            <h2>Loan Calculator</h2>
+        <div class="result mb-6">
+            <img class="mb-3" src="/src/LoanCalculatorIcon.png" alt="Logo" height="100">
             <form asp-action="LoanCalculator" method="post">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
                 <div class="result mb-3">
                     <label for="principal">Principal Amount (Loan Amount):</label>
                     <input type="text" class="form-control" id="principal" name="PrincipalAmount" value="@Model.PrincipalAmount" />
@@ -20,21 +39,24 @@
                     <label for="term">Loan Term (Refer To The Table Below):</label>
                     <input type="text" class="form-control" id="numberofterms" name="NumberOfTerms" value="@Model.NumberOfTerms" />
                 </div>
-                <button type="submit" class="btn btn-primary">Calculate</button>
+                <button type="submit" class="btn btn-custom btn-block btn-lg mb-3">Calculate</button>
+                    
             </form>
             @if (Model.Payment.HasValue)
             {
-                <div class="result mb-3">
+                <div class="result mb-3 center">
                     <h3>Monthly Payment: </h3>
                     <p class="result-value h4">@Model.Payment.Value.ToString("C", new CultureInfo("en-PH"))</p>
                     <p class="result-description">This is the monthly payment for the loan.</p>
                 </div>
             }
+        </div>
             <div asp-validation-summary="All" class="text-danger mt-5"></div>
-            <h2>Loan Description</h2>
+          </div>  
             <div class="table-responsive mt-4">
-                <table class="table table-bordered">
-                    <thead>
+            <h2 class="fw-bold ls-tight">Loan Description</h2>
+                <table class="table table-bordered mb-3">
+                    <thead class="thead-custom">
                         <tr>
                             <th>Loan Terms (months)</th>
                             <th>(Fixed) Interest Rate (annual)</th>
@@ -60,9 +82,10 @@
                     </tbody>
                 </table>
             </div>
-            <h2>Eligibility Criteria</h2>
+
+            <h2 class="fw-bold ls-tight">Eligibility Criteria</h2>
             <table class="table table-bordered">
-                <thead>
+                <thead class="thead-custom">
                     <tr>
                         <th>Criteria</th>
                         <th>Requirement</th>

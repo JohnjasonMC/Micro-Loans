@@ -7,110 +7,81 @@
 }
 
 <style>
-    .my-card {
-        background-color: hsl(0, 0%, 96%);
-    }
-
-    .btn-custom{
+    .btn-custom {
         background-color: #004260;
         color: white;
     }
+
+    .header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 </style>
 
-
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card my-card">
-                <div class="card-body my-2 mx-4">
-                    <h1 class="text-center fw-bold ls-tight mb-4">Profile Details</h1>
-                    <div class="row justify-content-center align-items-center">
-                        <div class="col-4">
-                            <strong class="text-muted">Full Name</strong>
-                        </div>
-                        <div class="col-8">
-                            @Html.DisplayFor(model => model.FullName)
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4">
-                            <strong class="text-muted">Email</strong>
-                        </div>
-                        <div class="col-8">
-                            @Html.DisplayFor(model => model.Email)
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4">
-                            <strong class="text-muted">Gender</strong>
-                        </div>
-                        <div class="col-8">
-                            @(Model.Gender == 'M' ? "Male" : "Female")
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4">
-                            <strong class="text-muted">Phone Number</strong>
-                        </div>
-                        <div class="col-8">
-                            @Html.DisplayFor(model => model.PhoneNumber)
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4">
-                            <strong class="text-muted">Address</strong>
-                        </div>
-                        <div class="col-8">
-                            @Html.DisplayFor(model => model.Address)
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4">
-                            <strong class="text-muted">Birthdate</strong>
-                        </div>
-                        <div class="col-8">
-                            @Html.DisplayFor(model => model.DateOfBirth)
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4">
-                            <strong class="text-muted">Id</strong>
-                        </div>
-                        <div class="col-8">
-                            @Html.DisplayFor(model => model.Id)
-                        </div>
-                    </div>
-                    <a class="btn btn-custom mt-3 mx-auto d-block" asp-controller="Authentication" asp-action="EditPassword">Update Password</a>
-                </div>
-            </div>
-        </div>
+    <div class="header-container mb-3">
+    <img class="mb-3" src="/src/ProfileDetails.png" alt="Logo" height="80">
+    <a class="btn btn-custom" asp-controller="Authentication" asp-action="EditPassword">Update Password</a>
     </div>
+    <table class="table table-hover">
+        <tbody>
+            <tr>
+                <th scope="row">Name</th>
+                <td>@Html.DisplayFor(model => model.FullName)</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th scope="row">Email</th>
+                <td>@Html.DisplayFor(model => model.Email)</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th scope="row">Phone Number</th>
+                <td>@Html.DisplayFor(model => model.PhoneNumber)</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th scope="row">Gender</th>
+                <td>@(Model.Gender == 'M' ? "Male" : "Female")</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th scope="row">Birthdate</th>
+                <td>@Html.DisplayFor(model => model.DateOfBirth)</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th scope="row">Address</th>
+                <td>@Html.DisplayFor(model => model.Address)</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+        </tbody>
+    </table>
 </div>
-@*<section class="container d-flex justify-content-center">
-    <div class="card" style="width: 24rem;">
-            <li class="list-group-item">
-                <i class="fas fa-id-card"></i>
-                <strong>ID:</strong> @Html.DisplayFor(model => model.Id)
-            </li>
-            <li class="list-group-item">
-                <i class="fas fa-user-circle"></i>
-                <strong>Full Name:</strong> @Html.DisplayFor(model => model.FullName)
-            </li>
-            <li class="list-group-item">
-                <i class="fas fa-at"></i>
-                <strong>Email:</strong> @Html.DisplayFor(model => model.Email)
-            </li>
-            <li class="list-group-item">
-                <i class="fas fa-venus-mars"></i>
-                <strong>Gender:</strong> @(Model.Gender == 'M' ? "Male" : "Female")
-            </li>
-            <li class="list-group-item">
-                <i class="fas fa-id-card"></i>
-                <strong>ID:</strong> @Html.DisplayFor(model => model.DateOfBirth)
-            </li>
-            <li class="list-group-item">
-                <i class="fas fa-user-cog"></i>
-                <a class="btn btn-primary" asp-controller="Authentication" asp-action="EditPassword">Update Password</a>
-            </li>
-    </div>
-</section>*@
+
