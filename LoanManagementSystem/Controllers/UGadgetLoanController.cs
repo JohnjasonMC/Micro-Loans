@@ -126,7 +126,7 @@ namespace LoanManagementSystem.Controllers
             
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = await _userManager.FindByIdAsync(userId);
-            var existingPurchase = _dbContext.purchases.FirstOrDefault(p => p.ApplicationUserId == userId);
+            var existingPurchase = _dbContext.purchases.FirstOrDefault(p => p.ApplicationUserId == userId);//one purchase only per user
             if (existingPurchase != null)
             {
                 ModelState.AddModelError(string.Empty, "You already have an existing gadget loan.");
