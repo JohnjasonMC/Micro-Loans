@@ -1,0 +1,64 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@using System.Globalization;
+@model Purchase
+
+
+
+<style>
+    .btn-color {
+        background-color: #004260;
+        color: white;
+    }
+</style>
+
+
+<h1 class="fw-bold ls-tight">Purchase Details</h1>
+<div class="row">
+    <div class="col-4">
+        <img class="img-thumbnail mb-4" src="@Model.GadgetImageURL" alt="@Model.GadgetName"/>
+    </div>
+
+    <div class="col-8">
+        <h3 class="fw-bold ls-tight">@Model.GadgetName</h3>
+        <h5>PHP @Model.Price.ToString("C", new CultureInfo("en-PH"))</h5>
+        <p class="my-3">@Model.Description</p>
+        <p><strong>Interest:</strong> @Model.Interest%</p>
+        <p><strong>Payment Term:</strong> @Model.PaymentTerm.ToString() Months</p>
+        <p><strong>Monthly Payment:</strong> @Model.Payment.ToString("C", new CultureInfo("en-PH"))</p>  
+        <p><strong>Date Purchase:</strong> @Model.DatePurchased</p>
+        <p><strong>Monthly Payment:</strong> @Model.Payment</p>
+    </div>
+</div>
+
+<h1 class="fw-bold ls-tight">User Details</h1>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+            <th>Gender</th>
+            <th>Birthdate</th>
+            <th>Address</th>
+        </tr>
+    </thead>
+    <tbody>
+            <tr>
+                <td>@Model.ApplicationUser.FullName</td>
+                <td>@Model.ApplicationUser.UserName</td>
+                <td>@Model.ApplicationUser.PhoneNumber</td>
+                <td>@Model.ApplicationUser.Gender</td>
+                <td>@Model.ApplicationUser.DateOfBirth.ToString("MM-dd-yyyy")</td>
+                <td>@Model.ApplicationUser.Address</td>
+
+                
+                
+            </tr>
+        
+    </tbody>
+</table
+

@@ -72,7 +72,7 @@ namespace LoanManagementSystem.Controllers
                 return NotFound();
             }
 
-            decimal interest = (decimal)paymentTermEntity.Interest;
+            double interest = (double)(paymentTermEntity.Interest/100);
             decimal payment = (decimal)((gadgetLoan.Price + (gadgetLoan.Price * interest * paymentTermEntity.PaymentTerm)) / (paymentTermEntity.PaymentTerm));
 
             var model = new PurchaseViewModel
@@ -111,7 +111,7 @@ namespace LoanManagementSystem.Controllers
             }
 
             //SAME LANG TO NUNG SA CONFIRM PARA LANG DIN MAKUHA YUNG DATA FROM IT
-            decimal interest = (decimal)paymentTermEntity.Interest;
+            double interest = (double)(paymentTermEntity.Interest/100);
             decimal payment = (decimal)((gadgetLoan.Price + (gadgetLoan.Price * interest * paymentTermEntity.PaymentTerm)) / (paymentTermEntity.PaymentTerm));
 
             var model = new PurchaseViewModel
@@ -137,6 +137,7 @@ namespace LoanManagementSystem.Controllers
                 Price = (int)model.Price,
                 Interest = model.Interest,
                 DatePurchased = DateTime.Now,
+                GadgetImageURL = model.GadgetImageURL,
                 PaymentTerm = model.PaymentTerm,
                 Payment = model.Payment,
                 IsComplete = true
@@ -172,6 +173,26 @@ namespace LoanManagementSystem.Controllers
 
             return View(purchases);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> PurchaseDetails(int id)
+        {
+            // Find the purchase by ID in the database
+            var purchase = await _dbContext.purchases
+                .Include(p => p.ApplicationUser)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (purchase == null)
+            {
+                // Return a not found response if the purchase is not found
+                return NotFound();
+            }
+
+            // Pass the purchase object to the view for displaying the details
+            return View(purchase);
+        }
+
+
 
     }
 }

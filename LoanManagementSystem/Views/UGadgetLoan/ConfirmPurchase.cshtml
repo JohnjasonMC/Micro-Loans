@@ -20,7 +20,7 @@
         <h3 class="fw-bold ls-tight">@Model.GadgetName</h3>
         <h5>PHP @Model.Price.ToString("C", new CultureInfo("en-PH"))</h5>
         <p class="my-3">@Model.Description</p>
-        <p><strong>Interest:</strong> @Model.Interest.ToString("P")</p>
+        <p><strong>Interest:</strong> @Model.Interest%</p>
         <p><strong>Payment Term:</strong> @Model.PaymentTerm.ToString() Months</p>
         <p><strong>Monthly Payment:</strong> @Model.Payment.ToString("C", new CultureInfo("en-PH"))</p>
         <form asp-action="CompletePurchase" method="post">
