@@ -164,12 +164,24 @@ namespace LoanManagementSystem.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> Purchases()
+        public async Task<IActionResult> Purchases(string searchQuery)
         {
+            // Get all purchases from the database including related ApplicationUser
             var purchases = await _dbContext.purchases
                 .Include(p => p.ApplicationUser)
                 .ToListAsync();
 
+            // Filter purchases based on search query
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                purchases = purchases.Where(p =>
+                    p.ApplicationUser.FullName.ToLower().Contains(searchQuery.Trim().ToLower()) || p.GadgetName.ToLower().Contains(searchQuery.Trim().ToLower()))
+                    .ToList();
+            }
+
+            ViewBag.SearchQuery = searchQuery;
+
+            // Pass filtered purchases to the view
             return View(purchases);
         }
 
