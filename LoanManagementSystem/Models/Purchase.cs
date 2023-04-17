@@ -16,7 +16,7 @@ namespace LoanManagementSystem.Models
         public DateTime DatePurchased { get; set; }
         public string GadgetImageURL { get; set; }
         public int PaymentTerm { get; set; }
-        public bool IsComplete { get; set; }
+        //public string LoanStatus { get; set; }
 
         public virtual ApplicationUser ApplicationUser { get; set; }
         public virtual GadgetLoan GadgetLoan { get; set; }

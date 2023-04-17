@@ -139,8 +139,7 @@ namespace LoanManagementSystem.Controllers
                 DatePurchased = DateTime.Now,
                 GadgetImageURL = model.GadgetImageURL,
                 PaymentTerm = model.PaymentTerm,
-                Payment = model.Payment,
-                IsComplete = true
+                Payment = model.Payment
             };
 
 
