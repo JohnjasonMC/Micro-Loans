@@ -87,7 +87,6 @@ namespace LoanManagementSystem.Controllers
                 Payment = Math.Round(payment, 2)
             };
 
-            //GINAMIT KOTO PARA MAKUHA KO YUNG PIPILIIN NI USER NA GADGET AT PAYMENT TERM AT MA MAP SA COMPLETEPURCHASE AT YUN NAMAN YUNG GAGAMITIN PARA MAG SAVE NG DATA SA PURCHASE TABLE
             TempData["gadgetId"] = gadgetId;
             TempData["paymentTermId"] = paymentTerm;
 
@@ -96,9 +95,9 @@ namespace LoanManagementSystem.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CompletePurchase()//KAYA NAG ADD ULIT AKO NG ACTION KASI PAG NASA CONFIRM YUNG PAG SASAVE NG PURCHASE MAG KAKABUG KASI KAHIT HINDI MAG CONFIRM YUNG USER MAG KAKAROON NG TOKEN ID YUNG PURCHASE SO KAYA NISEPARATE KO
-        {
-            //COCONVERT KO ULIT YUNG NAKUHANG DATA SA TEMP TO INT32 NA MAGAGAMIT NAMAN SA SUCCEEDING OPERATION AT YAN NADIN YUNG MAGSISILBING HOLDER NUNG DATA
+        public async Task<IActionResult> CompletePurchase()
+        { 
+           
             int gadgetId = Convert.ToInt32(TempData["gadgetId"]);
             int paymentTermId = Convert.ToInt32(TempData["paymentTermId"]);
 
@@ -110,7 +109,6 @@ namespace LoanManagementSystem.Controllers
                 return NotFound();
             }
 
-            //SAME LANG TO NUNG SA CONFIRM PARA LANG DIN MAKUHA YUNG DATA FROM IT
             decimal interest = (decimal)paymentTermEntity.Interest;
             decimal payment = (decimal)((gadgetLoan.Price + (gadgetLoan.Price * interest * paymentTermEntity.PaymentTerm)) / (paymentTermEntity.PaymentTerm));
 
@@ -125,10 +123,10 @@ namespace LoanManagementSystem.Controllers
                 Payment = Math.Round(payment, 2),
                 GadgetImageURL = gadgetLoan.GadgetImageURL
             };
-            // CODE PARA MAKUHA YUNG CURRENT USER ISYSYNC NYA TO SA TOKEN NA NAKUKUHA SA LOGIN USING USER MANAGER
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // KUHAIN NYA YUNG ID NG USER SYA DATABASE ITO YUNG CURRENT
-            var user = await _userManager.FindByIdAsync(userId);//OPTIONAL LANG TO PERO NILAGAY KONA DIN BAKA KASI MAG KA BUG PAG HAHANAP
-            var purchase = new Purchase //NAG GAWA LANG AKO NG PANIBAGONG MODEL PARA MAHOLD YUNG VALUE NA MAKUKUHA SA CONFIRM PURCHASE USING TEMPDATA
+   
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _userManager.FindByIdAsync(userId);
+            var purchase = new Purchase 
             {
                 ApplicationUserId = userId,
                 GadgetLoanId = model.GadgetLoanId,
@@ -141,13 +139,10 @@ namespace LoanManagementSystem.Controllers
                 Payment = model.Payment
             };
 
-
-
-            //TAPOS SASAVE KO SA DB NG PURCHASE KADA MAY COCOMPLETE PURCHASE YUNG USER
             _dbContext.purchases.Add(purchase);
             await _dbContext.SaveChangesAsync();
 
-            return RedirectToAction("MyPurchases");//MAY PROBLEMA PA DITO PERO PUSH KONA SA GIT PARA MAKITA MO CHANGES KO
+            return RedirectToAction("MyPurchases");
         }
 
         [HttpGet]
