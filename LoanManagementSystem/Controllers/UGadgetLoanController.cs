@@ -163,6 +163,23 @@ namespace LoanManagementSystem.Controllers
             return View(purchases);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> WithdrawPurchase(int purchaseId)
+        {
+            var purchase = await _dbContext.purchases.FindAsync(purchaseId);//get purchaseid from db 
+
+            if (purchase == null)
+            {
+                return NotFound();
+            }
+
+            // remove the purchase made by the user in the database
+            _dbContext.purchases.Remove(purchase);
+            await _dbContext.SaveChangesAsync();
+
+            return RedirectToAction("MyPurchases");
+        }
+
         [HttpGet]
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Purchases(string searchQuery)
@@ -204,7 +221,7 @@ namespace LoanManagementSystem.Controllers
             return View(purchase);
         }
 
-
+        
 
     }
 }
