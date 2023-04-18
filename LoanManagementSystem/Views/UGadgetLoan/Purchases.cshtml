@@ -7,10 +7,14 @@
         background-color: #004260;
         color: white;
     }
+    .thead-custom{
+        background-color: #004260;
+        color: white;
+    }
     </style>
 
 
-<h1 class="fw-bold ls-tight">Gadget Loan Applications</h1>
+<img class="mb-3" src="/src/ViewPurchases.png" alt="Logo" height="80">
 <form action="/UGadgetLoan/Purchases" method="get">
     <div class="search-form row g-0">
         <div class="form-group col-10">
@@ -22,17 +26,20 @@
     </div>
 </form>
 
+<a type="button" class="btn btn-custom mb-3" asp-area="" asp-controller="UGadgetLoan" asp-action="ArchivedPurchases">View Archived Purchases</a>
 
-
-<table class="table table-striped">
-    <thead>
+<table class="table table-hover">
+    <thead class="thead-custom">
         <tr>
             <th>Name</th>
             <th>Phone Number</th>
             <th>Gadget Name</th>
             <th>Interest</th>
             <th>Payment Term</th>
-            <th>Date Purchased</th>
+            <th>Date Applied</th>
+            <th>Status</th>
+            <th></th>
+            <th>Actions</th>
             <th></th>
         </tr>
     </thead>
@@ -46,8 +53,22 @@
                 <td>@purchase.Interest%</td>
                 <td>@purchase.PaymentTerm months</td>
                 <td>@purchase.DatePurchased</td>
+                <td>@purchase.Status</td>
                 <td><a type="button" class="btn btn-custom mt-1 mx-1" asp-controller="UGadgetLoan" asp-action="PurchaseDetails" asp-route-id="@purchase.Id">View</a></td>
-                
+                <td>
+                    <form method="post" asp-controller="UGadgetLoan" asp-action="ApprovePurchase" asp-route-purchaseId="@purchase.Id" onsubmit="return confirm('Processing your approval')">
+                        <button type="submit" class="btn btn-custom mt-1 mx-1">Approve</button>
+                        <input type="hidden" name="purchaseId" value="@purchase.Id" />
+                        @Html.AntiForgeryToken()
+                    </form>
+                </td>
+                <td>
+                    <form method="post" asp-controller="UGadgetLoan" asp-action="DeclinePurchase" asp-route-purchaseId="@purchase.Id" onsubmit="return confirm('Declining this purchase')">
+                        <button type="submit" class="btn btn-custom mt-1 mx-1">Decline</button>
+                        <input type="hidden" name="purchaseId" value="@purchase.Id" />
+                        @Html.AntiForgeryToken()
+                    </form>
+                </td>
             </tr>
         }
     </tbody>

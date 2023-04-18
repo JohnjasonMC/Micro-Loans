@@ -6,7 +6,20 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+<style>
+    .btn-custom{
+        background-color: #004260;
+        color: white;
+    }
 
+    .text-custom{
+        color: #004260;
+    }
+
+    .text-customred {
+        color: #ff473c;
+    }
+</style>
 <!-- Section: Design Block -->
 <section class="">
     <!-- Jumbotron -->
@@ -14,10 +27,7 @@
         <div class="container">
             <div class="row gx-lg-5 align-items-center">
                 <div class="col-lg-6 mb-5 mb-lg-0">
-                    <h1 class="my-5 display-3 fw-bold ls-tight">
-                        PJLI Group of Companies <br />
-                        <span class="text-primary">ePahiram</span>
-                    </h1>
+                    <img src="/src/epahiramwhitebg.png" alt="Logo" height="250">
                     <p style="color: hsl(217, 10%, 50.8%)">
                         We create value to customers through a simple application process,
                         easy terms, and less requirements, cutting long lines and long waiting time.
@@ -32,7 +42,7 @@
                     <div class="row">
                         <h2 class="my-5 display-3 fw-bold ls-tight" style="font-size: 40px; text-align: center;">
                             Welcome to ePahiram  <br />
-                            <span class="text-primary">Login Your Account</span>
+                            <span class="text-customred">Login Your Account</span>
                         </h2>
                     </div>
                     <div class="card" style="background: linear-gradient(to bottom right, #ffffff, #ffffff);">
@@ -67,7 +77,7 @@
 
                                 <!-- Submit button -->
                                 <div class="d-flex justify-content-center">
-                                    <button class="btn btn-primary btn-block mb-4" type="submit">Sign in</button>
+                                    <button class="btn btn-custom btn-block mb-4" type="submit">Sign in</button>
                                 </div>
                             </form>
                         </div>

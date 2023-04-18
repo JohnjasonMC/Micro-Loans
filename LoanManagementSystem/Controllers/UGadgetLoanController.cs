@@ -109,8 +109,12 @@ namespace LoanManagementSystem.Controllers
                 return NotFound();
             }
 
-            //SAME LANG TO NUNG SA CONFIRM PARA LANG DIN MAKUHA YUNG DATA FROM IT
+<<<<<<< HEAD
             decimal interest = (decimal)paymentTermEntity.Interest;
+=======
+            //SAME LANG TO NUNG SA CONFIRM PARA LANG DIN MAKUHA YUNG DATA FROM IT
+            double interest = (double)(paymentTermEntity.Interest/100);
+>>>>>>> 06174aa00f5780a070ca5423f11aaa2fff17984c
             decimal payment = (decimal)((gadgetLoan.Price + (gadgetLoan.Price * interest * paymentTermEntity.PaymentTerm)) / (paymentTermEntity.PaymentTerm));
 
             var model = new PurchaseViewModel
@@ -124,9 +128,15 @@ namespace LoanManagementSystem.Controllers
                 Payment = Math.Round(payment, 2),
                 GadgetImageURL = gadgetLoan.GadgetImageURL
             };
-   
+            
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = await _userManager.FindByIdAsync(userId);
+            var existingPurchase = _dbContext.purchases.FirstOrDefault(p => p.ApplicationUserId == userId && (p.IsArchived == false)); //one purchase only per user if a user has existing purchase and want to have another purchase the user must withdraw their purcahse first
+            if (existingPurchase != null)
+            {
+                ModelState.AddModelError(string.Empty, "You already have an existing gadget loan.");
+                return View("PurchaseError");
+            }
             var purchase = new Purchase 
             {
                 ApplicationUserId = userId,
@@ -138,8 +148,9 @@ namespace LoanManagementSystem.Controllers
                 DatePurchased = DateTime.Now,
                 GadgetImageURL = model.GadgetImageURL,
                 PaymentTerm = model.PaymentTerm,
-                Payment = model.Payment
-            };
+                Payment = model.Payment,
+                Status = "Pending"
+        };
 
             _dbContext.purchases.Add(purchase);
             await _dbContext.SaveChangesAsync();
@@ -148,14 +159,94 @@ namespace LoanManagementSystem.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Registered")]
         public async Task<IActionResult> MyPurchases()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var purchases = await _dbContext.purchases
                 .Where(p => p.ApplicationUserId == userId)
+                .Where(p => !p.IsArchived)
                 .ToListAsync();
 
             return View(purchases);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Registered")]
+        public async Task<IActionResult> WithdrawPurchase(int purchaseId)
+        {
+            var purchase = await _dbContext.purchases.FindAsync(purchaseId);//get purchaseid from db 
+
+            if (purchase == null)
+            {
+                return NotFound();
+            }
+            
+            // remove the purchase made by the user in the purchase view and put it in the archived
+            purchase.IsArchived = true;
+            _dbContext.purchases.Update(purchase);
+            await _dbContext.SaveChangesAsync();
+
+            return RedirectToAction("MyPurchases");
+        }
+
+        [Authorize(Roles = "Administrator, Registered")]
+        public IActionResult ArchivedPurchases() //kaya di ako naka async para matrigger lang sya once gagamitin na pineprevent kodin na di maload ng db ng purchase ito kasabay ng ibang task
+        {
+            var deactivePurchases = _dbContext.purchases.Where(p => p.IsArchived).ToList();
+            return View(deactivePurchases);
+        }
+
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> DeletePurchase(int purchaseId)
+        {
+            var purchase = await _dbContext.purchases.FindAsync(purchaseId);//get purchaseid from db 
+
+            if (purchase == null)
+            {
+                return NotFound();
+            }
+
+            _dbContext.purchases.Remove(purchase);
+            await _dbContext.SaveChangesAsync();
+
+            return RedirectToAction("Purchases");
+        }
+
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> ApprovePurchase(int purchaseId)
+        {
+            var purchase = await _dbContext.purchases.FindAsync(purchaseId);
+
+            if (purchase == null)
+            {
+                return NotFound();
+            }
+
+            purchase.Status = "Approved";
+            purchase.IsArchived = false;
+            _dbContext.Update(purchase);
+            await _dbContext.SaveChangesAsync();
+
+            return RedirectToAction("Purchases", "UGadgetLoan");
+        }
+
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> DeclinePurchase(int purchaseId)
+        {
+            var purchase = await _dbContext.purchases.FindAsync(purchaseId);
+
+            if (purchase == null)
+            {
+                return NotFound();
+            }
+
+            purchase.Status = "Declined";
+            purchase.IsArchived = true;
+            _dbContext.Update(purchase);
+            await _dbContext.SaveChangesAsync();
+
+            return RedirectToAction("Purchases", "UGadgetLoan");
         }
 
         [HttpGet]
@@ -164,12 +255,14 @@ namespace LoanManagementSystem.Controllers
         {
             var purchases = await _dbContext.purchases
                 .Include(p => p.ApplicationUser)
+                .Where(p => !p.IsArchived)
                 .ToListAsync();
 
             return View(purchases);
         }
 
         [HttpGet]
+        [Authorize(Roles = "Administrator, Registered")]
         public async Task<IActionResult> PurchaseDetails(int id)
         {
             // Find the purchase by ID in the database
@@ -186,8 +279,5 @@ namespace LoanManagementSystem.Controllers
             // Pass the purchase object to the view for displaying the details
             return View(purchase);
         }
-
-
-
     }
 }

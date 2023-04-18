@@ -1,0 +1,69 @@
+﻿@using System.Globalization
+@model List<Purchase>
+
+<style>
+    .header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .thead-custom {
+        background-color: #004260;
+        color: white;
+    }
+
+    .btn-custom {
+        background-color: #004260;
+        color: white;
+    }
+</style>
+
+<div class="header-container">
+    <h1 class="fw-bold ls-tight mb-3">Archived Purchases</h1>
+</div>
+<a type="button" class="btn btn-custom mb-3" asp-area="" asp-controller="GadgetLoan" asp-action="GetAllGadgets">Get More Gadgets</a>
+
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead class="thead-custom">
+            <tr>
+                <th>Gadget Name</th>
+                <th>Interest</th>
+                <th>Payment Term</th>
+                <th>Monthly Payment</th>
+                <th>Date Purchased</th>
+                <th>Status</th>
+                <th>Actions</th>
+                @if (User.IsInRole("Administrator"))
+                {
+                    <th></th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var purchase in Model)
+            {
+                <tr>
+                    <td>@purchase.GadgetName</td>
+                    <td>@purchase.Interest%</td>
+                    <td>@purchase.PaymentTerm months</td>
+                    <td>@purchase.Payment</td>
+                    <td>@purchase.DatePurchased.ToShortDateString()</td>
+                    <td>@purchase.Status</td>
+                    <td><a type="button" class="btn btn-custom mt-1 mx-1" asp-controller="UGadgetLoan" asp-action="PurchaseDetails" asp-route-id="@purchase.Id">View</a></td>
+                    @if(User.IsInRole("Administrator"))
+                    {
+                        <td>
+                            <form method="post" asp-controller="UGadgetLoan" asp-action="DeletePurchase" asp-route-purchaseId="@purchase.Id" onsubmit="return confirm('Are you sure you want to Delete this purchase permanently?')">
+                                <button type="submit" class="btn btn-custom mt-1 mx-1">Delete Purchase</button>
+                                <input type="hidden" name="purchaseId" value="@purchase.Id" />
+                                @Html.AntiForgeryToken()
+                            </form>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

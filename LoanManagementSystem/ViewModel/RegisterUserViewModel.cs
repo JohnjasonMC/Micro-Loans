@@ -23,7 +23,7 @@ namespace LoanManagementSystem.ViewModel
 
         [DisplayName("Phone Number")]
         [Required]
-        [RegularExpression(@"^\(?([0-9]{11})$", ErrorMessage = "Please enter valid phone number")]
+        [RegularExpression(@"^09[0-9]{9}$", ErrorMessage = "Please enter 11 digit valid phone number that starts with '09'.")]
         public string PhoneNumber { get; set; }
 
         [DisplayName("Address")]
