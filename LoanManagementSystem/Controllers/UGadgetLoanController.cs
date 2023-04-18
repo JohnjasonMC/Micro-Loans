@@ -109,12 +109,9 @@ namespace LoanManagementSystem.Controllers
                 return NotFound();
             }
 
-<<<<<<< HEAD
-            decimal interest = (decimal)paymentTermEntity.Interest;
-=======
-            //SAME LANG TO NUNG SA CONFIRM PARA LANG DIN MAKUHA YUNG DATA FROM IT
+
             double interest = (double)(paymentTermEntity.Interest/100);
->>>>>>> 06174aa00f5780a070ca5423f11aaa2fff17984c
+
             decimal payment = (decimal)((gadgetLoan.Price + (gadgetLoan.Price * interest * paymentTermEntity.PaymentTerm)) / (paymentTermEntity.PaymentTerm));
 
             var model = new PurchaseViewModel

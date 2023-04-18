@@ -55,20 +55,23 @@
                 <td>@purchase.DatePurchased</td>
                 <td>@purchase.Status</td>
                 <td><a type="button" class="btn btn-custom mt-1 mx-1" asp-controller="UGadgetLoan" asp-action="PurchaseDetails" asp-route-id="@purchase.Id">View</a></td>
-                <td>
-                    <form method="post" asp-controller="UGadgetLoan" asp-action="ApprovePurchase" asp-route-purchaseId="@purchase.Id" onsubmit="return confirm('Processing your approval')">
-                        <button type="submit" class="btn btn-custom mt-1 mx-1">Approve</button>
-                        <input type="hidden" name="purchaseId" value="@purchase.Id" />
-                        @Html.AntiForgeryToken()
-                    </form>
-                </td>
-                <td>
-                    <form method="post" asp-controller="UGadgetLoan" asp-action="DeclinePurchase" asp-route-purchaseId="@purchase.Id" onsubmit="return confirm('Declining this purchase')">
-                        <button type="submit" class="btn btn-custom mt-1 mx-1">Decline</button>
-                        <input type="hidden" name="purchaseId" value="@purchase.Id" />
-                        @Html.AntiForgeryToken()
-                    </form>
-                </td>
+                @if(purchase.Status == "Pending")
+                {
+                    <td>
+                        <form method="post" asp-controller="UGadgetLoan" asp-action="ApprovePurchase" asp-route-purchaseId="@purchase.Id" onsubmit="return confirm('Processing your approval')">
+                            <button type="submit" class="btn btn-custom mt-1 mx-1">Approve</button>
+                            <input type="hidden" name="purchaseId" value="@purchase.Id" />
+                            @Html.AntiForgeryToken()
+                        </form>
+                    </td>
+                    <td>
+                        <form method="post" asp-controller="UGadgetLoan" asp-action="DeclinePurchase" asp-route-purchaseId="@purchase.Id" onsubmit="return confirm('Declining this purchase')">
+                            <button type="submit" class="btn btn-custom mt-1 mx-1">Decline</button>
+                            <input type="hidden" name="purchaseId" value="@purchase.Id" />
+                            @Html.AntiForgeryToken()
+                        </form>
+                    </td>
+                }
             </tr>
         }
     </tbody>
