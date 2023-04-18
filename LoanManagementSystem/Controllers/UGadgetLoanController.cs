@@ -109,12 +109,8 @@ namespace LoanManagementSystem.Controllers
                 return NotFound();
             }
 
-<<<<<<< HEAD
-            decimal interest = (decimal)paymentTermEntity.Interest;
-=======
             //SAME LANG TO NUNG SA CONFIRM PARA LANG DIN MAKUHA YUNG DATA FROM IT
-            double interest = (double)(paymentTermEntity.Interest/100);
->>>>>>> 06174aa00f5780a070ca5423f11aaa2fff17984c
+            decimal interest = (decimal)paymentTermEntity.Interest;
             decimal payment = (decimal)((gadgetLoan.Price + (gadgetLoan.Price * interest * paymentTermEntity.PaymentTerm)) / (paymentTermEntity.PaymentTerm));
 
             var model = new PurchaseViewModel
@@ -164,24 +160,12 @@ namespace LoanManagementSystem.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> Purchases(string searchQuery)
+        public async Task<IActionResult> Purchases()
         {
-            // Get all purchases from the database including related ApplicationUser
             var purchases = await _dbContext.purchases
                 .Include(p => p.ApplicationUser)
                 .ToListAsync();
 
-            // Filter purchases based on search query
-            if (!string.IsNullOrEmpty(searchQuery))
-            {
-                purchases = purchases.Where(p =>
-                    p.ApplicationUser.FullName.ToLower().Contains(searchQuery.Trim().ToLower()) || p.GadgetName.ToLower().Contains(searchQuery.Trim().ToLower()))
-                    .ToList();
-            }
-
-            ViewBag.SearchQuery = searchQuery;
-
-            // Pass filtered purchases to the view
             return View(purchases);
         }
 
