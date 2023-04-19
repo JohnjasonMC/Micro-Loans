@@ -190,8 +190,13 @@ namespace LoanManagementSystem.Controllers
         [Authorize(Roles = "Administrator, Registered")]
         public IActionResult ArchivedPurchases() //kaya di ako naka async para matrigger lang sya once gagamitin na pineprevent kodin na di maload ng db ng purchase ito kasabay ng ibang task
         {
-            var deactivePurchases = _dbContext.purchases.Where(p => p.IsArchived).ToList();
-            return View(deactivePurchases);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // get the current user's ID
+            var isAdmin = User.IsInRole("Administrator"); // nag lagay lang ako ng pang check kung admin yung current user
+            var archivedPurchases = _dbContext.purchases
+                .Where(p => (isAdmin || p.ApplicationUserId == userId) && p.IsArchived)//ito yung nag function para madetermine nung action kung ano yung ididisplay
+                .ToList();//pag admin makikita nya lahat ng archives pero pag user lang yung naka login yung archive transaction lang makikita nya
+
+            return View(archivedPurchases);
         }
 
         [Authorize(Roles = "Administrator")]
