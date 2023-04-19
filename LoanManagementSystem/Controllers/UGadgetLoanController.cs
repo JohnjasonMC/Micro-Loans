@@ -193,7 +193,7 @@ namespace LoanManagementSystem.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // get the current user's ID
             var isAdmin = User.IsInRole("Administrator"); // nag lagay lang ako ng pang check kung admin yung current user
             var archivedPurchases = _dbContext.purchases
-                .Where(p => (isAdmin || p.ApplicationUserId == userId) && p.IsArchived)//ito yung nag function para madetermine nung action kung ano yung ididisplay
+                .Where(p => (isAdmin || p.ApplicationUserId == userId) && p.IsArchived)//ito yung function para madetermine nung action kung ano yung ididisplay kung admin or user lang
                 .ToList();//pag admin makikita nya lahat ng archives pero pag user lang yung naka login yung archive transaction lang makikita nya
 
             return View(archivedPurchases);
