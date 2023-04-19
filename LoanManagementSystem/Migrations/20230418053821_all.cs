@@ -265,8 +265,8 @@ namespace LoanManagementSystem.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "1a73053f-78c6-41c2-94fc-d897ccc8b33c", "6f0d0e9a-382a-4b7f-a821-8e8a509076ad", "Registered", "REGISTERED" },
-                    { "705c9705-c8a8-44af-99a3-e33b13856856", "d1dc6ed4-5f1c-4817-97b9-5c4035fe69f5", "Administrator", "ADMINISTRATOR" }
+                    { "1a73053f-78c6-41c2-94fc-d897ccc8b33c", "120800e1-dc5a-4fb3-93aa-dc893fad9ce1", "Registered", "REGISTERED" },
+                    { "705c9705-c8a8-44af-99a3-e33b13856856", "1f106452-54ee-40c3-8227-6b92de619ccb", "Administrator", "ADMINISTRATOR" }
                 });
 
             migrationBuilder.InsertData(
@@ -274,8 +274,8 @@ namespace LoanManagementSystem.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "Address", "ConcurrencyStamp", "DateOfBirth", "Email", "EmailConfirmed", "FullName", "Gender", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "147c0de8-847c-4466-ad04-1fc7b563e0c4", 0, "Somewhere", "f9e09aa2-fa70-4720-a103-23675fa0a4bb", new DateTime(2023, 4, 18, 12, 47, 59, 733, DateTimeKind.Local).AddTicks(1192), "admin@gmail.com", false, "Admin", " ", false, null, "ADMIN@GMAIL.COM", "ADMIN@GMAIL.COM", "AQAAAAEAACcQAAAAEMGP02lFJeLAH55MlE6x+NGNsfngXz5FojQQy6/ttW+g7jVeoXXsZltu4V008NmhLA==", "1234567890", false, "9ab3a51a-8af7-404e-a862-42dfd451cc7d", false, "admin@gmail.com" },
-                    { "cba87ff8-bb15-442f-8a47-0e65a93cab8c", 0, "Somewhere", "604dad01-a5f9-458c-b4a6-624a56505493", new DateTime(2023, 4, 18, 12, 47, 59, 735, DateTimeKind.Local).AddTicks(336), "registered@gmail.com", false, "Registered", "M", false, null, "REGISTERED@GMAIL.COM", "REGISTERED@GMAIL.COM", "AQAAAAEAACcQAAAAEGK4R0BlvXNqcm3btP/TZ0eRUObkpPQ5Id+VfgP47F2Zmr86wF06wVwRgODehqJh6Q==", "1234567890", false, "47cc0607-a83d-4eca-93b4-fb10e50f48fb", false, "registered@gmail.com" }
+                    { "147c0de8-847c-4466-ad04-1fc7b563e0c4", 0, "Somewhere", "faabe63a-abdd-4493-af54-d70295ea2713", new DateTime(2023, 4, 18, 13, 38, 20, 768, DateTimeKind.Local).AddTicks(4190), "admin@gmail.com", false, "Admin", " ", false, null, "ADMIN@GMAIL.COM", "ADMIN@GMAIL.COM", "AQAAAAEAACcQAAAAEJRkw6YOv98QobkkzlUboBynEfMD4ZczorEBuewzzT9KgYTVlEeax+iqt4PjEci/bw==", "1234567890", false, "86dde1a9-436d-42ea-a1ec-648f6ca0a838", false, "admin@gmail.com" },
+                    { "cba87ff8-bb15-442f-8a47-0e65a93cab8c", 0, "Somewhere", "3d99c9f9-02e6-4706-9315-ef9e51b36e75", new DateTime(2023, 4, 18, 13, 38, 20, 769, DateTimeKind.Local).AddTicks(7803), "registered@gmail.com", false, "Registered", "M", false, null, "REGISTERED@GMAIL.COM", "REGISTERED@GMAIL.COM", "AQAAAAEAACcQAAAAENC6xInTzyFjoK/Yrwvpigoz0tolmwKcjj4IIbMgD/RG0hbh+v5SwUIk8A1L311MKw==", "1234567890", false, "2fb5ec4d-7afe-44a2-a629-4dd590b01e2b", false, "registered@gmail.com" }
                 });
 
             migrationBuilder.InsertData(

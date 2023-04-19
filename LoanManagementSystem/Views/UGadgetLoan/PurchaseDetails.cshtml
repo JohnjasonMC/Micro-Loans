@@ -30,14 +30,7 @@
 
 <div class="header-container mb-3">
     <img class="mb-3" src="/src/PurchaseDetails.png" alt="Logo" height="50">
-    @if (!(User.IsInRole("Administrator")))
-    {
-        <a type="submit" class="btn btn-light btn-custom" asp-controller="UGadgetLoan" asp-action="MyPurchases">Back</a>
-    }
-    @if (User.IsInRole("Administrator"))
-    {
-        <a type="submit" class="btn btn-light btn-custom" asp-controller="UGadgetLoan" asp-action="Purchases">Back</a>
-    }
+   
 </div>
 
 <div class="row">
@@ -114,6 +107,27 @@
                     </tbody>
                 </table>
             </div>
+        }
+        @if (!(User.IsInRole("Administrator")))
+        {
+            <a type="submit" class="btn btn-light btn-custom" asp-controller="UGadgetLoan" asp-action="MyPurchases">Back</a>
+        }
+        @if (User.IsInRole("Administrator"))
+        {
+            <a type="submit" class="btn btn-light btn-custom" asp-controller="UGadgetLoan" asp-action="Purchases">Back</a>
+            @if (Model.Status == "Pending")
+            {
+                <form method="post" asp-controller="UGadgetLoan" asp-action="ApprovePurchase" asp-route-purchaseId="@Model.Id" onsubmit="return confirm('Processing your approval')">
+                    <button type="submit" class="btn btn-custom mt-1 mx-1">Approve</button>
+                    <input type="hidden" name="purchaseId" value="@Model.Id" />
+                    @Html.AntiForgeryToken()
+                </form>
+                <form method="post" asp-controller="UGadgetLoan" asp-action="DeclinePurchase" asp-route-purchaseId="@Model.Id" onsubmit="return confirm('Declining this purchase')">
+                    <button type="submit" class="btn btn-custom mt-1 mx-1">Decline</button>
+                    <input type="hidden" name="purchaseId" value="@Model.Id" />
+                    @Html.AntiForgeryToken()
+                </form>
+            }
         }
     </div>
 </div>

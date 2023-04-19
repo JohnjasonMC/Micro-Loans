@@ -207,7 +207,7 @@ namespace LoanManagementSystem.Controllers
             _dbContext.purchases.Remove(purchase);
             await _dbContext.SaveChangesAsync();
 
-            return RedirectToAction("Purchases");
+            return RedirectToAction("ArchivedPurchases");
         }
 
         [Authorize(Roles = "Administrator")]
@@ -248,17 +248,22 @@ namespace LoanManagementSystem.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> Purchases()
+        public async Task<IActionResult> Purchases(string searchQuery)
         {
-            var purchases = await _dbContext.purchases
+            var purchases = _dbContext.purchases
                 .Include(p => p.ApplicationUser)
-                .Where(p => !p.IsArchived)
-                .ToListAsync();
+                .Where(p => !p.IsArchived);
 
-            return View(purchases);
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                purchases = purchases.Where(p => p.ApplicationUser.FullName.Contains(searchQuery)
+                                              || p.GadgetName.Contains(searchQuery));
+            }
+            ViewBag.SearchQuery = searchQuery;
+            return View(await purchases.ToListAsync());
         }
 
-        [HttpGet]
+        [HttpGet]   
         [Authorize(Roles = "Administrator, Registered")]
         public async Task<IActionResult> PurchaseDetails(int id)
         {
