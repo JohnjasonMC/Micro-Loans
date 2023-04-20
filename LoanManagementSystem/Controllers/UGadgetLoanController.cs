@@ -128,7 +128,7 @@ namespace LoanManagementSystem.Controllers
             
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = await _userManager.FindByIdAsync(userId);
-            var existingPurchase = _dbContext.purchases.FirstOrDefault(p => p.ApplicationUserId == userId && (p.IsArchived == false)); //one purchase only per user if a user has existing purchase and want to have another purchase the user must withdraw their purcahse first
+            var existingPurchase = _dbContext.purchases.FirstOrDefault(p => p.ApplicationUserId == userId && (p.IsArchived == false));
             if (existingPurchase != null)
             {
                 ModelState.AddModelError(string.Empty, "You already have an existing gadget loan.");
@@ -172,14 +172,13 @@ namespace LoanManagementSystem.Controllers
         [Authorize(Roles = "Registered")]
         public async Task<IActionResult> WithdrawPurchase(int purchaseId)
         {
-            var purchase = await _dbContext.purchases.FindAsync(purchaseId);//get purchaseid from db 
+            var purchase = await _dbContext.purchases.FindAsync(purchaseId);
 
             if (purchase == null)
             {
                 return NotFound();
             }
             
-            // remove the purchase made by the user in the purchase view and put it in the archived
             purchase.IsArchived = true;
             _dbContext.purchases.Update(purchase);
             await _dbContext.SaveChangesAsync();
@@ -188,13 +187,13 @@ namespace LoanManagementSystem.Controllers
         }
 
         [Authorize(Roles = "Administrator, Registered")]
-        public IActionResult ArchivedPurchases() //kaya di ako naka async para matrigger lang sya once gagamitin na pineprevent kodin na di maload ng db ng purchase ito kasabay ng ibang task
+        public IActionResult ArchivedPurchases() 
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // get the current user's ID
-            var isAdmin = User.IsInRole("Administrator"); // nag lagay lang ako ng pang check kung admin yung current user
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var isAdmin = User.IsInRole("Administrator");
             var archivedPurchases = _dbContext.purchases
-                .Where(p => (isAdmin || p.ApplicationUserId == userId) && p.IsArchived)//ito yung function para madetermine nung action kung ano yung ididisplay kung admin or user lang
-                .ToList();//pag admin makikita nya lahat ng archives pero pag user lang yung naka login yung archive transaction lang makikita nya
+                .Where(p => (isAdmin || p.ApplicationUserId == userId) && p.IsArchived)
+                .ToList();
 
             return View(archivedPurchases);
         }
@@ -202,7 +201,7 @@ namespace LoanManagementSystem.Controllers
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeletePurchase(int purchaseId)
         {
-            var purchase = await _dbContext.purchases.FindAsync(purchaseId);//get purchaseid from db 
+            var purchase = await _dbContext.purchases.FindAsync(purchaseId);
 
             if (purchase == null)
             {
@@ -272,18 +271,15 @@ namespace LoanManagementSystem.Controllers
         [Authorize(Roles = "Administrator, Registered")]
         public async Task<IActionResult> PurchaseDetails(int id)
         {
-            // Find the purchase by ID in the database
             var purchase = await _dbContext.purchases
                 .Include(p => p.ApplicationUser)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
             if (purchase == null)
             {
-                // Return a not found response if the purchase is not found
                 return NotFound();
             }
 
-            // Pass the purchase object to the view for displaying the details
             return View(purchase);
         }
     }
