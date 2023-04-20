@@ -16,9 +16,23 @@
         background-color: #004260;
         color: white;
     }
+
+    .blue-text {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 5vw;
+        color: #004260;
+    }
+
+    .red-text {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 5vw;
+        color: #ff473c;
+    }
 </style>
 
-<img class="mb-3" src="/src/GadgetLoanIcon.png" alt="Logo" height="80">
+<div>
+    <span class="blue-text">Gadget</span><span class="red-text">Loan</span>
+</div>
 <div class="row">   
         <div class="col-4">
             <img class="img-thumbnail" src="@Model.GadgetImageURL" alt="@Model.GadgetName" />
@@ -28,25 +42,27 @@
             <h5>PHP @Model.Price</h5>
             <p class="my-3">@Model.Description</p>
             <h5 class="text-center fw-bold ls-tight mb-2 table-title">Interest Rate</h5>
-            <table class="table table-borderless table-fixed-bottom">
-                <thead class="thead-custom">
-                    <tr>
-                        <th scope="col" class="text-center">3 Months</th>
-                        <th scope="col" class="text-center">6 Months</th>
-                        <th scope="col" class="text-center">12 Months</th>
-                        <th scope="col" class="text-center">24 Months</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="text-center">0.5%</td>
-                        <td class="text-center">0.7%</td>
-                        <td class="text-center">1.0%</td>
-                        <td class="text-center">1.5%</td>
-                    </tr>
-                </tbody>
-            </table>
-            <a type="submit" class="btn btn-back-to-list" asp-controller="GadgetLoan" asp-action="GetAllGadgets">Back to list</a>
+            <div class="table-responsive rounded">
+                <table class="table table-borderless table-fixed-bottom">
+                    <thead class="thead-custom">
+                        <tr>
+                            <th scope="col" class="text-center">3 Months</th>
+                            <th scope="col" class="text-center">6 Months</th>
+                            <th scope="col" class="text-center">12 Months</th>
+                            <th scope="col" class="text-center">24 Months</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-center">0.5%</td>
+                            <td class="text-center">0.7%</td>
+                            <td class="text-center">1.0%</td>
+                            <td class="text-center">1.5%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+             <a type="submit" class="btn btn-back-to-list" asp-controller="GadgetLoan" asp-action="GetAllGadgets">Back to list</a>
         </div>
 </div>
 

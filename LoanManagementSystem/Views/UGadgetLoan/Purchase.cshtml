@@ -5,10 +5,24 @@
         background-color: #004260;
         color: white;
     }
+
+    .blue-text {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 5vw;
+        color: #004260;
+    }
+
+    .red-text {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 5vw;
+        color: #ff473c;
+    }
 </style>
 
 
-<img class="mb-3" src="/src/GadgetLoanIcon.png" alt="Logo" height="80">
+<div>
+    <span class="blue-text">Gadget</span><span class="red-text">Loan</span>
+</div>
 <div class="row">
     <div class="col-4">
         <img class="img-thumbnail" src="@Model.GadgetImageURL" alt="@Model.GadgetName" />
@@ -19,19 +33,12 @@
         <p class="my-3">@Model.Description</p>     
         <form method="post" asp-controller="UGadgetLoan" asp-action="ConfirmPurchase">
             <input type="hidden" name="gadgetId" value="@Model.GadgetLoanId" />
-
             <div class="form-group">
                 <label for="paymentTerm">Payment Term</label>
                 <select class="form-control" id="paymentTerm" name="paymentTerm" required>
                     <option value="">Select Payment Term</option>
-                    @*@foreach (var imp in Model.AvailablePaymentTerms)
-                    {
-                        var interestRate = imp.Interest * 100;
-                        <option value="@imp.Id">@imp.PaymentTerm Months @interestRate.ToString("0.0")% Interest</option>
-                    }*@
                      @foreach (var paymentTerm in Model.AvailablePaymentTerms)
                     {
-                       @* var interestRate = paymentTerm.Interest/100;*@
                         <option value="@paymentTerm.Id">@paymentTerm.PaymentTerm months - @paymentTerm.Interest% interest</option>
                     }
                 </select>

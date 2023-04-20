@@ -1,8 +1,21 @@
-﻿@{
-    ViewData["Title"] = "Purchase Error";
-}
+﻿<style>
+    .blue-text {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 6vw;
+        color: #004260;
+    }
 
-<h1>@ViewData["Title"]</h1>
+    .red-text {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 6vw;
+        color: #ff473c;
+    }
+</style>
+
+
+<div>
+    <span class="blue-text">Purchase</span><span class="red-text">Error</span>
+</div>
 
 @if (ViewData.ModelState.Any(m => m.Value.Errors.Count > 0))
 {
