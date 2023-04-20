@@ -25,7 +25,7 @@ namespace LoanManagementSystem.Controllers
 
             var gadgets = from gadget in _repo.GetAllGadgets()
                           select gadget;
-            if(!String.IsNullOrEmpty(searchString))
+            if (!String.IsNullOrEmpty(searchString))
             {
                 gadgets = gadgets.Where(s => s.GadgetName.ToLower().Contains(searchString.Trim().ToLower()));
             }
@@ -39,11 +39,20 @@ namespace LoanManagementSystem.Controllers
             return View(gadget);
         }
 
+        [HttpPost]
         [Authorize(Roles = "Administrator")]
         public IActionResult Delete(int gadgetId)
         {
-            var gadgetlist = _repo.DeleteGadget(gadgetId);
-            return RedirectToAction(controllerName: "GadgetLoan", actionName: "GetAllGadgets");
+            try
+            {
+                var gadgetlist = _repo.DeleteGadget(gadgetId);
+                return RedirectToAction(controllerName: "GadgetLoan", actionName: "GetAllGadgets");
+            }
+            catch (InvalidOperationException)
+            {
+                TempData["ErrorMessage"] = "Cannot delete gadget with existing purchases";
+                return RedirectToAction(controllerName: "GadgetLoan", actionName: "GetAllGadgets");
+            }
         }
 
         [HttpGet]
