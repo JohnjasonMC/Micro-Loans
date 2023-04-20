@@ -4,6 +4,11 @@
 
 
     <style>
+        .header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
         .thead-custom{
         background-color: #004260;
         color: white;
@@ -27,8 +32,11 @@
     }
     </style>
 
-<div>
-    <span class="blue-text">My</span><span class="red-text">Purchase</span>
+<div class="header-container mb-1">
+    <div>
+        <span class="blue-text">My</span><span class="red-text">Purchase</span>
+    </div>
+    <a type="button" class="btn btn-custom mb-3" asp-area="" asp-controller="UGadgetLoan" asp-action="ArchivedPurchases">View Archived Purchases</a>
 </div>
 <div class="table-responsive">
     <table class="table table-hover">
@@ -41,7 +49,6 @@
                 <th>Date Applied</th>
                 <th>Status</th>
                 <th>Actions</th>
-                <th></th>
                     
             </tr>
         </thead>
@@ -55,23 +62,13 @@
                     <td>@purchase.Payment</td>
                     <td>@purchase.DatePurchased.ToShortDateString()</td>
                     <td>@purchase.Status</td>
-                    <td><a type="button" class="btn btn-custom mt-1 mx-1" asp-controller="UGadgetLoan" asp-action="PurchaseDetails" asp-route-id="@purchase.Id">View</a></td>
-                    @if(purchase.Status == "Pending")
-                    {
-                        <td>
-                            <form method="post" asp-controller="UGadgetLoan" asp-action="WithdrawPurchase" asp-route-purchaseId="@purchase.Id" onsubmit="return confirm('Are you sure you want to withdraw this purchase?')">
-                                <button type="submit" class="btn btn-custom mt-1 mx-1">Withdraw Purchase</button>
-                                <input type="hidden" name="purchaseId" value="@purchase.Id" />
-                                @Html.AntiForgeryToken()
-                            </form>
-                        </td>
-                    }
+                    <td><a type="button" class="btn btn-custom mt-1 mx-1" asp-controller="UGadgetLoan" asp-action="PurchaseDetails" asp-route-id="@purchase.Id">View</a></td>                   
                 </tr>
             }
         </tbody>
     </table>
 </div>
-<a type="button" class="btn btn-custom mb-3" asp-area="" asp-controller="UGadgetLoan" asp-action="ArchivedPurchases">View Archived Purchases</a>
+
 
 @*
 <table class="table table-striped table-hover">

@@ -125,7 +125,19 @@
         }
         @if (!(User.IsInRole("Administrator")))
         {
-            <a type="submit" class="btn btn-light btn-custom" asp-controller="UGadgetLoan" asp-action="MyPurchases">Back</a>
+            <div class="clearfix">
+            <a type="submit" class="btn btn-light btn-custom float-left" asp-controller="UGadgetLoan" asp-action="MyPurchases">Back</a>
+            @if (Model.Status == "Pending")
+            {
+                <td>
+                    <form method="post" asp-controller="UGadgetLoan" asp-action="WithdrawPurchase" asp-route-purchaseId="@Model.Id" onsubmit="return confirm('Are you sure you want to withdraw this purchase?')">
+                        <button type="submit" class="btn btn-danger mt-1 mx-1 float-right">Withdraw Purchase</button>
+                        <input type="hidden" name="purchaseId" value="@Model.Id" />
+                        @Html.AntiForgeryToken()
+                    </form>
+                </td>
+            }
+            </div>
         }
         @if (User.IsInRole("Administrator"))
         {

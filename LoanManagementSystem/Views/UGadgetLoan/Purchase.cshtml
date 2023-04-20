@@ -45,8 +45,10 @@
             </div>
             <input type="hidden" name="gadgetId" value="@Model.GadgetLoanId" />
             <input type="hidden" name="paymentTerm" value="@Model.PaymentTerm" />
-            <a type="submit" class="btn btn-light btn-color" asp-controller="GadgetLoan" asp-action="GetAllGadgets">Back to list</a>
-            <button type="submit" class="btn btn-light btn-color">Confirm</button>
+            <div class="clearfix">
+            <a type="submit" class="btn btn-light btn-color float-left" asp-controller="GadgetLoan" asp-action="GetAllGadgets">Back to list</a>
+            <button type="submit" class="btn btn-color float-right">Confirm</button>
+            </div>
 
         </form>
     </div>
