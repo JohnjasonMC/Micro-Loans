@@ -16,10 +16,24 @@
         background-color: #004260   ;
         color: white;
     }
+
+    .blue-text {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 6vw;
+        color: #004260;
+    }
+
+    .red-text {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 6vw;
+        color: #ff473c;
+    }
 </style>
 
-<div class="header-container mb-3">
-    <img src="/src/ViewPurchases.png" alt="Logo" height="80">
+<div class="header-container mb-1">
+    <div>
+        <span class="blue-text">View</span><span class="red-text">Purchases</span>
+    </div>
     <a type="button" class="btn btn-custom mb-3" asp-area="" asp-controller="UGadgetLoan" asp-action="ArchivedPurchases">View Archived Purchases</a>
 </div>
 <form action="/UGadgetLoan/Purchases" method="get">

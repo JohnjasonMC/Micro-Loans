@@ -16,6 +16,18 @@
         background-color: #004260;
         color: white;
     }
+
+    .blue-text {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 6vw;
+        color: #004260;
+    }
+
+    .red-text {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 6vw;
+        color: #ff473c;
+    }
 </style>
 
 
@@ -23,7 +35,9 @@
     <div class="mb-6">
     <div class="row">
         <div class="result mb-6">
-            <img class="mb-3 img-fluid" src="/src/LoanCalculatorIcon.png" alt="Logo" style="width:60%;">
+            <div>
+                <span class="blue-text">Loan</span><span class="red-text">Calculator</span>
+            </div>
             <form asp-action="LoanCalculator" method="post">
                 <div class="row justify-content-center">
                     <div class="col-md-6">
@@ -51,38 +65,37 @@
                 </div>
             }
         </div>
-            <div asp-validation-summary="All" class="text-danger mt-5"></div>
-          </div>  
-            <div class="table-responsive mt-4">
+        <div asp-validation-summary="All" class="text-danger mt-5"></div>  
+        <div class="table-responsive rounded">
             <h2 class="fw-bold ls-tight mt-5">Loan Description</h2>
-                <table class="table table-bordered mb-3">
-                    <thead class="thead-custom">
-                        <tr>
-                            <th>Loan Terms (months)</th>
-                            <th>(Fixed) Interest Rate (annual)</th>
-                            <th>Loan Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>12</td>
-                            <td>12%(12.00)</td>
-                            <td>Php 50,000 - Php 500,000</td>
-                        </tr>
-                        <tr>
-                            <td>24</td>
-                            <td>12%(12.00)</td>
-                            <td>Php 50,000 - Php 500,000</td>
-                        </tr>
-                        <tr>
-                            <td>36</td>
-                            <td>12%(12.00)</td>
-                            <td>Php 50,000 - Php 500,000</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
+            <table class="table table-bordered mb-3">
+                <thead class="thead-custom">
+                    <tr>
+                        <th>Loan Terms (months)</th>
+                        <th>(Fixed) Interest Rate (annual)</th>
+                        <th>Loan Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>12</td>
+                        <td>12%(12.00)</td>
+                        <td>Php 50,000 - Php 500,000</td>
+                    </tr>
+                    <tr>
+                        <td>24</td>
+                        <td>12%(12.00)</td>
+                        <td>Php 50,000 - Php 500,000</td>
+                    </tr>
+                    <tr>
+                        <td>36</td>
+                        <td>12%(12.00)</td>
+                        <td>Php 50,000 - Php 500,000</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="table-responsive rounded">
             <h2 class="fw-bold ls-tight">Eligibility Criteria</h2>
             <table class="table table-bordered">
                 <thead class="thead-custom">

@@ -93,11 +93,24 @@
         padding-right: 0;
     }
 
+    .blue-text {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 6vw;
+        color: #004260;
+    }
+
+    .red-text {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 6vw;
+        color: #ff473c;
+    }
 </style>
 
 
 <div class="header-container mb-3">
-    <img class="mb-3 img-fluid" src="/src/GadgetLoanIcon.png" alt="GadgetLoan" style="width:50%;">
+    <div>
+        <span class="blue-text">Gadget</span><span class="red-text">Loan</span>
+    </div>
     @if (User.IsInRole("Administrator"))
     {
         <a type="button" class="btn btn-custom mb-3" asp-action="Create" asp-controller="GadgetLoan">Add Gadget</a>

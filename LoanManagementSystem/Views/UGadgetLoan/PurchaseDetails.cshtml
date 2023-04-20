@@ -26,11 +26,24 @@
         justify-content: space-between;
         align-items: center;
     }
+
+    .blue-text {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 5vw;
+        color: #004260;
+    }
+
+    .red-text {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 5vw;
+        color: #ff473c;
+    }
 </style>
 
 <div class="header-container mb-3">
-    <img class="mb-3" src="/src/PurchaseDetails.png" alt="Logo" height="50">
-   
+    <div>
+        <span class="blue-text">Purchase</span><span class="red-text">Details</span>
+    </div>
 </div>
 
 <div class="row">
@@ -76,7 +89,9 @@
         @if (User.IsInRole("Administrator"))
         {
             <div class="container">
-                <img class="mb-3 mt-4" src="/src/UserDetails.png" alt="Logo" height="50">
+                <div>
+                    <span class="blue-text">User</span><span class="red-text">Details</span>
+                </div>
                 <table class="table table-hover">
                     <tbody>
                         <tr>
