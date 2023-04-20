@@ -180,6 +180,7 @@ namespace LoanManagementSystem.Controllers
             }
             
             purchase.IsArchived = true;
+            purchase.Status = "Withdrawn";
             _dbContext.purchases.Update(purchase);
             await _dbContext.SaveChangesAsync();
 

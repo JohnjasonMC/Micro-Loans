@@ -20,6 +20,11 @@ namespace LoanManagementSystem.Repository
             var gadget = GetGadgetById(gadgetId);
             if (gadget != null)
             {
+                var relatedPurchases = _dbcontext.purchases.Where(p => p.GadgetLoanId == gadgetId).ToList();
+                if (relatedPurchases.Count > 0)
+                {
+                    throw new InvalidOperationException("This gadget cannot be deleted because there are existing purchases for it.");
+                }
                 _dbcontext.gadgetloans.Remove(gadget);
                 _dbcontext.SaveChanges();
             }
