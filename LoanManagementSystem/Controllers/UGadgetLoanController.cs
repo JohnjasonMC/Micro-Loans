@@ -193,6 +193,7 @@ namespace LoanManagementSystem.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var isAdmin = User.IsInRole("Administrator");
             var archivedPurchases = _dbContext.purchases
+                .Include(p =>p.ApplicationUser)
                 .Where(p => (isAdmin || p.ApplicationUserId == userId) && p.IsArchived)
                 .ToList();
 
