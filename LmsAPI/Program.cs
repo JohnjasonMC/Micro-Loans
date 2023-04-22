@@ -8,26 +8,35 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-
-builder.Services.AddControllers();
-builder.Services.AddAutoMapper(typeof(AutoMapperConfig)); //activate automapper
-builder.Services.AddDbContext<ApplicationDbContext>();
-builder.Services.AddScoped<IGadgetLoanRepository, GadgetLoanRepository>();
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddDefaultTokenProviders();
-
-builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 
 // configure the token decoding logic verify the token 
 // algorithm to decode the token
 var issuer = builder.Configuration["JWT:Issuer"];
 var audience = builder.Configuration["JWT:Audience"];
 var key = builder.Configuration["JWT:Key"];
+
+// Add services to the container.
+
+builder.Services.AddControllers();
+builder.Services.AddAutoMapper(typeof(AutoMapperConfig)); //activate automapper
+builder.Services.AddHttpClient();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+builder.Services.AddControllers().AddJsonOptions(x =>
+                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
+;
+
+
+builder.Services.AddDbContext<ApplicationDbContext>();
+builder.Services.AddScoped<IGadgetLoanRepository, GadgetLoanRepository>();
+builder.Services.AddScoped<IAccountRepository, AccountDbRepository>();
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddAuthentication(options =>
 {
@@ -91,6 +100,8 @@ if (app.Environment.IsDevelopment()) //nag sasabi sa api for development
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseStaticFiles();
 
 //app.UseHttpsRedirection();
 app.UseAuthentication();
