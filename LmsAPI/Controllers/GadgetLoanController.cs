@@ -21,14 +21,14 @@ namespace LmsAPI.Controllers
             this._mapper = mapper;
         }
 
-        [HttpGet("Get All Gadgets")]
+        [HttpGet]
         public IActionResult GetAllGadgets()
         {
             return Ok(this._repo.GetAllGadgets());
         }
 
 
-        [HttpGet("Get Gadget")]
+        [HttpGet("{gadgetId}")]
         public async Task<IActionResult> GetById([FromRoute] int gadgetId) 
         {
             if (gadgetId == 0)
@@ -47,7 +47,7 @@ namespace LmsAPI.Controllers
             
         }
 
-        [HttpDelete("Delete")]
+        [HttpDelete("gadgetId")]
         public async Task<IActionResult> Delete([FromRoute] int gadgetId)
         {
             if (gadgetId == 0)
@@ -73,7 +73,7 @@ namespace LmsAPI.Controllers
             return BadRequest(ModelState);
         }
 
-        [HttpPut("Update")]
+        [HttpPut("{gadgetId}")]
         public IActionResult Update([FromBody] GadgetLoan newGadgetLoan, [FromRoute] int gadgetId)
         {
             if (newGadgetLoan == null)

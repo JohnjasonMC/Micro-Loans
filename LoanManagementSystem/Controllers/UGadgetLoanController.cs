@@ -188,7 +188,7 @@ namespace LoanManagementSystem.Controllers
         }
 
         [Authorize(Roles = "Administrator, Registered")]
-        public IActionResult ArchivedPurchases() 
+        public IActionResult ArchivedPurchases(string searchString) 
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var isAdmin = User.IsInRole("Administrator");
@@ -196,6 +196,11 @@ namespace LoanManagementSystem.Controllers
                 .Include(p =>p.ApplicationUser)
                 .Where(p => (isAdmin || p.ApplicationUserId == userId) && p.IsArchived)
                 .ToList();
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                archivedPurchases = archivedPurchases.Where(ap => ap.GadgetName.ToLower().Contains(searchString.Trim().ToLower()) || ap.ApplicationUser.FullName.ToLower().Contains(searchString.Trim().ToLower())).ToList();
+            }
 
             return View(archivedPurchases);
         }

@@ -37,6 +37,18 @@
     </div>
 </div>
 
+@using (Html.BeginForm())
+{
+    <div class="search-form row g-0">
+        <div class="form-group col-10 search-pad">
+            @Html.TextBox("SearchString", null, new { @class = "form-control", placeholder = "Enter Name" })
+        </div>
+        <div class="form-group col-2">
+            <input type="submit" value="Search" class="btn btn-custom btn-block" />
+        </div>
+    </div>
+}
+
 <div class="table-responsive rounded">
     <table class="table table-hover">
         <thead class="thead-custom">
@@ -66,7 +78,7 @@
                     <td>@purchase.GadgetName</td>
                     <td>@purchase.Interest%</td>
                     <td>@purchase.PaymentTerm months</td>
-                    <td>@purchase.Payment</td>
+                    <td>@purchase.Payment.ToString("C", new CultureInfo("en-PH"))</td>
                     <td>@purchase.DatePurchased.ToShortDateString()</td>
                     <td>@purchase.Status</td>
                     <td><a type="button" class="btn btn-custom" asp-controller="UGadgetLoan" asp-action="PurchaseDetails" asp-route-id="@purchase.Id">View</a></td>
