@@ -18,6 +18,7 @@ namespace LoanManagementSystem.Models
         [Required(ErrorMessage = "Enter Price")]
         [Range(0, double.MaxValue, ErrorMessage = "Please enter a positive number.")]
         public int Price { get; set; }
+        [Required(ErrorMessage = "Enter Gadget Image URL")]
 
         [DisplayName("Gadget Image")]
         public string? GadgetImageURL { get; set; }
