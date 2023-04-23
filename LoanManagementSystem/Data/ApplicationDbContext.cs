@@ -20,8 +20,8 @@ namespace LoanManagementSystem.Data
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var server = "(localdb)\\MSSQLLocalDB";
-            var db = "LMSDB";
+            var server = _appConfig.GetConnectionString("Server");
+            var db = _appConfig.GetConnectionString("DB");
 
             string connectionString;
             if (_env.IsDevelopment())
@@ -30,8 +30,8 @@ namespace LoanManagementSystem.Data
             }
             else
             {
-                var userName = "SA";
-                var password = "P@ssword123";
+                var userName = _appConfig.GetConnectionString("UserName");
+                var password = _appConfig.GetConnectionString("Password");
                 connectionString = $"Server={server};Database={db};User Id= {userName};Password={password};MultipleActiveResultSets=true;Integrated Security=false;TrustServerCertificate=true;";
             }
 
