@@ -34,6 +34,17 @@
     <div>
         <span class="blue-text">Manage</span><span class="red-text">Users</span>
     </div>
+    @using (Html.BeginForm("GetAllUsersPost", "Administrator", FormMethod.Post))
+    {
+        <div class="search-form row g-0">
+            <div class="form-group col-10 search-pad">
+                @Html.TextBox("searchString", null, new { @class = "form-control", placeholder = "Enter Name" })
+            </div>
+            <div class="form-group col-2">
+                <input type="submit" value="Search" class="btn btn-custom btn-block" />
+            </div>
+        </div>
+    }
     <table class="table table-hover">
         <thead class="thead-custom">
             <tr>               

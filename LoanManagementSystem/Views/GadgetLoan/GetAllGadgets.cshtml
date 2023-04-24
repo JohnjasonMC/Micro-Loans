@@ -136,7 +136,18 @@
             <div class="col-md-4 mt-3 mb-4">
                 <div class="card">
                     <div class="card-img-top">
-                        <img src="@Model[j].GadgetImageURL" alt="@Model[j].GadgetName" />
+                        @if (!(User.IsInRole("Administrator")))
+                        {
+                            <a asp-area="" asp-controller="UGadgetLoan" asp-action="Purchase" asp-route-gadgetId="@Model[j].Id">
+                                <img src="@Model[j].GadgetImageURL" alt="@Model[j].GadgetName" />
+                            </a>
+                        }
+                        @if (User.IsInRole("Administrator"))
+                        {
+                            <a asp-area="" asp-controller="GadgetLoan" asp-action="Details" asp-route-gadgetId="@Model[j].Id">
+                                <img src="@Model[j].GadgetImageURL" alt="@Model[j].GadgetName" />
+                            </a>
+                        }
                     </div>
                     <div class="card-body">
                         <h4 class="card-title fw-bold ls-tight text-light">@Model[j].GadgetName</h4>

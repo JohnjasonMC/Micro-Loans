@@ -18,13 +18,26 @@ namespace LoanManagementSystem.Controllers
             this._adminRepository = adminRepository;
         }
         [HttpGet]
-        public async Task<IActionResult> GetAllUsers()
+        public async Task<IActionResult> GetAllUsers(string searchString)
         {
             ApplicationUser user = await this._userRepository.GetCurrentUser();
             List<ApplicationUser> users = await _adminRepository.GetAllUsersExcept(Guid.Parse(user.Id));
 
+            if(!string.IsNullOrEmpty(searchString))
+            {
+                users = users.Where(u => u.FullName.ToLower().Contains(searchString.Trim().ToLower())).ToList();
+            }
+
             return View(users);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> GetAllUsersPost(string searchString)
+        {
+            return RedirectToAction(nameof(GetAllUsers), new { searchString = searchString });
+        }
+
+
         [HttpGet]
         public async Task<IActionResult> Details(Guid userId)
         {
