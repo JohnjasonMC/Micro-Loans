@@ -1,0 +1,144 @@
+# Namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: lms
+
+# SQL Server
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lmsdb
+  namespace: lms
+spec:
+  selector:
+    matchLabels:
+      app: lmsdb
+  template:
+    metadata:
+      labels:
+        app: lmsdb
+    spec:
+      containers:
+      - name: lmsdb
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        ports:
+        - containerPort: 1433
+        env:
+        - name: ACCEPT_EULA
+          value: "Y"
+        - name: MSSQL_SA_PASSWORD
+          value: Pa$$w0rd!
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: lmsdb
+  namespace: lms
+  labels:
+    app: lmsdb
+spec:
+  selector:
+    app: lmsdb
+  ports:
+  - name: tcp
+    port: 1433
+    targetPort: 1433
+  type: NodePort
+
+# Web App
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: loanmanagementsystem
+  namespace: lms
+spec:
+  selector:
+    matchLabels:
+      app: loanmanagementsystem
+  template:
+    metadata:
+      labels:
+        app: loanmanagementsystem
+    spec:
+      containers:
+      - name: loanmanagementsystem
+        image: johnjason/loanmanagementsystem:1.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        env:
+        - name: ConnectionStrings__Server
+          value: lmsdb
+        - name: ConnectionStrings__DB
+          value: LMSDB
+        - name: ConnectionStrings__Username
+          value: sa
+        - name: ConnectionStrings__Password
+          value: Pa$$w0rd!
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: loanmanagementsystem
+  namespace: lms
+  labels:
+    app: loanmanagementsystem
+spec:
+  selector:
+    app: loanmanagementsystem
+  ports:
+  - name: tcp
+    port: 5001
+    targetPort: 80
+  type: NodePort
+
+# Web API
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lmsapi
+  namespace: lms
+spec:
+  selector:
+    matchLabels:
+      app: lmsapi
+  template:
+    metadata:
+      labels:
+        app: lmsapi
+    spec:
+      containers:
+      - name: lmsapi
+        image: johnjason/lms_api:1.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        env:
+        - name: ConnectionStrings__Server
+          value: lmsdb
+        - name: ConnectionStrings__DB
+          value: LMSDB
+        - name: ConnectionStrings__Username
+          value: sa
+        - name: ConnectionStrings__Password
+          value: Pa$$w0rd!
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: lmsapi
+  namespace: lms
+  labels:
+    app: lmsapi
+spec:
+  selector:
+    app: lmsapi
+  ports:
+  - name: tcp
+    port: 6001
+    targetPort: 80
+  type: NodePort

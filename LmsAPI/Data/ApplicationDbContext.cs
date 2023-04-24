@@ -25,13 +25,13 @@ namespace LmsAPI.Data
             string connectionString;
             if (_env.IsDevelopment())
             {
-                connectionString = $"Server={server};Database={db};MultipleActiveResultSets=true;Integrated Security=false;TrustServerCertificate=true;";
+                connectionString = $"Server={server};Database={db};MultipleActiveResultSets=true; Trusted_Connection=true; TrustServerCertificate=true;";
             }
             else
             {
                 var userName = _appConfig.GetConnectionString("UserName");
                 var password = _appConfig.GetConnectionString("Password");
-                connectionString = $"Server={server};Database={db};User Id= {userName};Password={password};MultipleActiveResultSets=true;Integrated Security=false;TrustServerCertificate=true;";
+                connectionString = $"Server={server};Database={db};User Id= {userName};Password={password};MultipleActiveResultSets=true; Trusted_Connection=true; TrustServerCertificate=true;";
             }
 
             if (string.IsNullOrEmpty(connectionString))
