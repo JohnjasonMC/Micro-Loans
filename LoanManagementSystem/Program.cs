@@ -36,7 +36,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseStaticFiles();
 
-//app.AutoMigrate();
+app.AutoMigrate();
 
 app.UseRouting();
 

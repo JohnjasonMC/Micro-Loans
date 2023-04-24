@@ -1,0 +1,40 @@
+version: "1.0"
+services:
+  lmsdb:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    ports:
+      - 1433:1433
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Pa$$w0rd!
+  lmsapi:
+    image: lmsapi
+    build:
+      context: .
+      dockerfile: LmsAPI/Dockerfile
+    ports:
+      - 5001:80
+    environment:
+      - ConnectionStrings__Server=lmsdb
+      - ConnectionStrings__DB=LMSDB
+      - ConnectionStrings__Username=sa
+      - ConnectionStrings__Password=Pa$$w0rd!
+    depends_on:
+      - lmsdb
+      - loanmanagementsystem
+    restart: on-failure
+  loanmanagementsystem:
+    image: loanmanagementsystem
+    build:
+      context: .
+      dockerfile: LoanManagementSystem/Dockerfile
+    ports:
+      - 6001:80
+    environment:
+      - ConnectionStrings__Server=lmsdb
+      - ConnectionStrings__DB=LMSDB
+      - ConnectionStrings__Username=sa
+      - ConnectionStrings__Password=Pa$$w0rd!
+    depends_on:
+      - lmsdb
+    restart: on-failure
