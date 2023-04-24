@@ -58,6 +58,8 @@
                 <td></td>
                 <td></td>
             </tr>
+            @if (!(User.IsInRole("Administrator")))
+            {
             <tr>
                 <th scope="row">Phone Number</th>
                 <td>@Html.DisplayFor(model => model.PhoneNumber)</td>
@@ -94,7 +96,7 @@
                 <td></td>
                 <td></td>
             </tr>
-
+            }
         </tbody>
     </table>
 </div>

@@ -268,7 +268,7 @@ namespace LoanManagementSystem.Controllers
             if (!string.IsNullOrEmpty(searchQuery))
             {
                 purchases = purchases.Where(p => p.ApplicationUser.FullName.Contains(searchQuery)
-                                              || p.GadgetName.Contains(searchQuery));
+                                              || p.GadgetName.Contains(searchQuery) || p.Status.Contains(searchQuery));
             }
             ViewBag.SearchQuery = searchQuery;
             return View(await purchases.ToListAsync());
