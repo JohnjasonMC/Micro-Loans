@@ -3,7 +3,6 @@ using LoanManagementSystem.Repository.Contract;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using X.PagedList;
 using System.Linq;
 using Microsoft.Data.SqlClient;
 
