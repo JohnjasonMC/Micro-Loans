@@ -5,10 +5,68 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LoanManagementSystem.Migrations
 {
-    public partial class all : Migration
+    public partial class webapp : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.Sql(@"
+                -- CREATE operation
+                CREATE PROCEDURE dbo.AddGadget
+                    @GadgetName varchar(100),
+                    @Description varchar(100),
+                    @Price int,
+                    @GadgetImageURL varchar(200)
+                AS
+                BEGIN
+                    INSERT INTO GadgetLoans (GadgetName, Description, Price, GadgetImageURL)
+                    VALUES (@GadgetName, @Description, @Price, @GadgetImageURL)
+                    SELECT SCOPE_IDENTITY() AS GadgetLoanId
+                END
+                GO
+
+                -- READ operation
+                CREATE PROCEDURE dbo.GetGadgetById
+                    @GadgetId int
+                AS
+                BEGIN
+                    SELECT * FROM GadgetLoans WHERE Id = @GadgetId
+                END
+                GO
+
+                -- READ operation
+                CREATE PROCEDURE dbo.GetAllGadgets
+                AS
+                BEGIN
+                    SELECT * FROM GadgetLoans
+                END
+                GO
+
+                -- UPDATE operation
+                CREATE PROCEDURE dbo.UpdateGadget
+                    @GadgetId int,
+                    @GadgetName varchar(100),
+                    @Description varchar(100),
+                    @Price int,
+                    @GadgetImageURL varchar(200)
+                AS
+                BEGIN
+                    UPDATE GadgetLoans
+                    SET GadgetName = @GadgetName, Description = @Description, Price = @Price, GadgetImageURL = @GadgetImageURL
+                    WHERE Id = @GadgetId
+                END
+                GO
+
+                -- DELETE operation
+                CREATE PROCEDURE dbo.DeleteGadget
+                    @GadgetId int
+                AS
+                BEGIN
+                    DELETE FROM GadgetLoans
+                    WHERE Id = @GadgetId
+                END
+                GO
+            ");
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -61,7 +119,7 @@ namespace LoanManagementSystem.Migrations
                     GadgetName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<int>(type: "int", nullable: false),
-                    GadgetImageURL = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    GadgetImageURL = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -265,8 +323,8 @@ namespace LoanManagementSystem.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "1a73053f-78c6-41c2-94fc-d897ccc8b33c", "a678d6e3-269f-459c-b18b-1610cf3ea106", "Registered", "REGISTERED" },
-                    { "705c9705-c8a8-44af-99a3-e33b13856856", "8d5f7ce3-9f23-4575-8451-29695671513f", "Administrator", "ADMINISTRATOR" }
+                    { "1a73053f-78c6-41c2-94fc-d897ccc8b33c", "0eaac597-2742-44fb-9686-8479d70998c5", "Registered", "REGISTERED" },
+                    { "705c9705-c8a8-44af-99a3-e33b13856856", "2b3f1462-1572-4b05-9715-35b9022e84d3", "Administrator", "ADMINISTRATOR" }
                 });
 
             migrationBuilder.InsertData(
@@ -274,8 +332,8 @@ namespace LoanManagementSystem.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "Address", "ConcurrencyStamp", "DateOfBirth", "Email", "EmailConfirmed", "FullName", "Gender", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "147c0de8-847c-4466-ad04-1fc7b563e0c4", 0, "Somewhere", "49d2d3fa-1768-47f3-b993-36958d6dffb7", new DateTime(2023, 4, 20, 12, 25, 53, 447, DateTimeKind.Local).AddTicks(4584), "admin@gmail.com", false, "Admin", " ", false, null, "ADMIN@GMAIL.COM", "ADMIN@GMAIL.COM", "AQAAAAEAACcQAAAAEKh34KrgXuPmPlGGanBV4JDAPGYRbxu8o++zYuRbOVF4VUITFGCzXGnWvxjBj0dGFg==", "1234567890", false, "13d8f771-b5e1-4748-9f00-c9ad2fa1809f", false, "admin@gmail.com" },
-                    { "cba87ff8-bb15-442f-8a47-0e65a93cab8c", 0, "Somewhere", "f5d72856-6df4-4704-b4ef-2f509a943a8e", new DateTime(2023, 4, 20, 12, 25, 53, 448, DateTimeKind.Local).AddTicks(6230), "registered@gmail.com", false, "Registered", "M", false, null, "REGISTERED@GMAIL.COM", "REGISTERED@GMAIL.COM", "AQAAAAEAACcQAAAAEIf8BKH8HaJik0TWpNj9AonJ46WvsxKALPiNxle/R4Dwbvn3f4jARD2TCEiF1zbfdw==", "1234567890", false, "0b26678e-0bf4-48af-9cf0-9d9126811ab0", false, "registered@gmail.com" }
+                    { "147c0de8-847c-4466-ad04-1fc7b563e0c4", 0, "Somewhere", "f082d249-e4cb-4672-8352-876eded1586b", new DateTime(2023, 5, 18, 16, 29, 47, 469, DateTimeKind.Local).AddTicks(1804), "admin@gmail.com", false, "Admin", " ", false, null, "ADMIN@GMAIL.COM", "ADMIN@GMAIL.COM", "AQAAAAEAACcQAAAAEObeuL0wfZRSvAU8F4nsfd8b4Gfz9NM+11Gx4LZI62MOGxC5S458lykaAv2DMDUMMQ==", "1234567890", false, "83dc6f10-c079-48f5-a392-e6157c63afc2", false, "admin@gmail.com" },
+                    { "cba87ff8-bb15-442f-8a47-0e65a93cab8c", 0, "Somewhere", "baa733d4-5a0b-4da2-b6cd-cea55d182b44", new DateTime(2023, 5, 18, 16, 29, 47, 470, DateTimeKind.Local).AddTicks(3528), "registered@gmail.com", false, "Registered", "M", false, null, "REGISTERED@GMAIL.COM", "REGISTERED@GMAIL.COM", "AQAAAAEAACcQAAAAEPxEy8ckL4fYq+v4Wf6JDS6vwsV2r997v6G36Weoy+wJPIHMwkZRCcJjcX+pgsGspg==", "1234567890", false, "62b09795-df7e-468f-b8e5-cb905dc9aa36", false, "registered@gmail.com" }
                 });
 
             migrationBuilder.InsertData(
@@ -382,6 +440,14 @@ namespace LoanManagementSystem.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.Sql(@"
+                DROP PROCEDURE dbo.AddGadget
+                DROP PROCEDURE dbo.GetGadgetById
+                DROP PROCEDURE dbo.GetAllGadgets
+                DROP PROCEDURE dbo.UpdateGadget
+                DROP PROCEDURE dbo.DeleteGadget
+            ");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 

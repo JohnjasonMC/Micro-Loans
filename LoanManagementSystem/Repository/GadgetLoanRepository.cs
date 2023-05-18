@@ -1,59 +1,85 @@
-﻿using LoanManagementSystem.Data;
-using LoanManagementSystem.Models;
+﻿using LoanManagementSystem.Models;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
 using LoanManagementSystem.Repository.Contract;
-using Microsoft.EntityFrameworkCore;
 
-namespace LoanManagementSystem.Repository
+namespace LoanManagementSystem.Data.Repositories
 {
     public class GadgetLoanRepository : IGadgetLoanRepository
     {
-        ApplicationDbContext _dbcontext;
+        private readonly HttpClient _httpClient;
+        private readonly string _apiBaseUrl;
+        private readonly string _apiClientKey;
+        private readonly string _jwtToken;
 
-        public GadgetLoanRepository(ApplicationDbContext dbcontext)
+        public GadgetLoanRepository(string apiBaseUrl, string apiClientKey, string jwtToken)
         {
-            _dbcontext = dbcontext;
+            _httpClient = new HttpClient();
+            _apiBaseUrl = apiBaseUrl;
+            _apiClientKey = apiClientKey;
+            _jwtToken = jwtToken;
         }
 
-
-        public GadgetLoan DeleteGadget(int gadgetId)
+        public async Task<GadgetLoan> GetGadgetById(int gadgetId)
         {
-            var gadget = GetGadgetById(gadgetId);
-            if (gadget != null)
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _jwtToken);
+            var response = await _httpClient.GetAsync($"{_apiBaseUrl}/gadgets/{gadgetId}");
+            if (response.IsSuccessStatusCode)
             {
-                var relatedPurchases = _dbcontext.purchases.Where(p => p.GadgetLoanId == gadgetId).ToList();
-                if (relatedPurchases.Count > 0)
-                {
-                    throw new InvalidOperationException("This gadget cannot be deleted because there are existing purchases for it.");
-                }
-                _dbcontext.gadgetloans.Remove(gadget);
-                _dbcontext.SaveChanges();
+                var content = await response.Content.ReadAsStringAsync();
+                var gadget = JsonConvert.DeserializeObject<GadgetLoan>(content);
+                return gadget;
             }
             return null;
         }
 
-        public GadgetLoan AddGadget(GadgetLoan newGadget)
+        public async Task<List<GadgetLoan>> GetAllGadgets()
         {
-            _dbcontext.Add(newGadget);
-            _dbcontext.SaveChanges();
-            return newGadget;
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _jwtToken);
+            var response = await _httpClient.GetAsync($"{_apiBaseUrl}/gadgets");
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var gadgets = JsonConvert.DeserializeObject<List<GadgetLoan>>(content);
+                return gadgets;
+            }
+            return new List<GadgetLoan>();
         }
 
-        public GadgetLoan GetGadgetById(int Id)
+        public async Task<GadgetLoan> AddGadget(GadgetLoan newGadget)
         {
-            return _dbcontext.gadgetloans.AsNoTracking().ToList().FirstOrDefault(t => t.Id == Id);
+            var newGadgetAsString = JsonConvert.SerializeObject(newGadget);
+            var requestBody = new StringContent(newGadgetAsString, Encoding.UTF8, "application/json");
+            _httpClient.DefaultRequestHeaders.Add("ApiKey", _apiClientKey);
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _jwtToken);
+            var response = await _httpClient.PostAsync($"{_apiBaseUrl}/gadgets", requestBody);
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var createdGadget = JsonConvert.DeserializeObject<GadgetLoan>(content);
+                return createdGadget;
+            }
+            return null;
         }
 
-        public List<GadgetLoan> GetAllGadgets()
+        public async Task UpdateGadget(int gadgetId, GadgetLoan updatedGadget)
         {
-            return _dbcontext.gadgetloans.AsNoTracking().ToList();
+            var updatedGadgetAsString = JsonConvert.SerializeObject(updatedGadget);
+            var requestBody = new StringContent(updatedGadgetAsString, Encoding.UTF8, "application/json");
+            _httpClient.DefaultRequestHeaders.Add("ApiKey", _apiClientKey);
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _jwtToken);
+            await _httpClient.PutAsync($"{_apiBaseUrl}/gadgets/{gadgetId}", requestBody);
         }
 
-        public GadgetLoan UpdateGadget(int gadgetId, GadgetLoan newGadget)
+        public async Task DeleteGadget(int gadgetId)
         {
-
-            _dbcontext.gadgetloans.Update(newGadget);
-            _dbcontext.SaveChanges();
-            return newGadget;
+            _httpClient.DefaultRequestHeaders.Add("ApiKey", _apiClientKey);
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _jwtToken);
+            await _httpClient.DeleteAsync($"{_apiBaseUrl}/gadgets/{gadgetId}");
         }
     }
 }

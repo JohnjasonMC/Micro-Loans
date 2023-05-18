@@ -7,83 +7,57 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LmsAPI.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class GadgetLoanController : ControllerBase
     {
-        IGadgetLoanRepository _repo;
-        private readonly IMapper _mapper;
+        private readonly IGadgetLoanRepository _gadgetLoanRepository;
 
-        public GadgetLoanController(IGadgetLoanRepository repo, IMapper mapper)
+        public GadgetLoanController(IGadgetLoanRepository gadgetLoanRepository)
         {
-            this._repo = repo;
-            this._mapper = mapper;
+            _gadgetLoanRepository = gadgetLoanRepository;
+        }
+
+        [HttpGet("{gadgetId}")]
+        public async Task<ActionResult<GadgetLoan>> GetGadgetById(int gadgetId)
+        {
+            var gadget = await _gadgetLoanRepository.GetGadgetById(gadgetId);
+
+            if (gadget == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(gadget);
         }
 
         [HttpGet]
-        public IActionResult GetAllGadgets()
+        public async Task<ActionResult<List<GadgetLoan>>> GetAllGadgets()
         {
-            return Ok(this._repo.GetAllGadgets());
+            var gadgets = await _gadgetLoanRepository.GetAllGadgets();
+            return Ok(gadgets);
         }
 
-
-        [HttpGet("{gadgetId}")]
-        public async Task<IActionResult> GetById([FromRoute] int gadgetId) 
+        [HttpPost]
+        public ActionResult<GadgetLoan> AddGadget(GadgetLoan newGadget)
         {
-            if (gadgetId == 0)
-                return BadRequest();
-            try
-            {
-                var gadgetLoan = await _repo.GetGadgetById(gadgetId);
-                if (gadgetLoan == null)
-                    return NoContent();
-                return Ok(gadgetLoan);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
-            
-        }
-
-        [HttpDelete("gadgetId")]
-        public async Task<IActionResult> Delete([FromRoute] int gadgetId)
-        {
-            if (gadgetId == 0)
-                return BadRequest();
-            var gadgetloan = await _repo.GetGadgetById(gadgetId);
-            if (gadgetloan == null)
-                return NotFound("No Resource Found");
-            await _repo.DeleteGadget(gadgetId);
-            return Accepted();
-        }
-
-        [HttpPost("Create")]
-        public IActionResult Create([FromBody] GadgetLoanDTO gadgetLoanDTO)
-        {
-            if (gadgetLoanDTO == null)
-                return BadRequest("No Data Provided");
-            if (ModelState.IsValid)
-            {
-                var gadgetloan = _mapper.Map<GadgetLoan>(gadgetLoanDTO);
-                var newgadgetloan = _repo.AddGadget(gadgetloan);
-                return CreatedAtAction("GetById", new { gadgetId = newgadgetloan.Id }, newgadgetloan);
-            }
-            return BadRequest(ModelState);
+            var addedGadget = _gadgetLoanRepository.AddGadget(newGadget);
+            return Ok(addedGadget);
         }
 
         [HttpPut("{gadgetId}")]
-        public IActionResult Update([FromBody] GadgetLoan newGadgetLoan, [FromRoute] int gadgetId)
+        public IActionResult UpdateGadget(int gadgetId, GadgetLoan updatedGadget)
         {
-            if (newGadgetLoan == null)
-                return BadRequest("No Data Provided");
-            if (ModelState.IsValid)
-            {
-                var updateGadgetloan = _repo.UpdateGadget(gadgetId, newGadgetLoan);
-                return AcceptedAtAction("GetById", new { gadgetId = updateGadgetloan.Id }, updateGadgetloan);
-            }
-            return BadRequest(ModelState);
+            _gadgetLoanRepository.UpdateGadget(gadgetId, updatedGadget);
+            return NoContent();
+        }
+
+        [HttpDelete("{gadgetId}")]
+        public IActionResult DeleteGadget(int gadgetId)
+        {
+            _gadgetLoanRepository.DeleteGadget(gadgetId);
+            return NoContent();
         }
     }
 }

@@ -1,4 +1,5 @@
 using LmsAPI.AutoMap;
+using LmsAPI.CustomMiddleware;
 using LmsAPI.Data;
 using LmsAPI.Models;
 using LmsAPI.Repository;
@@ -57,6 +58,26 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+builder.Services.AddAuthorization(options => {
+    options.AddPolicy("admin_greetings", policy => policy.RequireAuthenticatedUser());
+});
+
+// policy who can access it 
+
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+builder.Services.AddCors(opt =>
+{
+    opt.AddPolicy(name: MyAllowSpecificOrigins, policy =>
+    {
+        //policy.AllowAnyOrigin()
+        policy.WithOrigins("https://localhost:44360", "mydomain.com")
+        .AllowAnyHeader()
+        .AllowAnyMethod();
+    });
+});
+
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -91,22 +112,18 @@ builder.Services.AddSwaggerGen(opt =>
 });
 
 
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment()) //nag sasabi sa api for development
+if (app.Environment.IsDevelopment()) 
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
 app.UseStaticFiles();
-
-//app.UseHttpsRedirection();
+app.UseMiddleware<ApiKeyAuthMiddleware>();
 app.UseAuthentication();
-app.UseAuthorization();
-
+//app.UseAuthorization();
 app.MapControllers();
-
 app.Run();

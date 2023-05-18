@@ -4,10 +4,10 @@ namespace LmsAPI.Repository
 {
     public interface IGadgetLoanRepository
     {
-        List<GadgetLoan> GetAllGadgets();
-        Task<GadgetLoan> GetGadgetById(int Id);
+        Task<GadgetLoan> GetGadgetById(int gadgetId);
+        Task<List<GadgetLoan>> GetAllGadgets();
         GadgetLoan AddGadget(GadgetLoan newGadget);
-        GadgetLoan UpdateGadget(int gadgetId, GadgetLoan newGadget);
-        Task DeleteGadget(int gadgetId);
+        void UpdateGadget(int gadgetId, GadgetLoan updatedGadget);
+        void DeleteGadget(int gadgetId);
     }
 }
