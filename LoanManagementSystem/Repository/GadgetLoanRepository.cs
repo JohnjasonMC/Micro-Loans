@@ -45,7 +45,7 @@ namespace LoanManagementSystem.Repository
             var newGadgetAsString = Newtonsoft.Json.JsonConvert.SerializeObject(newGadget);
             var requestBody = new StringContent(newGadgetAsString, Encoding.UTF8, "application/json");
 
-            var response = await httpClient.PostAsync("https://localhost:7259", requestBody);
+            var response = await httpClient.PostAsync("http://localhost:7259", requestBody);
             response.EnsureSuccessStatusCode();
 
             var content = await response.Content.ReadAsStringAsync();
@@ -66,7 +66,7 @@ namespace LoanManagementSystem.Repository
             var updatedGadgetAsString = Newtonsoft.Json.JsonConvert.SerializeObject(updatedGadget);
             var requestBody = new StringContent(updatedGadgetAsString, Encoding.UTF8, "application/json");
 
-            var response = await httpClient.PutAsync($"https://localhost:7259{gadgetId}", requestBody);
+            var response = await httpClient.PutAsync($"http://localhost:7259{gadgetId}", requestBody);
             response.EnsureSuccessStatusCode();
         }
 
@@ -82,7 +82,7 @@ namespace LoanManagementSystem.Repository
                 httpClient.DefaultRequestHeaders.Add("ApiKey", "RANDomValuetoDenoteAPIKeyWithNumbers131235");
                 httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODQ0MDQzMzgsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NzI1OSIsImF1ZCI6IlVzZXIifQ.Lc_ELRgOl1BPZcA3fTQHVelrx9DwfEaQM0UJQPzEtHo");
 
-                var response = await httpClient.DeleteAsync($"https://localhost:7259{gadgetId}");
+                var response = await httpClient.DeleteAsync($"http://localhost:7259{gadgetId}");
                 response.EnsureSuccessStatusCode();
             }
         }
