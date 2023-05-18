@@ -1,12 +1,10 @@
 ﻿using LoanManagementSystem.Models;
 using LoanManagementSystem.Repository.Contract;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace LoanManagementSystem.Controllers
 {
-    [Authorize]
     public class GadgetLoanController : Controller
     {
         private readonly IGadgetLoanRepository _gadgetLoanRepository;
@@ -16,25 +14,23 @@ namespace LoanManagementSystem.Controllers
             _gadgetLoanRepository = gadgetLoanRepository;
         }
 
-        [AllowAnonymous]
         public async Task<IActionResult> GetAllGadgets()
         {
             var gadgets = await _gadgetLoanRepository.GetAllGadgets();
             return View(gadgets);
         }
 
-        [AllowAnonymous]
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(int gadgetId)
         {
-            var gadget = await _gadgetLoanRepository.GetGadgetById(id);
+            var gadget = await _gadgetLoanRepository.GetGadgetById(gadgetId);
             if (gadget == null)
             {
                 return NotFound();
             }
+
             return View(gadget);
         }
 
-        [HttpGet]
         public IActionResult Create()
         {
             return View();
@@ -42,56 +38,51 @@ namespace LoanManagementSystem.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(GadgetLoan gadget)
+        public async Task<IActionResult> Create(GadgetLoan newGadget)
         {
             if (ModelState.IsValid)
             {
-                await _gadgetLoanRepository.AddGadget(gadget);
+                await _gadgetLoanRepository.AddGadget(newGadget);
                 return RedirectToAction(nameof(Index));
             }
-            return View(gadget);
+
+            return View(newGadget);
         }
 
-        public async Task<IActionResult> Update(int id)
+        public async Task<IActionResult> Update(int gadgetId)
         {
-            var gadget = await _gadgetLoanRepository.GetGadgetById(id);
+            var gadget = await _gadgetLoanRepository.GetGadgetById(gadgetId);
             if (gadget == null)
             {
                 return NotFound();
             }
+
             return View(gadget);
         }
 
-        [Authorize(Roles = "Administrator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Update(int id, GadgetLoan gadget)
+        public async Task<IActionResult> Update(int gadgetId, GadgetLoan updatedGadget)
         {
-            if (id != gadget.Id)
+            if (gadgetId != updatedGadget.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                await _gadgetLoanRepository.UpdateGadget(id, gadget);
+                await _gadgetLoanRepository.UpdateGadget(gadgetId, updatedGadget);
                 return RedirectToAction(nameof(Index));
             }
-            return View(gadget);
+
+            return View(updatedGadget);
         }
 
-
-        [Authorize(Roles = "Administrator")]
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int gadgetId)
         {
-            var gadget = await _gadgetLoanRepository.GetGadgetById(id);
-            if (gadget == null)
-            {
-                return NotFound();
-            }
-            await _gadgetLoanRepository.DeleteGadget(id);
+            await _gadgetLoanRepository.DeleteGadget(gadgetId);
             return RedirectToAction(nameof(Index));
         }
     }
