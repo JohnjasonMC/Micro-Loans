@@ -1,57 +1,37 @@
 ﻿using LoanManagementSystem.Models;
 using LoanManagementSystem.Repository.Contract;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using System.Linq;
-using Microsoft.Data.SqlClient;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace LoanManagementSystem.Controllers
 {
     [Authorize]
     public class GadgetLoanController : Controller
     {
-        IGadgetLoanRepository _repo;
+        private readonly IGadgetLoanRepository _gadgetLoanRepository;
 
-        public GadgetLoanController(IGadgetLoanRepository repo)
+        public GadgetLoanController(IGadgetLoanRepository gadgetLoanRepository)
         {
-            this._repo = repo;
+            _gadgetLoanRepository = gadgetLoanRepository;
         }
 
         [AllowAnonymous]
-        public IActionResult GetAllGadgets(string searchString)
+        public async Task<IActionResult> GetAllGadgets()
         {
+            var gadgets = await _gadgetLoanRepository.GetAllGadgets();
+            return View(gadgets);
+        }
 
-            var gadgets = from gadget in _repo.GetAllGadgets()
-                          select gadget;
-            if (!String.IsNullOrEmpty(searchString))
+        [AllowAnonymous]
+        public async Task<IActionResult> Details(int id)
+        {
+            var gadget = await _gadgetLoanRepository.GetGadgetById(id);
+            if (gadget == null)
             {
-                gadgets = gadgets.Where(s => s.GadgetName.ToLower().Contains(searchString.Trim().ToLower()));
+                return NotFound();
             }
-                return View(gadgets.ToList()); 
-        }
-
-        [AllowAnonymous]
-        public IActionResult Details(int gadgetId)
-        {
-            var gadget = _repo.GetGadgetById(gadgetId);
             return View(gadget);
-        }
-
-        [HttpPost]
-        [Authorize(Roles = "Administrator")]
-        public IActionResult Delete(int gadgetId)
-        {
-            try
-            {
-                var gadgetlist = _repo.DeleteGadget(gadgetId);
-                return RedirectToAction(controllerName: "GadgetLoan", actionName: "GetAllGadgets");
-            }
-            catch (InvalidOperationException)
-            {
-                TempData["ErrorMessage"] = "Cannot delete gadget with existing purchases";
-                return RedirectToAction(controllerName: "GadgetLoan", actionName: "GetAllGadgets");
-            }
         }
 
         [HttpGet]
@@ -60,39 +40,59 @@ namespace LoanManagementSystem.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Administrator")]
         [HttpPost]
-        public IActionResult Create(GadgetLoan newGadget)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(GadgetLoan gadget)
         {
             if (ModelState.IsValid)
             {
-                var gadget = _repo.AddGadget(newGadget);
-                return RedirectToAction("GetAllGadgets");
+                await _gadgetLoanRepository.AddGadget(gadget);
+                return RedirectToAction(nameof(Index));
             }
-            ViewData["Message"] = "Data is not valid to create gadget";
-            return View(newGadget);
+            return View(gadget);
         }
 
-        [Authorize(Roles = "Administrator")]
-        [HttpGet]
-        public IActionResult Update(int gadgetId)
+        public async Task<IActionResult> Update(int id)
         {
-            var oldGadget = _repo.GetGadgetById(gadgetId);
-            return View(oldGadget);
+            var gadget = await _gadgetLoanRepository.GetGadgetById(id);
+            if (gadget == null)
+            {
+                return NotFound();
+            }
+            return View(gadget);
         }
+
         [Authorize(Roles = "Administrator")]
         [HttpPost]
-        public IActionResult Update(GadgetLoan newGadgetLoan)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Update(int id, GadgetLoan gadget)
         {
+            if (id != gadget.Id)
+            {
+                return NotFound();
+            }
+
             if (ModelState.IsValid)
             {
-                var gadget = _repo.UpdateGadget(newGadgetLoan.Id, newGadgetLoan);
-                return RedirectToAction("GetAllGadgets");
+                await _gadgetLoanRepository.UpdateGadget(id, gadget);
+                return RedirectToAction(nameof(Index));
             }
-            ViewData["Message"] = "Data is not valid to create gadget";
-            return View(newGadgetLoan);
+            return View(gadget);
         }
 
 
+        [Authorize(Roles = "Administrator")]
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var gadget = await _gadgetLoanRepository.GetGadgetById(id);
+            if (gadget == null)
+            {
+                return NotFound();
+            }
+            await _gadgetLoanRepository.DeleteGadget(id);
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

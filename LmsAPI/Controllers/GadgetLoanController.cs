@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LmsAPI.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class GadgetLoanController : ControllerBase
