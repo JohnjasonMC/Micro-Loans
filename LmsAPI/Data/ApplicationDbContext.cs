@@ -17,7 +17,7 @@ namespace LmsAPI.Data
             this._env = env;
 
         }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) //dipende kung susundan sa docker 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var server = _appConfig.GetConnectionString("Server");
             var db = _appConfig.GetConnectionString("DB");

@@ -122,8 +122,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseStaticFiles();
-app.UseMiddleware<ApiKeyAuthMiddleware>();
+//app.UseMiddleware<ApiKeyAuthMiddleware>();
 app.UseAuthentication();
-app.UseAuthorization();
+//app.UseAuthorization();
 app.MapControllers();
 app.Run();

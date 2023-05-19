@@ -7,7 +7,7 @@ namespace LoanManagementSystem.Repository.Contract
         Task<GadgetLoan> GetGadgetById(int gadgetId);
         Task<List<GadgetLoan>> GetAllGadgets();
         Task<GadgetLoan> AddGadget(GadgetLoan newGadget);
-        Task UpdateGadget(int gadgetId, GadgetLoan updatedGadget);
-        Task DeleteGadget(int gadgetId);
+        Task <GadgetLoan?> UpdateGadget(int gadgetId, GadgetLoan updatedGadget);
+        //Task<GadgetLoan?> DeleteGadget(int gadgetId);
     }
 }

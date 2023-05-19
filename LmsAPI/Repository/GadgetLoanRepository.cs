@@ -19,12 +19,18 @@ namespace LmsAPI.Repository
 
         public async Task<GadgetLoan> GetGadgetById(int gadgetId)
         {
-            return await _dbContext.gadgetloans.FromSqlRaw("EXEC dbo.GetGadgetById @GadgetId", new SqlParameter("GadgetId", gadgetId)).FirstOrDefaultAsync();
+            var gadgets = await _dbContext.gadgetloans
+                .FromSqlInterpolated($"EXEC dbo.GetGadgetById {gadgetId}")
+                .ToListAsync();
+
+            return gadgets.FirstOrDefault();
         }
 
         public async Task<List<GadgetLoan>> GetAllGadgets()
         {
-            return await _dbContext.gadgetloans.FromSqlRaw("EXEC dbo.GetAllGadgets").ToListAsync();
+            return await _dbContext.gadgetloans
+                .FromSqlRaw("EXEC dbo.GetAllGadgets")
+                .ToListAsync();
         }
 
         public GadgetLoan AddGadget(GadgetLoan newGadget)

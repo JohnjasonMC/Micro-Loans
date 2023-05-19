@@ -22,6 +22,7 @@ namespace LoanManagementSystem.Controllers
 
         public async Task<IActionResult> Details(int gadgetId)
         {
+            
             var gadget = await _gadgetLoanRepository.GetGadgetById(gadgetId);
             if (gadget == null)
             {
@@ -40,6 +41,7 @@ namespace LoanManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(GadgetLoan newGadget)
         {
+            
             if (ModelState.IsValid)
             {
                 await _gadgetLoanRepository.AddGadget(newGadget);
@@ -64,6 +66,7 @@ namespace LoanManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Update(int gadgetId, GadgetLoan updatedGadget)
         {
+            
             if (gadgetId != updatedGadget.Id)
             {
                 return NotFound();
@@ -78,12 +81,14 @@ namespace LoanManagementSystem.Controllers
             return View(updatedGadget);
         }
 
+        /*
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int gadgetId)
         {
+            var token = HttpContext.Session.GetString("JWToken");
             await _gadgetLoanRepository.DeleteGadget(gadgetId);
             return RedirectToAction(nameof(Index));
-        }
+        }*/
     }
 }
