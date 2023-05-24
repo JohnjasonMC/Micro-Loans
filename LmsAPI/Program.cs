@@ -19,10 +19,10 @@ var issuer = builder.Configuration["JWT:Issuer"];
 var audience = builder.Configuration["JWT:Audience"];
 var key = builder.Configuration["JWT:Key"];
 
-// Add services to the container.
 
+// Add services to the container.
 builder.Services.AddControllers();
-builder.Services.AddAutoMapper(typeof(AutoMapperConfig)); //activate automapper
+builder.Services.AddAutoMapper(typeof(AutoMapperConfig));
 builder.Services.AddHttpClient();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -124,6 +124,6 @@ if (app.Environment.IsDevelopment())
 app.UseStaticFiles();
 app.UseMiddleware<ApiKeyAuthMiddleware>();
 app.UseAuthentication();
-//app.UseAuthorization();
+app.UseAuthorization();
 app.MapControllers();
 app.Run();
