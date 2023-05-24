@@ -9,6 +9,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Text;
+using System.Net;
 
 namespace LoanManagementSystem.Controllers
 {
@@ -32,52 +33,58 @@ namespace LoanManagementSystem.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Login()
+        public IActionResult Login()
         {
             return View();
         }
-
-        public async Task<IActionResult> Login(LoginUserViewModel loginUser)
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginUserViewModel userViewModel)
         {
+
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(loginUser.UserName, loginUser.Password, loginUser.RememberMe, false);
-
-                if (result.Succeeded)
+                using (var httpClient = new HttpClient())
                 {
-                    var token = await SignInUserAsync(loginUser);
-
-                    if (!string.IsNullOrEmpty(token))
+                    StringContent stringContent = new StringContent(JsonConvert.SerializeObject(userViewModel), Encoding.UTF8, "application/json");
+                    using (var response = await httpClient.PostAsync("https://localhost:7259/api/Account/login", stringContent))
                     {
-                        HttpContext.Session.SetString("JWToken", token);
-                        return RedirectToAction("Index", "Home");
+                        // Read the response content
+                        string responseContent = await response.Content.ReadAsStringAsync();
+                        //string token = responseContent;
+                        var token = JObject.Parse(responseContent)["token"].ToString();
+                        if (token == "Invalid Credentials")
+                        {
+                            ViewBag.Message = "Incorrect Username or Password";
+                            return View(userViewModel);
+                        }
+
+                        // Check the response status code
+                        if (response.StatusCode == HttpStatusCode.OK)
+                        {
+                            var result = await _signInManager.PasswordSignInAsync(userViewModel.UserName, userViewModel.Password, userViewModel.RememberMe, false);
+
+                            if (result.Succeeded)
+                            {
+                                ViewBag.LoginSuccess = true;
+                                // Store the token in the session
+                                HttpContext.Session.SetString("JWToken", token);
+                                return RedirectToAction("Index", "Home");
+                            }
+                        }
+                        else
+                        {
+                            // Handle the response based on the status code or content
+                            ViewBag.Message = "An error occurred. Status code: " + response.StatusCode;
+                            // You might choose to handle different error scenarios here
+                            return View(userViewModel);
+                        }
                     }
-
-                    ModelState.AddModelError(string.Empty, "Invalid login credentials");
                 }
+
             }
+            return View(userViewModel);
 
-            return View(loginUser);
         }
-
-        public async Task<string> SignInUserAsync(LoginUserViewModel loginUserViewModel)
-        {
-            var newTodoAsString = JsonConvert.SerializeObject(loginUserViewModel);
-            var requestBody = new StringContent(newTodoAsString, Encoding.UTF8, "application/json");
-            _httpClient.DefaultRequestHeaders.Add("ApiKey", _configs.GetValue<string>("ApiKey"));
-            var response = await _httpClient.PostAsync("https://localhost:7259/api/Account/login", requestBody);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                var token = JObject.Parse(content)["token"].ToString();
-
-                return token;
-            }
-
-            return null;
-        }
-
 
         [HttpGet]
         public async Task<IActionResult> Register()

@@ -11,12 +11,22 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();
 builder.Services.AddDbContext<ApplicationDbContext, ApplicationDbContext>();
 builder.Services.AddScoped<IAdminRepository, AdminRepository>();
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IGadgetLoanRepository, GadgetLoanRepository>();
 //builder.Services.AddScoped<IUGadgetLoanRepository, UGadgetLoanRepository>();
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
+
+builder.Services.AddSession(options =>
+{
+    options.Cookie.Name = "YourSessionCookieName";
+    options.IdleTimeout = TimeSpan.FromMinutes(20); // Set the session timeout as desired
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 
 builder.Services.ConfigureApplicationCookie(options =>
@@ -33,6 +43,7 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
 }
 
+app.UseSession();
 
 app.UseStaticFiles();
 

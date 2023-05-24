@@ -4,6 +4,7 @@ using LoanManagementSystem.Repository.Contract;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Linq.Dynamic.Core.Tokenizer;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -14,35 +15,55 @@ namespace LoanManagementSystem.Repository
     public class GadgetLoanRepository : IGadgetLoanRepository
     {
         private readonly HttpClient httpClient;
+        private readonly IConfiguration _configs;
         ApplicationDbContext _dbContext;
-        private const string ApiKey = "RANDomValuetoDenoteAPIKeyWithNumbers131235";
-        private const string BaseUrl = "http://localhost:7259";
-        private const string JwtToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODQ0MDQzMzgsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NzI1OSIsImF1ZCI6IlVzZXIifQ.Lc_ELRgOl1BPZcA3fTQHVelrx9DwfEaQM0UJQPzEtHo";
 
-        public GadgetLoanRepository(ApplicationDbContext dbContext, IHttpClientFactory httpClientFactory)
+        public GadgetLoanRepository(ApplicationDbContext dbContext, IConfiguration configs)
         {
             httpClient = new HttpClient();
+            _configs = configs;
             _dbContext = dbContext;
+            httpClient.BaseAddress = new Uri("https://localhost:7259/api/");
         }
 
-        public async Task<GadgetLoan> GetGadgetById(int gadgetId)
+        public async Task<GadgetLoan?> GetGadgetById(int gadgetId)
         {
             var gadget = await _dbContext.gadgetloans.FindAsync(gadgetId);
             return gadget;
+            /*
+            var response = await httpClient.GetAsync($"GadgetLoan/{gadgetId}");
+            if(response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var gadgetloan = JsonConvert.DeserializeObject<GadgetLoan>(content);
+                return gadgetloan;
+            }
+            return null;
+            */
         }
 
-        public async Task<List<GadgetLoan>> GetAllGadgets()
+        public async Task<List<GadgetLoan>> GetAllGadgets(string token)
         {
-            return _dbContext.gadgetloans.AsNoTracking().ToList();
+            httpClient.DefaultRequestHeaders.Add("ApiKey", _configs.GetValue<string>("ApiKey"));
+            httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+            var response = await httpClient.GetAsync("https://localhost:7259/api/GadgetLoan");
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var gadgetloan = JsonConvert.DeserializeObject<List<GadgetLoan>>(content);
+                return gadgetloan ?? new List<GadgetLoan>();
+            }
+            return new List<GadgetLoan>();
+
         }
 
-        public async Task<GadgetLoan> AddGadget(GadgetLoan newGadget)
+        public async Task<GadgetLoan> AddGadget(GadgetLoan newGadget, string token)
         {
             var newGadgetAsString = JsonConvert.SerializeObject(newGadget);
             var requestBody = new StringContent(newGadgetAsString, Encoding.UTF8, "application/json");
-            httpClient.DefaultRequestHeaders.Add("ApiKey", ApiKey);
-            httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + JwtToken);
-            var response = await httpClient.PostAsync($"{BaseUrl}/gadgetloans", requestBody);
+            httpClient.DefaultRequestHeaders.Add("ApiKey", "RANDomValuetoDenoteAPIKeyWithNumbers131235");
+            httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+            var response = await httpClient.PostAsync($"https://localhost:7259/api/GadgetLoan", requestBody);
             if(response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
@@ -53,32 +74,34 @@ namespace LoanManagementSystem.Repository
             return null;
         }
 
-        public async Task<GadgetLoan?> UpdateGadget(int gadgetId, GadgetLoan updatedGadget)
+        public async Task<GadgetLoan?> UpdateGadget(int gadgetId, GadgetLoan updatedGadget, string token)
         {
-            var updatedGadgetAsString = JsonConvert.SerializeObject(updatedGadget);
-            var requestBody = new StringContent(updatedGadgetAsString, Encoding.UTF8, "application/json");
-            httpClient.DefaultRequestHeaders.Add("ApiKey", ApiKey);
-            httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + JwtToken);
-            var response = await httpClient.PutAsync($"{BaseUrl}/gadgetloans/{gadgetId}", requestBody);
-            if(response.IsSuccessStatusCode )
+            httpClient.DefaultRequestHeaders.Add("ApiKey", _configs.GetValue<string>("ApiKey"));
+            httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+            var newGadgetAsString = JsonConvert.SerializeObject(updatedGadget);
+            var requestBody = new StringContent(newGadgetAsString, Encoding.UTF8, "application/json");
+            var response = await httpClient.PutAsync($"{gadgetId}", requestBody);
+            if(response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
-                var gadgetloan = JsonConvert.DeserializeObject<GadgetLoan>(content);
-                return gadgetloan;
+                var updatedgadget = JsonConvert.DeserializeObject<GadgetLoan>(content);
+                return updatedgadget;
             }
             return null;
         }
 
-        /*
-        public async Task<GadgetLoan?> DeleteGadget(int gadgetId)
+        
+        public async Task DeleteGadget(int gadgetId, string token)
         {
-            var gadgetloan = GetGadgetById(gadgetId);
-            httpClient.DefaultRequestHeaders.Add("ApiKey", ApiKey);
-            httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + JwtToken);
-
-            await httpClient.DeleteAsync($"{BaseUrl}/gadgetloans/{gadgetId}");
-
-            return gadgetloan;
-        }*/
+            httpClient.DefaultRequestHeaders.Clear();
+            httpClient.DefaultRequestHeaders.Add("ApiKey", _configs.GetValue<string>("ApiKey"));
+            httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer" + token);
+            var response = await httpClient.DeleteAsync($"https://localhost:7259/api/GadgetLoan/{gadgetId}");
+            if(response.IsSuccessStatusCode )
+            {
+                var data = await response.Content.ReadAsByteArrayAsync();
+                Console.WriteLine("Delete Password Response: ", data);
+            }
+        }
     }
 }
