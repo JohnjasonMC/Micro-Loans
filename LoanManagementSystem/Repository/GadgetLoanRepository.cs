@@ -28,9 +28,6 @@ namespace LoanManagementSystem.Repository
 
         public async Task<GadgetLoan?> GetGadgetById(int gadgetId)
         {
-            var gadget = await _dbContext.gadgetloans.FindAsync(gadgetId);
-            return gadget;
-            /*
             var response = await httpClient.GetAsync($"GadgetLoan/{gadgetId}");
             if(response.IsSuccessStatusCode)
             {
@@ -39,7 +36,6 @@ namespace LoanManagementSystem.Repository
                 return gadgetloan;
             }
             return null;
-            */
         }
 
         public async Task<List<GadgetLoan>> GetAllGadgets(string token)
